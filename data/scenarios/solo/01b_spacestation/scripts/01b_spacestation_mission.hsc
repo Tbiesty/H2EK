@@ -909,7 +909,7 @@
 	10)
 ;	(sleep_until (not (objects_can_see_flag (players) 1st_2nd_flag 40)) 1)
 	(save_1st_wv4)
-	(sleep 60)
+	(sleep 10)
 	(ai_place 1st_cov_wv4)
 	(sleep_until (< (ai_living_count 1st_cov) 2) 10 300)
 
