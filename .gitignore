@@ -1,0 +1,4 @@
+# Ignore large files that are not modified
+*.bitmap
+*.model_animation_graph
+*.sound
