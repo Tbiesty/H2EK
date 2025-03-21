@@ -292,7 +292,7 @@
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2610_cor);"Clock's ticking, Chief! Get down here!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2630_cor);"Chief! Over here! Next to the bomb!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2640_cor);"Ask yourself this question: is what I'm doing right now helping Cortana keep this station from blowing into tiny, tiny bits?"
-	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2650_cor);"Just a friendly reminder…bomb!"
+	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2650_cor);"Just a friendly reminderï¿½bomb!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2660_cor);"If this thing goes off...I'm never talking to you again."
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2340_lhd);"All non-combat personnel to pressure-zones!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2350_lhd);"All hands to pressure-zones!"
@@ -470,8 +470,8 @@
 										)
 										((= counter_flavor_bomb_safe 7)
 ;											(if (> (ai_living_count gun_cortana) 0)
-;												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor (list_get (ai_get_object gun_cortana) 1) 1 "radio_3d");"Just a friendly reminder…bomb!"
-												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor NONE 1 "radio_default");"Just a friendly reminder…bomb!"
+;												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor (list_get (ai_get_object gun_cortana) 1) 1 "radio_3d");"Just a friendly reminderï¿½bomb!"
+												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor NONE 1 "radio_default");"Just a friendly reminderï¿½bomb!"
 ;											)
 										)
 										((= counter_flavor_bomb_safe 8)
@@ -1945,7 +1945,7 @@
 	(ai_place elv_hum_mar)
 
 	(sleep_until (volume_test_objects tv_elv_start (players)) 1)
-	(ai_place elv_cov_top)
+; TODO	(ai_place elv_cov_top)
 	(sleep 30)
 	(sound_looping_start scenarios\solo\01b_spacestation\01b_music\01b_07 NONE 1); swelltrill
 
@@ -1954,7 +1954,7 @@
 	(object_type_predict "objects\characters\grunt\grunt")
 	(object_type_predict "objects\characters\elite\elite")
 	(sleep 15)
-	(ai_place elv_cov_elevator)
+; TODO	(ai_place elv_cov_elevator)
 	(sleep 5)
 	(device_set_position lvr_door_enter_1 1)
 	(device_set_power elv_elevator_control_1 1)
@@ -2058,7 +2058,7 @@
 	(sleep_until (game_safe_to_save) 1 150)
 	(save_lvr_start)
 	(sleep 30)
-	(ai_place lvr_cov_wv1)
+; TODO	(ai_place lvr_cov_wv1)
 ;	(ai_place lvr_cov_air)
 
 	(wake lvr_carrier_flyby)
@@ -2077,7 +2077,7 @@
 	(device_set_power lvr_airlock_blower 0)
 
 	(sleep_until (volume_test_objects tv_lvr_back (players)) 1)
-	(if (not (difficulty_normal)) (ai_place lvr_cov_wv2))
+; TODO	(if (not (difficulty_normal)) (ai_place lvr_cov_wv2))
 
 	(sleep_until (< (objects_distance_to_object (players) gun_elevator_door_top) 4) 1)
 	(device_operates_automatically_set gun_elevator_door_top 1)
@@ -2137,7 +2137,8 @@
 	(sleep 30)
 	(ai_erase ai_current_actor)
 )
-;*
+
+;*	
 (script dormant gun_cortana
 	(sleep_until
 		(cond
@@ -2193,7 +2194,7 @@
 	(ai_erase gun_cortana_3)
 	(ai_erase gun_cortana_4)
 )
-			
+	
 
 (script static void test
 	(object_create carrier_01)
@@ -2479,6 +2480,7 @@
 	(load_bsp3)
 	(switch_bsp 3)
 	(object_teleport (player0) elv_flag)
+
 	(wake elv_mission)
 	(wake lvr_mission)
 	(gun_mission)

@@ -4,4 +4,6 @@
 *.sound
 # Ignore auto backup files
 **/*auto-backup*.scenario
+# Ignore temp files
+**/sapien_temp_scenario*.scenario
 
