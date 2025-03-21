@@ -2,3 +2,6 @@
 *.bitmap
 *.model_animation_graph
 *.sound
+# Ignore auto backup files
+**/*auto-backup*.scenario
+

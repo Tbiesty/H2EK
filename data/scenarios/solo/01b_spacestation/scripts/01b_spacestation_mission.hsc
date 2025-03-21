@@ -2455,6 +2455,8 @@
 	(wake 1st_tram)
 	(sleep 1)
 	(cinematic_fade_from_white)
+;*
+
 	(wake breadcrumbs_nav_points_01b)
 
 	(sleep_until (= (structure_bsp_index) 2) 1)
@@ -2473,7 +2475,10 @@
 	(wake dck_mission)
 
 	(sleep_until (= (structure_bsp_index) 3) 1)
+*;
 	(load_bsp3)
+	(switch_bsp 3)
+	(object_teleport (player0) elv_flag)
 	(wake elv_mission)
 	(wake lvr_mission)
 	(gun_mission)
