@@ -1227,7 +1227,7 @@
 	(save_bay1_mid)
 	(cs_run_command_script bay1_hum cs_clear)
 	(set mark_flavor_disable FALSE)
-;	(sleep 150)
+	(sleep 30)
 
 	(set mark_flavor_bay1 FALSE)
 	(set mark_flavor_bay2 TRUE)
