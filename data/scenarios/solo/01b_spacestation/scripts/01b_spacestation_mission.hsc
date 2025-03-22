@@ -1446,7 +1446,7 @@
 (script dormant arm_mission
 	(print "arm")
 	(sleep 5)
-	; TODO (ai_place arm_cov_stl)
+	(ai_place arm_cov_stl)
 	(wake save_arm_start)
 
 	(sleep_until (volume_test_objects tv_arm_start (players)) 1)
@@ -1535,13 +1535,13 @@
 	(sleep_until (volume_test_objects tv_atr1_floor (players)) 1)
 	(wake save_atr1_start)
 	(sleep 15)
-; TODO	(ai_place atr1_cov_fbalcony)
-; TODO	(ai_place atr1_cov_bbalcony)
-; TODO	(ai_place atr1_cov_sec_front)
+    (ai_place atr1_cov_fbalcony)
+    (ai_place atr1_cov_bbalcony)
+    (ai_place atr1_cov_sec_front)
 	(set mark_flavor_brace TRUE)
 
 	(sleep_until (volume_test_objects tv_atr1_mid (players)) 1)
-; TODO	(ai_place atr1_cov_stairs_front)
+    (ai_place atr1_cov_stairs_front)
 
 	(sleep_until
 		(or
@@ -1549,10 +1549,10 @@
 			(volume_test_objects tv_atr1_stairs (players))
 		)
 	1)
-; TODO	(if (< (ai_living_count atr1_cov) 6) (ai_place atr1_cov_stairs_back) (ai_place atr1_cov_stairs_back_elt))
+    (ai_place atr1_cov_stairs_back)
 
 	(sleep_until (volume_test_objects tv_atr1_sec (players)) 1)
-; TODO	(if (< (ai_living_count atr1_cov) 6) (ai_place atr1_cov_sec_back) (ai_place atr1_cov_sec_back_elt))
+    (ai_place atr1_cov_sec_back)
 
 	(sleep_until
 		(or
@@ -1746,7 +1746,7 @@
 	(cs_run_command_script trm1_hum_johnson cs_trm1_bunker)
 	(cs_run_command_script trm1_hum_miranda cs_trm1_bunker)
 ;	(ai_place trm1_hum_block)
-; TODO	(ai_place trm1_cov_alock)
+    (ai_place trm1_cov_alock)
 	
 	(sleep_until (volume_test_objects tv_trm1_start (players)) 1)
 	
@@ -1768,9 +1768,9 @@
 
 	(sleep_until (volume_test_objects tv_trm1_block (players)) 1)
  	(ai_set_orders trm1_hum_alock trm1_hum_iac)
-; TODO	(ai_place trm1_cov_block)
+    (ai_place trm1_cov_block)
 	(ai_magically_see_object trm1_cov_block (player0))
-	;(ai_magically_see_object trm1_cov_block (player1))
+	(ai_magically_see_object trm1_cov_block (player1))
 
 	(sleep_until (volume_test_objects tv_dck_mid (players)) 1)
 	(ai_disposable trm1_cov_alock 1)
@@ -1950,7 +1950,7 @@
 	(ai_place elv_hum_mar)
 
 	(sleep_until (volume_test_objects tv_elv_start (players)) 1)
-; TODO	(ai_place elv_cov_top)
+    (ai_place elv_cov_top)
 	(sleep 30)
 	(sound_looping_start scenarios\solo\01b_spacestation\01b_music\01b_07 NONE 1); swelltrill
 
@@ -1959,7 +1959,7 @@
 	(object_type_predict "objects\characters\grunt\grunt")
 	(object_type_predict "objects\characters\elite\elite")
 	(sleep 15)
-; TODO	(ai_place elv_cov_elevator)
+    (ai_place elv_cov_elevator)
 	(sleep 5)
 	(device_set_position lvr_door_enter_1 1)
 	(device_set_power elv_elevator_control_1 1)
@@ -2063,7 +2063,7 @@
 	(sleep_until (game_safe_to_save) 1 150)
 	(save_lvr_start)
 	(sleep 30)
-; TODO	(ai_place lvr_cov_wv1)
+    (ai_place lvr_cov_wv1)
 ;	(ai_place lvr_cov_air)
 
 	(wake lvr_carrier_flyby)
@@ -2082,7 +2082,7 @@
 	(device_set_power lvr_airlock_blower 0)
 
 	(sleep_until (volume_test_objects tv_lvr_back (players)) 1)
-; TODO	(if (not (difficulty_normal)) (ai_place lvr_cov_wv2))
+    (if (not (difficulty_normal)) (ai_place lvr_cov_wv2))
 
 	(sleep_until (< (objects_distance_to_object (players) gun_elevator_door_top) 4) 1)
 	(device_operates_automatically_set gun_elevator_door_top 1)
@@ -2462,8 +2462,6 @@
 	(wake 1st_tram)
 	(sleep 1)
 	(cinematic_fade_from_white)
-;*
-TODO
 	(wake breadcrumbs_nav_points_01b)
 
 	(sleep_until (= (structure_bsp_index) 2) 1)
@@ -2475,22 +2473,14 @@ TODO
 
 	(sleep_until (= (structure_bsp_index) 0) 1)
 	(load_bsp0b)
-
 	(wake ice_cream_check)
-
 	(wake arm_mission)
-	(wake atr1_mission)
-*;			
+	(wake atr1_mission)		
 	(wake trm1_mission)
 	(wake dck_mission)
-;*
+
 	(sleep_until (= (structure_bsp_index) 3) 1)
-*;
-
-	(load_bsp0b)
-	(switch_bsp 0)
-	(object_teleport (player0) trm1_flag)
-
+	(load_bsp3)
 	(wake elv_mission)
 	(wake lvr_mission)
 	(gun_mission)
