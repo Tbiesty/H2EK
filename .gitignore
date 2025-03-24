@@ -1,5 +1,6 @@
 # Ignore large files that are not modified
 *.bitmap
+!health_meter.bitmap
 *.model_animation_graph
 *.sound
 # Ignore auto backup files
