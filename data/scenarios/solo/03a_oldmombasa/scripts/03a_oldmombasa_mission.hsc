@@ -4295,18 +4295,18 @@ Open Issues
 	; Wait for one sniper to die, or for the advance
 	(sleep_until 
 		(or
-			(< (ai_living_count e4_cov_snipers0) 3)
+			(< (ai_living_count e4_cov_snipers0) 2)
 			(volume_test_objects tv_e4_cov_inf1_main_begin (players))
 		)
 	)
 	
 	; Send in the low sniper
-	(if (< (ai_living_count e4_cov_snipers0) 3) (ai_place e4_cov_snipers0_2/sniper0))
+	(if (< (ai_living_count e4_cov_snipers0) 2) (ai_place e4_cov_snipers0_2/sniper0))
 	
 	; Wait again
 	(sleep_until 
 		(or
-			(< (ai_living_count e4_cov_snipers0) 3)
+			(< (ai_living_count e4_cov_snipers0) 2)
 			(volume_test_objects tv_e4_player_moved_up (players))
 		)
 	)
@@ -4314,18 +4314,18 @@ Open Issues
 	; Again and again
 	(sleep_until 
 		(or
-			(< (ai_living_count e4_cov_snipers0) 3)
+			(< (ai_living_count e4_cov_snipers0) 2)
 			(volume_test_objects tv_e4_player_moved_up (players))
 		)
 	)
-	(if (< (ai_living_count e4_cov_snipers0) 3) (ai_place e4_cov_snipers0_2/sniper1))
+	(if (< (ai_living_count e4_cov_snipers0) 2) (ai_place e4_cov_snipers0_2/sniper1))
 	(sleep_until 
 		(or
-			(< (ai_living_count e4_cov_snipers0) 3)
+			(< (ai_living_count e4_cov_snipers0) 2)
 			(volume_test_objects tv_e4_player_moved_up (players))
 		)
 	)
-	(if (< (ai_living_count e4_cov_snipers0) 3) (ai_place e4_cov_snipers0_2/sniper2))
+	(if (< (ai_living_count e4_cov_snipers0) 2) (ai_place e4_cov_snipers0_2/sniper2))
 	
 	; Checkpoint
 	(sleep_until 
@@ -4340,14 +4340,9 @@ Open Issues
 		(volume_test_objects tv_e4_player_moved_up (players)) 
 		15
 	)
-	(if 
-		(and
-			(difficulty_legendary)
-			(= (random_range 0 3) 0)
-		)
-		(ai_place e4_cov_inf2 (pin (- 8 (ai_living_count e4_cov)) 1 3))
-		(ai_place e4_cov_inf2 (pin (- 8 (ai_living_count e4_cov)) 1 2))	
-	)
+	(game_save)
+	(sleep 30)
+	(ai_place e4_cov_inf2 2)	
 	
 	; Checkpoint
 	(sleep_until 
@@ -4367,27 +4362,7 @@ Open Issues
 		)
 		15
 	)
-	(ai_place e4_cov_inf1_0 (pin (- 7 (ai_living_count e4_cov)) 2 4))
-
-	; Respawn a few
-	(sleep_until
-		(begin
-			(if 
-				(and
-					(< (ai_living_count e4_cov) 6)
-					(not (volume_test_objects tv_e4_end_of_street (players)))
-				)
-				(ai_place e4_cov_inf1_0 2)
-			)
-		
-			; Until enough have spawned
-			(or
-				(>= (ai_spawn_count e4_cov_inf1) 8)
-				(volume_test_objects tv_e4_end_of_street (players))
-			)
-		)
-		90
-	)
+	(ai_place e4_cov_inf1)
 )
 
 (script dormant e4_cov_inf0_main
@@ -4402,21 +4377,8 @@ Open Issues
 		)
 		15
 	)
-	(ai_place e4_cov_inf0_0 (pin (- 8 (ai_living_count e4_cov)) 0 2))
-	
-	; Wait until reins are needed
-	(sleep_until 
-		(or
-			(volume_test_objects tv_e4_player_moved_up (players))
-			(<= (ai_living_count e4_cov_inf0_0) 0) 
-		)
-		15
-	)
-	
-	; If the player isn't in the volume, replenish the jackals
-	(if (not (volume_test_objects tv_e4_player_moved_up (players)))
-		(ai_place e4_cov_inf0_1 (pin (- 8 (ai_living_count e4_cov)) 0 2))
-	)
+	(ai_place e4_cov_inf0_0)
+	(ai_place e4_cov_inf0_1)
 )
 
 (script dormant e4_mars_inf0_main
@@ -4691,6 +4653,7 @@ Open Issues
 		15
 	)
 	(ai_place e3_cov_inf0_2)
+	(ai_place e3_cov_inf0_3)
 )
 
 (script dormant e3_mars_pelican0_main
@@ -5265,7 +5228,7 @@ Open Issues
 	(wake e2_cov_hunters0_main)
 	(wake e2_mars_inf0_main)
 	(wake e2_mars_johnson_main)
-;	(wake e2_cov_inf0_main)
+	(wake e2_cov_inf0_main)
 	
 	; Shut down
 	(sleep_until g_e3_started)
@@ -5636,14 +5599,14 @@ Open Issues
 
 (script static boolean e1_cov_inf2_spawn_ready
 	(and
-		(<= (ai_living_count e1_cov_inf2) 1)
+		(<= (ai_living_count e1_cov_inf2) 2)
 		(<= (ai_fighting_count e1_cov_inf2) 0)
 	)
 )
 
 (script static void e1_cov_inf2_sleep_until_respawn
 	; Sleep until they're ready to respawn, or two minutes, timeout
-	(sleep_until (e1_cov_inf2_spawn_ready) 31 two_minutes)
+	(sleep_until (e1_cov_inf2_spawn_ready) 30 two_minutes)
 	
 	; Pause unless the player is on the rooftops
 	(sleep_until (volume_test_objects tv_e1_on_building (players)) 30 150)
@@ -5691,6 +5654,11 @@ Open Issues
 			(ai_magically_see e1_mars_johnson e1_cov_inf2_5)
 			(set g_e1_cov_inf2_spawned (+ g_e1_cov_inf2_spawned 1))
 			
+			(if (not g_e1_cov_inf2_wave0)
+				(ai_play_line e1_mars_johnson/johnson0 0150) ; "Across street, low"
+;				(ai_play_line e1_mars_johnson/johnson0 0160) ; "Across street, low"
+			)
+
 ;*			; Dialog
 			(sleep 150)
 			(if g_e1_cov_inf2_wave0
@@ -5732,7 +5700,7 @@ Open Issues
 	)
 )
 
-;*
+
 (script static void e1_cov_inf2_4_spawn
 	; If player isn't in the unsafe volume...
 	(if (not (volume_test_objects tv_e1_cov_inf2_4_unsafe (players)))
@@ -5749,7 +5717,7 @@ Open Issues
 			(set g_e1_cov_inf2_spawned (+ g_e1_cov_inf2_spawned 1))
 			
 			; Dialog
-			(sleep 60)
+			(sleep 150)
 			(if g_e1_cov_inf2_wave0
 				(ai_play_line e1_mars_johnson/johnson0 0190) ; "Right side, in the street"
 ;				(ai_play_line e1_mars_johnson/johnson0 0200) ; "Right side, in the street"
@@ -5760,7 +5728,7 @@ Open Issues
 		)
 	)
 )
-*;
+
 
 (script static void e1_cov_inf2_3_spawn
 	; If player isn't in the unsafe volume...
@@ -5899,7 +5867,7 @@ Open Issues
 
 (global short g_e1_cov_snipers0_limit 2)
 (script dormant e1_cov_snipers0_main
-	(if (difficulty_legendary) (set g_e1_cov_snipers0_limit 5))
+	(if (difficulty_legendary) (set g_e1_cov_snipers0_limit 4))
 
 	; Spawn some snipers
 	(begin_random
@@ -5950,18 +5918,6 @@ Open Issues
 				)
 			)
 		)
-		
-		; Sniper 4
-		(if (< (ai_spawn_count e1_cov_snipers0) g_e1_cov_snipers0_limit)
-			(if (not (volume_test_objects tv_e1_cov_sniper0_3_unsafe (players))) 
-				(begin
-					(ai_place e1_cov_snipers0/sniper4)
-					(game_save)
-					(sleep_until (<= (ai_living_count e1_cov_snipers0) 0))
-					(sleep (random_range one_minute two_minutes))
-				)
-			)
-		)
 	)
 )
 
@@ -6002,19 +5958,21 @@ Open Issues
 	)
 	
 	; Send them in
-	(ai_place e1_cov_inf3_0 (- 8 (ai_living_count e1_cov_inf3)))
+	(ai_place e1_cov_inf3_0)
 	(sleep 30)
+	(ai_place e1_cov_inf2_7)
 	(ai_play_line e1_mars_johnson/johnson0 0270)
 	
 	; Respawn a few
 	(sleep_until
 		(begin
 			(if (< (ai_living_count e1_cov_inf3) 3)
-				(ai_place e1_cov_inf3_1 4)
+				(ai_place e1_cov_inf3_1 2)
+				(ai_place e1_cov_inf2_7 2)
 			)
 		
 			; Until enough have spawned
-			(>= (ai_spawn_count e1_cov_inf3) 12)
+			(>= (ai_spawn_count e1_cov_inf3) 15)
 		)
 	)
 	
@@ -6039,7 +5997,7 @@ Open Issues
 	; Set the wave count
 	(set g_e1_cov_inf2_spawned 0)
 	(set g_e1_cov_inf2_limit 2)
-	(if (difficulty_heroic) (set g_e1_cov_inf2_limit 2))
+	(if (difficulty_heroic) (set g_e1_cov_inf2_limit 3))
 	(if (difficulty_legendary) (set g_e1_cov_inf2_limit 3))
 	
 	; Start up the snipers
@@ -6049,7 +6007,7 @@ Open Issues
 	(begin_random 
 		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_1_spawn))
 		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_3_spawn))
-		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_6_spawn))
+		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_4_spawn))
 	)
 	
 	; Wait till we're ready to spawn another wave
@@ -6065,7 +6023,7 @@ Open Issues
 	; Wait till we're ready to spawn waves
 	(sleep_until 
 		(and
-			(<= (ai_living_count e1_cov_inf2) 1)
+			(<= (ai_living_count e1_cov_inf2) 2)
 			(<= (ai_fighting_count e1_cov_inf2) 0)
 		)
 	)
@@ -6105,9 +6063,8 @@ Open Issues
 	
 	; Spawn the waves
 	(begin_random 
-		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_1_spawn))
 		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_3_spawn))
-		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_5_spawn))
+		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_4_spawn))
 		(if (e1_cov_inf2_under_limit) (e1_cov_inf2_6_spawn))
 	)
 	
@@ -6210,6 +6167,7 @@ Open Issues
 )
 
 (script dormant e1_mars_inf1_main
+	(print "e1_mars_inf1_main")
 	(ai_place e1_mars_inf1)
 	
 	; Initial command script
@@ -6218,6 +6176,7 @@ Open Issues
 )
 
 (script dormant e1_mars_inf0_main
+	(print "e1_mars_inf1_main")
 	(ai_place e1_mars_inf0)
 	
 	; Sleep until the second Phantom has lived and died
@@ -6235,7 +6194,8 @@ Open Issues
 (script dormant e1_mars_johnson_main
 	(ai_place e1_mars_johnson)
 	(object_cannot_die (ai_get_object e1_mars_johnson/johnson0) true)
-	
+	(print "e1_mars_johnson_main")
+
 	; Initial command script
 	(cs_run_command_script e1_mars_johnson cs_e1_mars_johnson_entry)
 
