@@ -38,6 +38,7 @@ e13
 (global short 45_seconds 900)
 (global short one_minute 1800)
 (global short two_minutes 3600)
+(global short three_minutes 4800)
 
 ; Breadcrumb navpoint progression
 (global short g_breadcrumb_nav_index 0)
@@ -2454,6 +2455,7 @@ Open Issues
 
 	; Wait until we're on the beach
 	(sleep_until (volume_test_objects tv_e9_main_begin (players)))
+    (ai_place e8_cov_ghosts0_1)
 	(sleep_until (ai_scene e9_beach_chatter_scene cs_e9_beach_chatter_scene e9_mars_warthog0) 30 300)
 )
 
@@ -2563,8 +2565,7 @@ Open Issues
 )
 
 (script dormant e9_cov_ghosts0_main
-;	(ai_migrate e8_cov_ghosts0 e9_cov_ghosts0)
-;	(ai_place e9_cov_ghosts0 (pin (- 1 (ai_living_count e9_cov_ghosts0)) 0 1))
+	(ai_migrate e8_cov_ghosts0 e9_cov_ghosts0)
 
 	; Wait for the first turret to be depleted, or for the player's charge
 	(sleep_until 
@@ -2962,16 +2963,17 @@ Open Issues
 	)
 	(ai_place e8_cov_ghosts0_0 1)
 	
-	; Place the second set of Ghosts
+	; Place the second Ghost
 	(sleep_until
 		(<= (ai_living_count e8_cov_ghosts0) 0)
 	)
-	
+	(sleep 150)
+
 	; Send then in if it's safe
 	(sleep_until
 		(not (volume_test_objects tv_e8_vehicle_spawn_area (players)))
 	)
-	(ai_place e8_cov_ghosts0_0 (pin (- 10 (ai_living_count covenant)) 0 2))
+	(ai_place e8_cov_ghosts0_0 1)
 )
 
 (script dormant e8_cov_phantom0_main
@@ -2980,11 +2982,7 @@ Open Issues
 
 (script dormant e8_cov_inf2_main
 	; Wait until the player is close
-	(sleep_until
-		(volume_test_objects tv_e8_cov_inf2_begin (players))
-		15
-	)
-	(ai_place e8_cov_inf2 (pin (- 10 (ai_living_count e8_cov)) 1 4))
+	(ai_place e8_cov_inf2)
 	
 	; Save point
 	(sleep_until
@@ -3009,7 +3007,7 @@ Open Issues
 			g_e9_started
 			(and
 				g_e8_cov_inf1_unloaded
-				(<= (ai_living_count e8_cov_inf1) 5)
+				(<= (ai_living_count e8_cov_inf1) 2)
 				(= (structure_bsp_index) 1)
 			)
 		)
@@ -3555,7 +3553,8 @@ Open Issues
 
 (script dormant e6_mars_inf1_main
 	(ai_place e6_mars_inf1)
-	
+	(object_cannot_die (ai_get_object e6_mars_inf1/marine0) true)
+
 	; TODO: Get rid of this
 	; Sleep until the Covenant are dead or the player is near
 	(sleep_until 
@@ -3575,6 +3574,7 @@ Open Issues
 		)
 		5
 	)
+	(object_cannot_die (ai_get_object e6_mars_inf1/marine0) false)
 
 	; Have the other ODST break out
 	(sleep 20)
@@ -3600,7 +3600,7 @@ Open Issues
 	(sleep_until (> (ai_spawn_count e6_cov_inf0) 0))
 	
 	; Place more Marines if we need them
-	(ai_place e6_mars_inf0_1 (- 2 (ai_living_count e6_mars_inf0)))
+	(ai_place e6_mars_inf0_1)
 	(ai_migrate e6_mars_inf0_1 e6_mars_inf0)
 	(ai_renew e6_mars_inf0)
 	(ai_disposable e6_mars_inf0 false)
@@ -3913,32 +3913,32 @@ Covenant
 	(sleep_until 
 		(volume_test_objects tv_e5_player_advanced (players))
 	)
-	(if (< (ai_living_count covenant) 15) (ai_place e5_cov_inf3))
+	(ai_place e5_cov_inf3)
 )
 
 (script dormant e5_cov_inf2_main
 	(sleep_until 
 		(volume_test_objects tv_e5_player_advanced (players))
 	)
-	(if (< (ai_living_count covenant) 15) (ai_place e5_cov_inf2))
+	(ai_place e5_cov_inf2)
 )
 
 (script static void e5_cov_inf1_0_spawn
 	(print "e5_cov_inf1_0_spawn")
 	(if 
 		(and
-			(<= (ai_living_count e5_cov_inf1) 1)
+			(<= (ai_living_count e5_cov_inf1) 2)
 			(not (volume_test_objects tv_e5_cov_inf1_unsafe0 (players)))
 			(not (volume_test_objects tv_e5_cov_inf1_done (players)))
 		)
 		(begin
-			(ai_place e5_cov_inf1_0 (pin (- 7 (ai_living_count e5_cov)) 0 4))
+			(ai_place e5_cov_inf1_0)
 			(ai_set_orders e5_cov_inf1_0 e5_cov_inf1_0_init)
 		)
 	)
 	(sleep_until
 		(or
-			(<= (ai_living_count e5_cov_inf1) 1)
+			(<= (ai_living_count e5_cov_inf1) 2)
 			(volume_test_objects tv_e5_cov_inf1_done (players))
 		)
 	)
@@ -3953,18 +3953,18 @@ Covenant
 	(print "e5_cov_inf1_1_spawn")
 	(if 
 		(and
-			(<= (ai_living_count e5_cov_inf1) 1)
+			(<= (ai_living_count e5_cov_inf1) 2)
 			(not (volume_test_objects tv_e5_cov_inf1_unsafe1 (players)))
 			(not (volume_test_objects tv_e5_cov_inf1_done (players)))
 		)
 		(begin
-			(ai_place e5_cov_inf1_1 (pin (- 7 (ai_living_count e5_cov)) 0 4))
+			(ai_place e5_cov_inf1_1)
 			(ai_set_orders e5_cov_inf1_1 e5_cov_inf1_1_init)
 		)
 	)
 	(sleep_until
 		(or
-			(<= (ai_living_count e5_cov_inf1) 1)
+			(<= (ai_living_count e5_cov_inf1) 2)
 			(volume_test_objects tv_e5_cov_inf1_done (players))
 		)
 	)
@@ -3988,13 +3988,13 @@ Covenant
 	; Know our limits. There is a price you cannot pay.
 	(if (difficulty_heroic) 
 		(begin
-			(set g_e5_cov_inf1_max 16)
+			(set g_e5_cov_inf1_max 15)
 			(set g_e5_cov_inf1_spawn_delay 15)
 		)
 	)
 	(if (difficulty_legendary) 
 		(begin
-			(set g_e5_cov_inf1_max 30)
+			(set g_e5_cov_inf1_max 20)
 			(set g_e5_cov_inf1_spawn_delay 5)
 		)
 	)
@@ -4027,32 +4027,25 @@ Covenant
 
 (script dormant e5_cov_inf0_main
 	(ai_place e5_cov_inf0_0/sniper0)
-;	(ai_place e5_cov_inf0_1)
+	(ai_place e5_cov_inf0_1)
 	
 	; Wait for it...
-	(sleep_until 
-		(or
-			(< (ai_living_count e5_cov_inf0) 1)
-			(volume_test_objects tv_e5_advanced1 (players))
-		)
-	)
-	(if (< (ai_living_count covenant) 15) (ai_place e5_cov_inf0_0/sniper1))
+	; (sleep_until 
+	; 	(or
+	; 		(< (ai_living_count e5_cov_inf0) 1)
+	; 		(volume_test_objects tv_e5_advanced1 (players))
+	; 	)
+	; )
+	; (if (< (ai_living_count covenant) 15) (ai_place e5_cov_inf0_0/sniper1))
 
 	(sleep_until 
 		(or
-			(< (ai_living_count e5_cov_inf0) 2)
+			(< (ai_living_count e5_cov_inf0_0) 1)
 			(volume_test_objects tv_e5_advanced1 (players))
 		)
 	)
-	(if (< (ai_living_count covenant) 15) (ai_place e5_cov_inf0_0/sniper2))
-
-	(sleep_until 
-		(or
-			(< (ai_living_count e5_cov_inf0) 2)
-			(volume_test_objects tv_e5_advanced1 (players))
-		)
-	)
-	(if (< (ai_living_count covenant) 15) (ai_place e5_cov_inf0_0/sniper3))
+	(ai_place e5_cov_inf0_0/sniper2)
+	(ai_place e5_cov_inf0_0/sniper3)
 )
 
 (script dormant e5_mars_inf0_main
@@ -5081,6 +5074,7 @@ Open Issues
 (script dormant e2_dialog
 	(sleep 75)
 ;	(ai_play_line e2_mars_johnson 0920) ; "Nevermind"
+	(print "e2_dialog")
 
 	; Wait for the Hunters to spawn and appear
 	(sleep_until g_e2_door_breached)
@@ -5159,7 +5153,7 @@ Open Issues
 	(sleep 1)
 	(device_set_position_immediate e2_hunter_door 1)
 	(object_destroy e2_hunter_smoke)
-	
+
 	; Signal the breach
 	(set g_e2_door_breached true)
 	
@@ -5717,7 +5711,7 @@ Open Issues
 			(set g_e1_cov_inf2_spawned (+ g_e1_cov_inf2_spawned 1))
 			
 			; Dialog
-			(sleep 150)
+			(sleep 240)
 			(if g_e1_cov_inf2_wave0
 				(ai_play_line e1_mars_johnson/johnson0 0190) ; "Right side, in the street"
 ;				(ai_play_line e1_mars_johnson/johnson0 0200) ; "Right side, in the street"
@@ -5867,7 +5861,6 @@ Open Issues
 
 (global short g_e1_cov_snipers0_limit 2)
 (script dormant e1_cov_snipers0_main
-	(if (difficulty_legendary) (set g_e1_cov_snipers0_limit 4))
 
 	; Spawn some snipers
 	(begin_random
@@ -5878,23 +5871,11 @@ Open Issues
 					(ai_place e1_cov_snipers0/sniper0)
 					(game_save)
 					(sleep_until (<= (ai_living_count e1_cov_snipers0) 0))
-					(sleep (random_range one_minute two_minutes))
+					(sleep (random_range two_minutes three_minutes))
 				)
 			)
 		)
-		
-		; Sniper 1
-		(if (< (ai_spawn_count e1_cov_snipers0) g_e1_cov_snipers0_limit)
-			(if (not (volume_test_objects tv_e1_cov_sniper0_1_unsafe (players))) 
-				(begin
-					(ai_place e1_cov_snipers0/sniper1)
-					(game_save)
-					(sleep_until (<= (ai_living_count e1_cov_snipers0) 0))
-					(sleep (random_range one_minute two_minutes))
-				)
-			)
-		)
-		
+			
 		; Sniper 2
 		(if (< (ai_spawn_count e1_cov_snipers0) g_e1_cov_snipers0_limit)
 			(if (not (volume_test_objects tv_e1_cov_sniper0_2_unsafe (players))) 
@@ -5902,19 +5883,7 @@ Open Issues
 					(ai_place e1_cov_snipers0/sniper2)
 					(game_save)
 					(sleep_until (<= (ai_living_count e1_cov_snipers0) 0))
-					(sleep (random_range one_minute two_minutes))
-				)
-			)
-		)
-		
-		; Sniper 3
-		(if (< (ai_spawn_count e1_cov_snipers0) g_e1_cov_snipers0_limit)
-			(if (not (volume_test_objects tv_e1_cov_sniper0_3_unsafe (players))) 
-				(begin
-					(ai_place e1_cov_snipers0/sniper3)
-					(game_save)
-					(sleep_until (<= (ai_living_count e1_cov_snipers0) 0))
-					(sleep (random_range one_minute two_minutes))
+					(sleep (random_range two_minutes three_minutes))
 				)
 			)
 		)
@@ -5966,13 +5935,13 @@ Open Issues
 	; Respawn a few
 	(sleep_until
 		(begin
-			(if (< (ai_living_count e1_cov_inf3) 3)
+			(if (< (ai_living_count e1_cov_inf3) 4)
 				(ai_place e1_cov_inf3_1 2)
 				(ai_place e1_cov_inf2_7 2)
 			)
 		
 			; Until enough have spawned
-			(>= (ai_spawn_count e1_cov_inf3) 15)
+			(>= (ai_spawn_count e1_cov_inf3) 16)
 		)
 	)
 	
@@ -6285,6 +6254,7 @@ Open Issues
 	
 	; Wake subsequent scripts
 ;	e2_main awakened in e1_mars_pelican0_main
+
 	(wake e3_main)
 	(wake e8_main)
 	(wake e12_main)
