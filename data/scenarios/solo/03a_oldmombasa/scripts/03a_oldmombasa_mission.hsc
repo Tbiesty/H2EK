@@ -2143,8 +2143,8 @@ Covenant
 	
 	; Load up the gunner
 	(ai_vehicle_reserve e10_guntower0 true)
-;	(ai_vehicle_enter_immediate e10_cov_inf1/gunner0 e10_guntower0 "guntower_d")
-;	(cs_run_command_script e10_cov_inf1/gunner0 cs_e10_cov_guntower_shoot)
+	(ai_vehicle_enter_immediate e10_cov_inf1/gunner0 e10_guntower0 "guntower_d")
+	(cs_run_command_script e10_cov_inf1/gunner0 cs_e10_cov_guntower_shoot)
 )
 
 (script dormant e10_cov_inf0_main
@@ -2518,24 +2518,28 @@ Open Issues
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e9_cov_inf1_main
-	(ai_place e9_cov_inf1_2 (pin (- 10 (ai_living_count covenant)) 0 1))
+	(print "e9_cov_inf1_main")
+	(ai_place e9_cov_inf1_2)
 	(sleep_until (volume_test_objects tv_e9_main_begin (players)) 15)
 
 	; Place them
-	(ai_place e9_cov_inf1_0 (pin (- 10 (ai_living_count covenant)) 1 3))
-	(ai_place e9_cov_inf1_1 (pin (- 10 (ai_living_count covenant)) 1 2))
+	(ai_place e9_cov_inf1_0)
+	(ai_place e9_cov_inf1_1)
 	
 	; Load up the gunner
+	(print "Load up the gunner")
 	(ai_vehicle_reserve e9_guntower0 true)
-;	(ai_vehicle_enter_immediate e9_cov_inf1_1/gunner0 e9_guntower0 "guntower_d")
-;	(cs_run_command_script e9_cov_inf1_1/gunner0 cs_e9_cov_guntower_shoot)
-	
+	(ai_vehicle_enter_immediate e9_cov_inf1_1/gunner0 e9_guntower0 "guntower_d")
+	(cs_run_command_script e9_cov_inf1_1/gunner0 cs_e9_cov_guntower_shoot)
+	(print "Loaded up the gunner")
+
 	; When they're all dead, try for a save
 	(sleep_until (<= (ai_living_count e9_cov_inf1) 0))
 	(game_save)
 )
 
 (script dormant e9_cov_inf0_main
+	(print "e9_cov_inf0_main")
 	(sleep_until 
 		(or
 			(volume_test_objects tv_e9_near_entrance (players)) 
@@ -2550,7 +2554,7 @@ Open Issues
 		)
 		15
 	)
-	(ai_place e9_cov_inf0 (pin (- 10 (ai_living_count e9_cov)) 3 7))
+	(ai_place e9_cov_inf0)
 
 	; Retreat checkpoint
 	(wake e9_retreat_checkpoint0)
