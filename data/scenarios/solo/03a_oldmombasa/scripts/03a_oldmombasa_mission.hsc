@@ -2455,7 +2455,6 @@ Open Issues
 
 	; Wait until we're on the beach
 	(sleep_until (volume_test_objects tv_e9_main_begin (players)))
-    (ai_place e8_cov_ghosts0_1)
 	(sleep_until (ai_scene e9_beach_chatter_scene cs_e9_beach_chatter_scene e9_mars_warthog0) 30 300)
 )
 
@@ -2518,7 +2517,6 @@ Open Issues
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e9_cov_inf1_main
-	(print "e9_cov_inf1_main")
 	(ai_place e9_cov_inf1_2)
 	(sleep_until (volume_test_objects tv_e9_main_begin (players)) 15)
 
@@ -2527,11 +2525,9 @@ Open Issues
 	(ai_place e9_cov_inf1_1)
 	
 	; Load up the gunner
-	(print "Load up the gunner")
 	(ai_vehicle_reserve e9_guntower0 true)
 	(ai_vehicle_enter_immediate e9_cov_inf1_1/gunner0 e9_guntower0 "guntower_d")
 	(cs_run_command_script e9_cov_inf1_1/gunner0 cs_e9_cov_guntower_shoot)
-	(print "Loaded up the gunner")
 
 	; When they're all dead, try for a save
 	(sleep_until (<= (ai_living_count e9_cov_inf1) 0))
@@ -2573,13 +2569,10 @@ Open Issues
 
 	; Wait for the first turret to be depleted, or for the player's charge
 	(sleep_until 
-		(and
-			(<= (ai_living_count e9_cov_ghosts0) 0)
-			(or
-				(volume_test_objects tv_e9_near_entrance (players)) 
-				(volume_test_objects tv_e9_bypass (players)) 
-				(<= (ai_living_count e9_cov_inf1) 3)
-			)
+		(or
+			(volume_test_objects tv_e9_near_entrance (players)) 
+			(volume_test_objects tv_e9_bypass (players)) 
+			(<= (ai_living_count e9_cov_inf1) 3)
 		)
 		15
 	)
@@ -2978,6 +2971,9 @@ Open Issues
 		(not (volume_test_objects tv_e8_vehicle_spawn_area (players)))
 	)
 	(ai_place e8_cov_ghosts0_0 1)
+
+	(sleep 60)
+	(ai_place e8_cov_ghosts0_1)
 )
 
 (script dormant e8_cov_phantom0_main
