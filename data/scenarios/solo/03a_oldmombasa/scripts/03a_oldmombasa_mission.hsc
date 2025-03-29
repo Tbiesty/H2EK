@@ -1735,34 +1735,34 @@ Open Issues:
 )
 
 (script dormant e11_cov_inf1_main
-	(sleep_until 
-	 	(or
-	 		(volume_test_objects tv_e11_on_fort (players))
-	 		(volume_test_objects tv_e11_near_exit (players))
-	 	)
-	 	10
-	)
-	(sleep 30)
+	; (sleep_until 
+	;  	(or
+	;  		(volume_test_objects tv_e11_on_fort (players))
+	;  		(volume_test_objects tv_e11_near_exit (players))
+	;  	)
+	;  	10
+	; )
+	(sleep 180)
 	 
 	; If the player is not near the exit...
-	(if (not (volume_test_objects tv_e11_near_exit (players)))
-	 	; He's not, so send in inf1_0
-	 	(begin
-	 		; Wait until he's looking at the exit
-	 		(sleep_until 
-	 			(objects_can_see_flag (players) e11_cov_inf1_entry 25)
-	 			60
-	 			300
-	 		)
+	; (if (not (volume_test_objects tv_e11_near_exit (players)))
+	;  	; He's not, so send in inf1_0
+	;  	(begin
+	;  		; Wait until he's looking at the exit
+	;  		(sleep_until 
+	;  			(objects_can_see_flag (players) e11_cov_inf1_entry 25)
+	;  			60
+	;  			300
+	;  		)
 	 		
 	 		; Send them in
-	 		(wake e11_cov_inf1_0_insertion0)
-	 		(sleep 20)
-	 		(wake e11_cov_inf1_0_insertion1)
-	 		(sleep 10)
-	 		(if (< (ai_living_count covenant) 10) (wake e11_cov_inf1_0_insertion2))
-	 	)
-	)
+	(wake e11_cov_inf1_0_insertion0)
+	(sleep 20)
+	(wake e11_cov_inf1_0_insertion1)
+	(sleep 10)
+	(wake e11_cov_inf1_0_insertion2)
+	;  	)
+	; )
 	 
 	; Wait till he's near the exit to send in the rest
 	(sleep_until 
@@ -1775,9 +1775,9 @@ Open Issues:
 	(sleep 15)
 	(wake e11_cov_inf1_1_insertion1)
 	(sleep 7)
-	(if (< (ai_living_count covenant) 10) (wake e11_cov_inf1_1_insertion2))
+	(wake e11_cov_inf1_1_insertion2)
 	(sleep 25)
-	(if (< (ai_living_count covenant) 10) (wake e11_cov_inf1_1_insertion3))
+	(wake e11_cov_inf1_1_insertion3)
 )
 
 (script dormant e11_cov_inf0_main
@@ -1847,14 +1847,14 @@ Open Issues:
 	; Wake control scripts
 	(wake e11_mars_inf0_main)
 	(wake e11_mars_warthog0_main)
-;	(wake e11_cov_inf0_main)
+	(wake e11_cov_inf0_main)
 	(wake e11_cov_inf1_main)
 	(wake e11_cov_inf2_main)
 	(wake e11_cov_ghosts0_main)
 	(wake e11_cov_phantom0_main)
 	(wake e11_dialog)
 	(wake e11_miranda_dialog)
-	(wake e11_warthog_for_the_masses)
+	; (wake e11_warthog_for_the_masses)
 	
 	; Shut down
 	(sleep_until g_e12_started)
