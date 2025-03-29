@@ -3307,7 +3307,8 @@ Covenant
 	(if (volume_test_objects tv_e18_second_half (players))
 		; He is. If he's clear...
 		(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe1 (players)))
-			(ai_place e18_cov_inf2_1/sniper1)
+			(print "skip sniper")
+			; (ai_place e18_cov_inf2_1/sniper1)
 		)
 		
 		; He is not. If he's clear...
@@ -3321,8 +3322,8 @@ Covenant
 	(ai_place e18_cov_inf2_0)
 	
 	; Set the spawn limits!
-	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 8))
-	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 12))
+	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 6))
+	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 10))
 	
 	; Spawn more snipers
 	(sleep_until
@@ -3340,11 +3341,11 @@ Covenant
 					)
 					
 					; It's legendary, there are less than 3, and the others are depleted
-					(and
-						(difficulty_legendary)
-						(< (ai_living_count e18_cov_inf1) 4)
-						(< (ai_living_count e18_cov_inf2) 2)
-					)
+					; (and
+					; 	(difficulty_legendary)
+					; 	(< (ai_living_count e18_cov_inf1) 4)
+					; 	(< (ai_living_count e18_cov_inf2) 2)
+					; )
 				)
 				
 				; Spawn one
@@ -3694,14 +3695,14 @@ Covenant
 	)
 )
 
-(script dormant e17_dialog
-	(sleep_until (volume_test_objects tv_e17_on_first_wall (players)) 15)
-	(sleep (ai_play_line_on_object none 0650)) ; "Your armor is airtight"
-	(sleep 20)
-	(sleep_until (volume_test_objects tv_e17_section0 (players)) 15)
-	(sleep_until (game_safe_to_save) 30 one_minute)
-	(ai_play_line_on_object none 0660) ; "You can crouch under the water"
-)
+; (script dormant e17_dialog
+; 	(sleep_until (volume_test_objects tv_e17_on_first_wall (players)) 15)
+; 	(sleep (ai_play_line_on_object none 0650)) ; "Your armor is airtight"
+; 	(sleep 20)
+; 	(sleep_until (volume_test_objects tv_e17_section0 (players)) 15)
+; 	(sleep_until (game_safe_to_save) 30 one_minute)
+; 	(ai_play_line_on_object none 0660) ; "You can crouch under the water"
+; )
 
 
 ;- Squad Controls --------------------------------------------------------------
@@ -3714,7 +3715,7 @@ Covenant
 	(sleep_until (volume_test_objects tv_e17_section2 (players)) 15)
 	(ai_place e17_cov_inf2_2)
 	(sleep_until (volume_test_objects tv_e17_section3 (players)) 15)
-	(ai_place e17_cov_inf2_3 (pin (- 3 (ai_living_count e17_cov_inf2)) 0 1))
+	(ai_place e17_cov_inf2_3)
 )
 
 (script dormant e17_cov_inf1_main
@@ -3746,7 +3747,7 @@ Covenant
 	
 	; Is the player in section 1? If necessary, spawn reins
 	(sleep_until (volume_test_objects tv_e17_section1 (players)) 15)
-	(if (<= (ai_living_count e17_cov_inf0) 4)
+	(if (<= (ai_living_count e17_cov_inf0) 5)
 		(ai_place e17_cov_inf0_1)
 	)
 
@@ -3758,13 +3759,13 @@ Covenant
 	(sleep 30)
 
 	; Reins
-	(if (<= (ai_living_count e17_cov_inf0) 4)
+	(if (<= (ai_living_count e17_cov_inf0) 5)
 		(ai_place e17_cov_inf0_1)
 	)
 
 	; Is the player in section 1? If necessary, spawn reins
 	(sleep_until (volume_test_objects tv_e17_section3 (players)) 15)
-	(if (<= (ai_living_count e17_cov_inf0) 4)
+	(if (<= (ai_living_count e17_cov_inf0) 5)
 		(ai_place e17_cov_inf0_1)
 	)
 )
@@ -3817,7 +3818,7 @@ Covenant
 	(sleep_forever e17_cov_inf1_main)
 	(sleep_forever e17_cov_inf2_main)
 	(sleep_forever e17_doors_main)
-	(sleep_forever e17_dialog)
+;	(sleep_forever e17_dialog)
 
 	; Condemn
 	(ai_disposable e17_cov true)
