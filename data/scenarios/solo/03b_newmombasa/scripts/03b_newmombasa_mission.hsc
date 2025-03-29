@@ -4007,7 +4007,7 @@ Covenant
 			(<= (ai_living_count e16_cov_banshees0) 1)
 		)
 	)
-	(ai_place e16_cov_ghosts1 (- 3 (ai_living_count e16_cov_ghosts0)))
+	(ai_place e16_cov_ghosts1)
 )
 
 (script dormant e16_cov_banshees0_main
@@ -4018,7 +4018,7 @@ Covenant
 	(sleep_until (volume_test_objects tv_e16_bridge_end (players)) 15)
 	
 	; Send in Wave 0
-	(ai_place e16_cov_banshees0_1 (- 3 (ai_living_count e16_cov_banshees0)))
+	(ai_place e16_cov_banshees0_1 2)
 	
 	; Dialogue
 	(sleep 150)
@@ -4035,7 +4035,7 @@ Covenant
 	(sleep_until 
 		(and
 			(> (ai_spawn_count e16_cov_ghosts1) 0)
-			(<= (+ (ai_living_count e16_cov_ghosts1) (ai_living_count e16_cov_banshees0)) 1)
+			(<= (+ (ai_living_count e16_cov_ghosts1) (ai_living_count e16_cov_banshees0)) 0)
 		)
 	)
 	
@@ -4063,14 +4063,14 @@ Covenant
 					(< (ai_living_count e16_cov_ghosts0) 3)
 				)
 				(begin
-					(ai_place e16_cov_ghosts0_1 1)					
+					(ai_place e16_cov_ghosts0_1)					
 				)
 			)
 			
 			; Loop until
 			(or
 				(volume_test_objects tv_e16_bridge_end (players))
-				(>= (ai_spawn_count e16_cov_ghosts0) 10)
+				(>= (ai_spawn_count e16_cov_ghosts0) 12)
 			)
 		)
 		90
@@ -4108,13 +4108,13 @@ Covenant
 	(wake music_03b_02_start)
 	
 	; Get on with it!
-;	(ai_place e16_cov_inf0_0 (pin (- 5 (ai_living_count e16_cov)) 1 5))
+	(ai_place e16_cov_inf0_0)
 
 	; More meat for the grinder
 	(sleep_until (volume_test_objects tv_e16_cov_inf0_1_begin (players)) 15)
-	(ai_place e16_cov_inf0_1 (pin (- 9 (ai_living_count e16_cov_inf0)) 0 2))
+	(ai_place e16_cov_inf0_1)
 	(sleep_until (volume_test_objects tv_e16_cov_inf0_2_begin (players)) 15)
-	(ai_place e16_cov_inf0_2 (pin (- 9 (ai_living_count e16_cov_inf0)) 0 1))
+	(ai_place e16_cov_inf0_2)
 )
 
 (script dormant e16_mars_inf0_main
