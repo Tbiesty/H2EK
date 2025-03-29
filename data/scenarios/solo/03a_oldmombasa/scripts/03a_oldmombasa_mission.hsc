@@ -855,12 +855,14 @@ Open Issues
 		)
 		; Continue
 		(begin
+		    (print "cs_e13_cov_creep0_0_decision - Continue")
 			(cs_queue_command_script ai_current_actor cs_e13_cov_creep0_drive1)
 			(ai_set_orders ai_current_squad e13_cov_creep0_defend)
 		)
 		
 		; Stand and deliver
 		(begin
+		    (print "cs_e13_cov_creep0_0_decision - Stand and deliver")
 			(cs_go_to e13_cov_creep0_mid/creep0_0_mid)
 			(cs_vehicle_boost false)
 			(cs_face true e13_cov_creep0_mid/creep0_0_mid_facing)
@@ -890,12 +892,14 @@ Open Issues
 		)
 		; Continue
 		(begin
+		    (print "cs_e13_cov_creep0_1_decision - Continue")
 			(cs_queue_command_script ai_current_actor cs_e13_cov_creep0_drive1)
 			(ai_set_orders ai_current_squad e13_cov_creep0_defend)
 		)
 		
 		; Stand and deliver
 		(begin
+		    (print "cs_e13_cov_creep0_1_decision - Stand and deliver")
 			(cs_go_to e13_cov_creep0_mid/creep0_1_mid)
 			(cs_vehicle_boost false)
 			(cs_face true e13_cov_creep0_mid/creep0_1_mid_facing)
@@ -925,12 +929,14 @@ Open Issues
 		)
 		; Continue
 		(begin
+		    (print "cs_e13_cov_creep0_2_decision - Continue")
 			(cs_queue_command_script ai_current_actor cs_e13_cov_creep0_drive1)
 			(ai_set_orders ai_current_squad e13_cov_creep0_defend)
 		)
 		
 		; Stand and deliver
 		(begin
+		    (print "cs_e13_cov_creep0_2_decision - Stand and deliver")
 			(cs_go_to e13_cov_creep0_mid/creep0_2_mid)
 			(cs_vehicle_boost false)
 			(cs_face true e13_cov_creep0_mid/creep0_2_mid_facing)
@@ -1072,6 +1078,22 @@ Open Issues
 	)
 )
 
+(script dormant e13_cov_creep0_3_ghost_aux
+	; Load the Ghost into the Creep
+	(vehicle_load_magic (ai_vehicle_get_from_starting_location e13_cov_creep0_3/creep0) "creep_sc01" (ai_vehicle_get_from_starting_location e13_cov_ghosts0/ghost3))
+
+	; Unloads Ghost from Creep
+	(sleep_until
+		(begin
+			(if (<= (ai_living_count e13_cov_creep0_3/creep0) 0) (vehicle_unload (ai_vehicle_get_from_starting_location e13_cov_creep0_3/creep0) "creep_sc01"))
+		
+			; Loop forever (mission will end soon)
+			false
+		)
+		60
+	)
+)
+
 (script dormant e13_cov_creep0_main
 	(sleep_until (volume_test_objects tv_e13_creep0_begin (players)))
 
@@ -1118,6 +1140,9 @@ Open Issues
 			(<= (ai_living_count e13_cov_creep0_2/creep0) 0) 
 		)
 		(ai_place e13_cov_creep0_3)
+
+		; Load the Ghosts into the Creep
+	    (wake e13_cov_creep0_3_ghost_aux)
 	)
 	
 	; Sleep till the player approaches the end of the tunnel
@@ -1413,7 +1438,7 @@ Open Issues:
 	; Past the Scarab
 	(sleep_until (volume_test_objects tv_e12_cov_inf0_5_begin (players)) 10)
 	(game_save)
-;	(ai_place e12_cov_inf0_5)
+	(ai_place e12_cov_inf0_5)
 )
 
 (script dormant e12_mars_inf1_main
@@ -1502,11 +1527,13 @@ Open Issues:
 	(ai_disposable e12_cov true)	
 )
 
-(script static void test_tunnel_blockades
-	(switch_bsp 2)
-	(object_teleport (player0) e12_test)
-	(if (not g_e12_started) (wake e12_main))
-)
+; (script static void test_tunnel_blockades
+;     (test_hotel_exit)
+; 	(sleep 15)
+; 	(switch_bsp 2)
+; 	(object_teleport (player0) e12_test)
+; 	(if (not g_e12_started) (wake e12_main))
+; )
 
 
 ;= ENCOUNTER 11 ==========================================================================
@@ -3297,16 +3324,6 @@ Open Issues
 
 	; Condemn the Marines
 	(ai_disposable e8_mars true)	
-)
-
-(script static void test_hotel_exit
-	(switch_bsp 1)
-	(object_teleport (player0) e8_test)
-	(ai_place e8_mars_inf0)
-	(if (not g_e8_started) (wake e8_main))
-
-	; Get the other scripts running
-	(if (not g_e12_started) (wake e12_main))
 )
 
 
@@ -6534,5 +6551,26 @@ Open Issues
 	; Begin the mission
 	; Comment this out when you're testing individual encounters
 	(if (> (player_count) 0) (start))
+)
+
+
+;= TEST SCRIPTS ==========================================================================
+
+(script static void test_hotel_exit
+	(switch_bsp 1)
+	(object_teleport (player0) e8_test)
+	(ai_place e8_mars_inf0)
+	(if (not g_e8_started) (wake e8_main))
+
+	; Get the other scripts running
+	(if (not g_e12_started) (wake e12_main))
+)
+
+(script static void test_tunnel_blockades
+    (test_hotel_exit)
+	(sleep 15)
+	(switch_bsp 2)
+	(object_teleport (player0) e12_test)
+	(if (not g_e12_started) (wake e12_main))
 )
 
