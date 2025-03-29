@@ -3550,11 +3550,11 @@ Covenant
 	; Honk at the player
 	(sleep_until 
 		(or
-			(< (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 13)
+			(< (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 15)
 			(volume_test_objects tv_e17_near_first_wall (players))
 		)
 		15
-		one_minute
+		30_seconds
 	)
 	(sound_looping_start "sound\vehicles\warthog\warthog_horn\warthog_horn" (ai_vehicle_get ai_current_actor) 1.5)
 	(sleep 5)
@@ -4111,8 +4111,8 @@ Covenant
 	(ai_place e16_cov_inf0_0)
 
 	; More meat for the grinder
-	(sleep_until (volume_test_objects tv_e16_cov_inf0_1_begin (players)) 15)
-	(ai_place e16_cov_inf0_1)
+	; (sleep_until (volume_test_objects tv_e16_cov_inf0_1_begin (players)) 15)
+	; (ai_place e16_cov_inf0_1)
 	(sleep_until (volume_test_objects tv_e16_cov_inf0_2_begin (players)) 15)
 	(ai_place e16_cov_inf0_2)
 )
