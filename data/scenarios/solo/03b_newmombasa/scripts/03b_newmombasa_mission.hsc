@@ -4514,7 +4514,7 @@ Covenant
 
 (script dormant e15_mars_inf0_main
 	(ai_migrate e14_mars_inf0 e15_mars_inf0)
-	(ai_place e15_mars_inf0 (pin (- 3 (ai_living_count e15_mars_inf0)) 1 2))
+	(ai_place e15_mars_inf0)
 )
 
 
@@ -4530,7 +4530,7 @@ Covenant
 
 	; Wake control scripts
 	(wake e15_mars_inf0_main)
-;	(wake e15_cov_inf0_main)
+	(wake e15_cov_inf0_main)
 ;	(wake e15_cov_inf1_main)
 ;	(wake e15_cov_inf2_main)
 	(wake e15_cov_phantom0_main)
@@ -4704,7 +4704,7 @@ Covenant
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e14_cov_snipers0_main
-	(sleep 1)
+	(ai_place e14_cov_snipers0)
 )
 
 (script dormant e14_cov_wraiths0_main
@@ -4725,17 +4725,17 @@ Covenant
 
 	; Spawn at the blockades
 	(sleep_until (volume_test_objects tv_e14_blockade0 (players)) 15)
-	(ai_place e14_cov_ghosts0_1 (pin (- 4 (ai_living_count e14_cov_ghosts0)) 0 2))
+	(ai_place e14_cov_ghosts0_1 (pin (- 5 (ai_living_count e14_cov_ghosts0)) 0 2))
 	(sleep_until (volume_test_objects tv_e14_blockade1 (players)) 15)
-	(ai_place e14_cov_ghosts0_1 (pin (- 4 (ai_living_count e14_cov_ghosts0)) 0 2))
+	(ai_place e14_cov_ghosts0_1 (pin (- 5 (ai_living_count e14_cov_ghosts0)) 0 2))
 	(sleep_until (volume_test_objects tv_e14_blockade2 (players)) 15)
-	(ai_place e14_cov_ghosts0_1 (pin (- 4 (ai_living_count e14_cov_ghosts0)) 0 2))
+	(ai_place e14_cov_ghosts0_1 (pin (- 5 (ai_living_count e14_cov_ghosts0)) 0 2))
 	(sleep_until (volume_test_objects tv_e14_blockade3 (players)) 15)
-	(ai_place e14_cov_ghosts0_1 (pin (- 4 (ai_living_count e14_cov_ghosts0)) 0 2))
+	(ai_place e14_cov_ghosts0_1 (pin (- 5 (ai_living_count e14_cov_ghosts0)) 0 2))
 	(sleep_until (volume_test_objects tv_e14_blockade4 (players)) 15)
-	(ai_place e14_cov_ghosts0_1 (pin (- 4 (ai_living_count e14_cov_ghosts0)) 0 2))
+	(ai_place e14_cov_ghosts0_1 (pin (- 5 (ai_living_count e14_cov_ghosts0)) 0 2))
 	(sleep_until (volume_test_objects tv_e14_blockade5 (players)) 15)
-	(ai_place e14_cov_ghosts0_1 (pin (- 4 (ai_living_count e14_cov_ghosts0)) 0 2))
+	(ai_place e14_cov_ghosts0_1 (pin (- 5 (ai_living_count e14_cov_ghosts0)) 0 2))
 )
 
 (script dormant e14_mars_pelican0_main
