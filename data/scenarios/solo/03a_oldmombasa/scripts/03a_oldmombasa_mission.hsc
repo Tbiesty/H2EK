@@ -50,6 +50,178 @@ e13
 (script stub void chief_recovery_sequence (print "chief_recovery_sequence (cinematics didn't compile)"))
 
 
+(script static void print_covenant_count
+	(if (= (ai_living_count covenant) 0)
+		(begin
+	        (print "covenant_count: 0")
+		)
+	)
+	(if (= (ai_living_count covenant) 1)
+		(begin
+	        (print "covenant_count: 1")
+		)
+	)
+	(if (= (ai_living_count covenant) 2)
+		(begin
+	        (print "covenant_count: 2")
+		)
+	)
+	(if (= (ai_living_count covenant) 3)
+		(begin
+	        (print "covenant_count: 3")
+		)
+	)
+	(if (= (ai_living_count covenant) 4)
+		(begin
+	        (print "covenant_count: 4")
+		)
+	)
+	(if (= (ai_living_count covenant) 5)
+		(begin
+	        (print "covenant_count: 5")
+		)
+	)
+	(if (= (ai_living_count covenant) 6)
+		(begin
+	        (print "covenant_count: 6")
+		)
+	)
+	(if (= (ai_living_count covenant) 7)
+		(begin
+	        (print "covenant_count: 7")
+		)
+	)
+	(if (= (ai_living_count covenant) 8)
+		(begin
+	        (print "covenant_count: 8")
+		)
+	)
+	(if (= (ai_living_count covenant) 9)
+		(begin
+	        (print "covenant_count: 9")
+		)
+	)
+	(if (= (ai_living_count covenant) 10)
+		(begin
+	        (print "covenant_count: 10")
+		)
+	)
+	(if (= (ai_living_count covenant) 11)
+		(begin
+	        (print "covenant_count: 11")
+		)
+	)
+	(if (= (ai_living_count covenant) 12)
+		(begin
+	        (print "covenant_count: 12")
+		)
+	)
+	(if (= (ai_living_count covenant) 13)
+		(begin
+	        (print "covenant_count: 13")
+		)
+	)
+	(if (= (ai_living_count covenant) 14)
+		(begin
+	        (print "covenant_count: 14")
+		)
+	)
+	(if (= (ai_living_count covenant) 15)
+		(begin
+	        (print "covenant_count: 15")
+		)
+	)
+	(if (= (ai_living_count covenant) 16)
+		(begin
+	        (print "covenant_count: 16")
+		)
+	)
+	(if (= (ai_living_count covenant) 17)
+		(begin
+	        (print "covenant_count: 17")
+		)
+	)
+	(if (= (ai_living_count covenant) 18)
+		(begin
+	        (print "covenant_count: 18")
+		)
+	)
+	(if (= (ai_living_count covenant) 19)
+		(begin
+	        (print "covenant_count: 19")
+		)
+	)
+	(if (>= (ai_living_count covenant) 20)
+		(begin
+	        (print "covenant_count: 20+")
+		)
+	)
+)
+
+(script static void print_marine_count
+	(if (= (ai_living_count marines) 0)
+		(begin
+	        (print "marine_count: 0")
+		)
+	)
+	(if (= (ai_living_count marines) 1)
+		(begin
+	        (print "marine_count: 1")
+		)
+	)
+	(if (= (ai_living_count marines) 2)
+		(begin
+	        (print "marine_count: 2")
+		)
+	)
+	(if (= (ai_living_count marines) 3)
+		(begin
+	        (print "marine_count: 3")
+		)
+	)
+	(if (= (ai_living_count marines) 4)
+		(begin
+	        (print "marine_count: 4")
+		)
+	)
+	(if (= (ai_living_count marines) 5)
+		(begin
+	        (print "marine_count: 5")
+		)
+	)
+	(if (= (ai_living_count marines) 6)
+		(begin
+	        (print "marine_count: 6")
+		)
+	)
+	(if (= (ai_living_count marines) 7)
+		(begin
+	        (print "marine_count: 7")
+		)
+	)
+	(if (= (ai_living_count marines) 8)
+		(begin
+	        (print "marine_count: 8")
+		)
+	)
+	(if (= (ai_living_count marines) 9)
+		(begin
+	        (print "marine_count: 9")
+		)
+	)
+	(if (>= (ai_living_count marines) 10)
+		(begin
+	        (print "marine_count: 10+")
+		)
+	)
+)
+
+(script static void print_actor_count
+	(print_covenant_count)
+	(print_marine_count)
+)
+
+
 ;= SINEMATICS ============================================================================
 
 (script static void cinematic_intro
@@ -1703,8 +1875,7 @@ Open Issues:
 	; Attempt a save 
 	(game_save)
 
-	; Wait 30 seconds, and then until it's safe to spawn
-	(sleep 30_seconds)
+	; Wait 15 seconds, and then until it's safe to spawn
 	(sleep_until (volume_test_objects_all tv_e11_area (players)))
 	(ai_place e11_cov_ghosts0_1)
 	
@@ -1714,23 +1885,23 @@ Open Issues:
 	; Attempt a save 
 	(game_save)
 
-	; Wait 30 seconds, and then until it's safe to spawn
-	(sleep 30_seconds)
+	; Wait 15 seconds, and then until it's safe to spawn
+	(sleep 15_seconds)
 	(sleep_until (volume_test_objects_all tv_e11_area (players)))
-	(ai_place e11_cov_ghosts0_1)
+	(ai_place e11_cov_ghosts0_1 1)
 )
 
 (script dormant e11_cov_inf2_main
 	(ai_place e11_cov_inf2)
 	
 	; Wait till the player is closer, then raise the tower
-	(sleep_until 
-		(or
-	 		(volume_test_objects tv_e11_on_fort (players))
-			(< (objects_distance_to_flag (players) e11_cov_inf1_entry) 40) 
-		)
-		10
-	)
+	; (sleep_until 
+	; 	(or
+	;  		(volume_test_objects tv_e11_on_fort (players))
+	; 		(< (objects_distance_to_flag (players) e11_cov_inf1_entry) 40) 
+	; 	)
+	; 	10
+	; )
 	(device_group_set_immediate e11_watchtower0 1.0)
 )
 
@@ -1755,14 +1926,21 @@ Open Issues:
 	;  			300
 	;  		)
 	 		
-	 		; Send them in
+	;  		; Send them in
+	;  		(wake e11_cov_inf1_0_insertion0)
+	;  		(sleep 20)
+	;  		(wake e11_cov_inf1_0_insertion1)
+	;  		(sleep 10)
+	;  		(if (< (ai_living_count covenant) 10) (wake e11_cov_inf1_0_insertion2))
+	;  	)
+	; )
+
+	; Send them in
 	(wake e11_cov_inf1_0_insertion0)
 	(sleep 20)
 	(wake e11_cov_inf1_0_insertion1)
-	(sleep 10)
-	(wake e11_cov_inf1_0_insertion2)
-	;  	)
-	; )
+	;(sleep 10)
+	;(if (< (ai_living_count covenant) 10) (wake e11_cov_inf1_0_insertion2))
 	 
 	; Wait till he's near the exit to send in the rest
 	(sleep_until 
@@ -1798,19 +1976,19 @@ Open Issues:
 	(ai_disposable e11_mars_warthog0 false)
 
 	; Wait until the players aren't in vehicles, and the original Warthog is nowhere in the second half
-	(sleep_until
-		(and
-			(not (player_in_vehicle))
-			(or
-				(not (volume_test_object tv_beach g_e8_warthog))
-				(<= (object_get_health g_e8_warthog) 0)
-			)
-			(or
-				(not (volume_test_object tv_beach g_e10_warthog))
-				(<= (object_get_health g_e10_warthog) 0)
-			)
-		)
-	)
+	; (sleep_until
+	; 	(and
+	; 		(not (player_in_vehicle))
+	; 		(or
+	; 			(not (volume_test_object tv_beach g_e8_warthog))
+	; 			(<= (object_get_health g_e8_warthog) 0)
+	; 		)
+	; 		(or
+	; 			(not (volume_test_object tv_beach g_e10_warthog))
+	; 			(<= (object_get_health g_e10_warthog) 0)
+	; 		)
+	; 	)
+	; )
 	
 	; Wait a bit longer, and then until the area is clear
 	(sleep 15_seconds)
@@ -1854,7 +2032,7 @@ Open Issues:
 	(wake e11_cov_phantom0_main)
 	(wake e11_dialog)
 	(wake e11_miranda_dialog)
-	; (wake e11_warthog_for_the_masses)
+	(wake e11_warthog_for_the_masses)
 	
 	; Shut down
 	(sleep_until g_e12_started)
@@ -2455,6 +2633,7 @@ Open Issues
 
 	; Wait until we're on the beach
 	(sleep_until (volume_test_objects tv_e9_main_begin (players)))
+    (ai_place e8_cov_ghosts0_1)
 	(sleep_until (ai_scene e9_beach_chatter_scene cs_e9_beach_chatter_scene e9_mars_warthog0) 30 300)
 )
 
@@ -2535,7 +2714,6 @@ Open Issues
 )
 
 (script dormant e9_cov_inf0_main
-	(print "e9_cov_inf0_main")
 	(sleep_until 
 		(or
 			(volume_test_objects tv_e9_near_entrance (players)) 
@@ -2569,10 +2747,13 @@ Open Issues
 
 	; Wait for the first turret to be depleted, or for the player's charge
 	(sleep_until 
-		(or
-			(volume_test_objects tv_e9_near_entrance (players)) 
-			(volume_test_objects tv_e9_bypass (players)) 
-			(<= (ai_living_count e9_cov_inf1) 3)
+		(and
+			(<= (ai_living_count e9_cov_ghosts0) 0)
+			(or
+				(volume_test_objects tv_e9_near_entrance (players)) 
+				(volume_test_objects tv_e9_bypass (players)) 
+				(<= (ai_living_count e9_cov_inf1) 3)
+			)
 		)
 		15
 	)
@@ -3527,7 +3708,7 @@ Open Issues
 
 (script static boolean e6_cov_inf0_not_a_threat
 	(and
-		(<= (ai_living_count e6_cov) 4) 
+		(<= (ai_living_count e6_cov) 2) 
 		(<= (ai_fighting_count e6_cov) 0) 
 	)
 )
@@ -3924,7 +4105,6 @@ Covenant
 )
 
 (script static void e5_cov_inf1_0_spawn
-	(print "e5_cov_inf1_0_spawn")
 	(if 
 		(and
 			(<= (ai_living_count e5_cov_inf1) 2)
@@ -3950,7 +4130,6 @@ Covenant
 )
 
 (script static void e5_cov_inf1_1_spawn
-	(print "e5_cov_inf1_1_spawn")
 	(if 
 		(and
 			(<= (ai_living_count e5_cov_inf1) 2)
@@ -6136,7 +6315,6 @@ Open Issues
 )
 
 (script dormant e1_mars_inf1_main
-	(print "e1_mars_inf1_main")
 	(ai_place e1_mars_inf1)
 	
 	; Initial command script
@@ -6145,7 +6323,6 @@ Open Issues
 )
 
 (script dormant e1_mars_inf0_main
-	(print "e1_mars_inf1_main")
 	(ai_place e1_mars_inf0)
 	
 	; Sleep until the second Phantom has lived and died
@@ -6163,7 +6340,6 @@ Open Issues
 (script dormant e1_mars_johnson_main
 	(ai_place e1_mars_johnson)
 	(object_cannot_die (ai_get_object e1_mars_johnson/johnson0) true)
-	(print "e1_mars_johnson_main")
 
 	; Initial command script
 	(cs_run_command_script e1_mars_johnson cs_e1_mars_johnson_entry)
