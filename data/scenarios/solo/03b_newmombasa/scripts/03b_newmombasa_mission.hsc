@@ -8,6 +8,8 @@
 (global boolean g_mission_over false)		; Mission over?
 
 ; Enough magic numbers
+(global short 5_seconds 150)
+(global short 15_seconds 450)
 (global short 30_seconds 900)
 (global short 45_seconds 900)
 (global short one_minute 1800)
@@ -4225,7 +4227,7 @@ Covenant
 	; If the Wraith is still alive...
 	(if (> (ai_living_count e16_cov_wraiths0_0/wraith1) 0)
 		(begin
-;			(cs_fly_to_and_face e15_cov_phantom0_1_entry/p3 e15_cov_phantom0_1_entry/p4)
+			(cs_fly_to_and_face e15_cov_phantom0_1_entry/p3 e15_cov_phantom0_1_entry/p4)
 			(cs_fly_by e15_cov_phantom0_1_entry/p4)
 		
 			(cs_face_player true)
@@ -4300,7 +4302,7 @@ Covenant
 	)
 	
 	; Continue out
-	(cs_fly_to_and_face e15_cov_phantom0_0_entry/p3 e15_cov_phantom0_0_entry/p8 0.5)
+	(cs_fly_to_and_face e15_cov_phantom0_0_entry/p7 e15_cov_phantom0_0_entry/p8 0.5)
 	(cs_fly_by e15_cov_phantom0_0_entry/p8)
 	(cs_fly_to_and_face e15_cov_phantom0_0_entry/p8 e15_cov_phantom0_0_entry/p9 1.0)
 	(cs_vehicle_boost true)
@@ -4378,7 +4380,7 @@ Covenant
 (script dormant e15_cov_banshees0_main
 	(ai_place e15_cov_banshees0)
 	(cs_run_command_script e15_cov_banshees0/banshee0 cs_e15_cov_banshee0_0_entry)
-	(cs_run_command_script e15_cov_banshees0/banshee1 cs_e15_cov_banshee0_1_entry)
+;	(cs_run_command_script e15_cov_banshees0/banshee1 cs_e15_cov_banshee0_1_entry)
 ;	(sleep 15)
 ;	(ai_magically_see_object e15_cov_banshees0 (player0))
 )
@@ -4445,7 +4447,7 @@ Covenant
 	(ai_place e15_cov_phantom0_0)
 	
 	; Load the Wraith
-;	(wake e15_cov_wraith0_main)
+	(wake e15_cov_wraith0_main)
 	
 	; Sleep until one Phantom is damaged or dead (or a timeout)
 	(sleep_until 
@@ -4453,10 +4455,10 @@ Covenant
 			g_e16_started
 			(<= (object_get_health (ai_vehicle_get e15_cov_phantom0_0/phantom0)) 0.05) 
 			(>= (object_model_targets_destroyed (ai_vehicle_get e15_cov_phantom0_0/phantom0) "target_front") 2) 			
-;			(<= (ai_living_count e16_cov_wraiths0_0/wraith0) 0)
+			(<= (ai_living_count e16_cov_wraiths0_0/wraith0) 0)
 		)
 		30 
-		one_minute
+		5_seconds
 	)
 	
 	; Send the first Phantom packing
@@ -4477,35 +4479,35 @@ Covenant
 			(<= (ai_living_count e16_cov_wraiths0_0/wraith1) 0)
 		)
 		30 
-		one_minute
+		5_seconds
 	)
 	
 	; Send the second one packing
 	(cs_queue_command_script e15_cov_phantom0_1/phantom0 cs_e15_cov_phantom0_1_exit)
 )
 
-(script dormant e15_cov_inf2_main
-	(ai_place e15_cov_inf2_0)
+; (script dormant e15_cov_inf2_main
+; 	(ai_place e15_cov_inf2_0)
 	
-	; Sleep until the player has advanced up
-	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
+; 	; Sleep until the player has advanced up
+; 	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
 	
-	; Place more, if there is room
-	(ai_place e15_cov_inf2_1 (- 10 (ai_living_count e15_cov))) 
-)
+; 	; Place more, if there is room
+; 	(ai_place e15_cov_inf2_1 (- 10 (ai_living_count e15_cov))) 
+; )
 
 (script dormant e15_cov_inf1_main
 	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
 	(ai_place e15_cov_inf1)
 	
-	; Launch the buggers
-	(sleep 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger0) 2 0 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger1) 2 0 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger2) 3 0 6)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger3) 2 0 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger4) 3 0 6)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger5) 2 0 5)
+	; Launch the buggews
+	; (sleep 5)
+	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger0) 2 0 5)
+	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger1) 2 0 5)
+	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger2) 3 0 6)
+	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger3) 2 0 5)
+	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger4) 3 0 6)
+	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger5) 2 0 5)
 )
 
 (script dormant e15_cov_inf0_main
@@ -4531,7 +4533,7 @@ Covenant
 	; Wake control scripts
 	(wake e15_mars_inf0_main)
 	(wake e15_cov_inf0_main)
-;	(wake e15_cov_inf1_main)
+	(wake e15_cov_inf1_main)
 ;	(wake e15_cov_inf2_main)
 	(wake e15_cov_phantom0_main)
 	(wake e15_cov_phantom1_main)
@@ -4542,7 +4544,7 @@ Covenant
 	(sleep_forever e15_mars_inf0_main)
 	(sleep_forever e15_cov_inf0_main)
 	(sleep_forever e15_cov_inf1_main)
-	(sleep_forever e15_cov_inf2_main)
+;	(sleep_forever e15_cov_inf2_main)
 	(sleep_forever e15_cov_phantom0_main)
 	(sleep_forever e15_cov_banshees0_main)
 	
