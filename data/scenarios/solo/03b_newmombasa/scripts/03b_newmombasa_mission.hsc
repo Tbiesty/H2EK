@@ -3140,7 +3140,7 @@ Covenant
 
 (global boolean g_e18_started false)			; Encounter has been activated?
 (global short g_e18_orbit_count 0)
-(global short g_e18_cov_inf2_spawn_max 5)
+(global short g_e18_cov_inf2_spawn_max 4)
 
 
 ;- Command Scripts -------------------------------------------------------------
@@ -3304,26 +3304,36 @@ Covenant
 
 (script static void e18_cov_inf2_spawn
 	; Is the player in the second half?
-	(if (volume_test_objects tv_e18_second_half (players))
+	 ;(if (volume_test_objects tv_e18_second_half (players))
 		; He is. If he's clear...
-		(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe1 (players)))
-			(print "skip sniper")
+		; (if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe1 (players)))
 			; (ai_place e18_cov_inf2_1/sniper1)
-		)
+			;(ai_place e18_cov_inf2_1/sniper0)
+		;)
 		
-		; He is not. If he's clear...
-		(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe0 (players)))
-			(ai_place e18_cov_inf2_1/sniper0)
+	; He is not. If he's clear...
+	(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe0 (players)))
+		(cond
+			((<= (ai_living_count e18_cov_inf2_3) 0)
+				(ai_place e18_cov_inf2_3/sniper0))
+			((<= (ai_living_count e18_cov_inf2_2) 0)
+				(ai_place e18_cov_inf2_2/sniper0))
+			(true
+				(ai_place e18_cov_inf2_1/sniper0))
 		)
 	)
+	; )
 )
+
 
 (script dormant e18_cov_inf2_main
 	(ai_place e18_cov_inf2_0)
-	
+	(ai_place e18_cov_inf2_2/sniper0)
+	(ai_place e18_cov_inf2_3/sniper0)
+
 	; Set the spawn limits!
-	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 6))
-	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 10))
+	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 5))
+	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 6))
 	
 	; Spawn more snipers
 	(sleep_until
@@ -3341,11 +3351,11 @@ Covenant
 					)
 					
 					; It's legendary, there are less than 3, and the others are depleted
-					; (and
-					; 	(difficulty_legendary)
-					; 	(< (ai_living_count e18_cov_inf1) 4)
-					; 	(< (ai_living_count e18_cov_inf2) 2)
-					; )
+					(and
+						(difficulty_legendary)
+						(< (ai_living_count e18_cov_inf1) 4)
+						(< (ai_living_count e18_cov_inf2) 3)
+					)
 				)
 				
 				; Spawn one
@@ -3353,7 +3363,7 @@ Covenant
 					(e18_cov_inf2_spawn)
 
 					; Random pause, to throw off spawn campers
-					(sleep (random_range 60 300))
+					(sleep (random_range 60 150))
 				)
 			)
 		
