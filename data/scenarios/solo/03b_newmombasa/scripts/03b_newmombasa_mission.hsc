@@ -14,6 +14,7 @@
 (global short 45_seconds 900)
 (global short one_minute 1800)
 (global short two_minutes 3600)
+(global short three_minutes 4800)
 
 ; Breadcrumb navpoint progression
 (global short g_breadcrumb_nav_index 0)
@@ -1385,7 +1386,7 @@ Covenant
 	(if (not (difficulty_legendary)) (sleep_forever))
 	
 	; Only one out of 10 times
-	(if (not (= (random_range 0 10) 0)) (sleep_forever))
+	; (if (not (= (random_range 0 10) 0)) (sleep_forever))
 	
 	; Do it. Do it now.
 	(set g_target (player0))
@@ -1410,7 +1411,7 @@ Covenant
 	
 	; Place the defenders
 	(ai_place e23_cov_inf1_1)
-	(ai_place e23_cov_inf1_0 (pin (- 4 (ai_living_count e23_cov_inf0)) 1 3))
+	(ai_place e23_cov_inf1_0)
 	
 	; Dialogue hooks
 	(wake e23_ultra_dialogue)
@@ -1449,7 +1450,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_1 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 4))
+	(ai_place e23_cov_inf0_1 (pin (- 8 (ai_living_count e23_cov_inf0)) 0 4))
 	
 	; Pause and spawn
 	(sleep_until 
@@ -1460,7 +1461,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_2 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 3))
+	(ai_place e23_cov_inf0_2 (pin (- 8 (ai_living_count e23_cov_inf0)) 0 4))
 
 	; Pause and spawn
 	(sleep_until 
@@ -1471,7 +1472,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_3 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 2))
+	(ai_place e23_cov_inf0_3 (pin (- 8 (ai_living_count e23_cov_inf0)) 0 2))
 
 	; Pause and spawnw
 	(sleep_until 
@@ -1481,7 +1482,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_4 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 5))
+	(ai_place e23_cov_inf0_4 (pin (- 10 (ai_living_count e23_cov_inf0)) 0 5))
 	
 	; Sneak in a save
 	(game_save)
@@ -1610,7 +1611,7 @@ Covenant
 	(game_save)
 	
 	; Remove the gun on legendary (guns are for wusses)
-	(if (difficulty_legendary) (object_destroy e23_gun))
+	;(if (difficulty_legendary) (object_destroy e23_gun))
 	
 	; Music
 	(wake music_03b_04_start)
@@ -1622,10 +1623,10 @@ Covenant
 	(kill_volume_enable kill_e23_2)
 
 	; Wake control scripts
-;	(wake e23_mars_inf0_main)
+	(wake e23_mars_inf0_main)
 	(wake e23_mars_inf1_main)
-;	(wake e23_mars_pelican0_main)
-;	(wake e23_mars_pelican1_main)
+	(wake e23_mars_pelican0_main)
+	(wake e23_mars_pelican1_main)
 	(wake e23_mars_pelican2_main)
 	(wake e23_cov_inf0_main)
 	(wake e23_cov_inf1_main)
@@ -2717,10 +2718,10 @@ Covenant
 
 	; Wait for one of the other Wraiths to be destroyed
 	(sleep_until 
-		(or
-			(<= (ai_living_count e21_cov_wraiths0) 1)
-			(volume_test_objects tv_e21_cov_wraith0_2_unsafe (players))
-		)
+	;	(or
+		(<= (ai_living_count e21_cov_wraiths0) 1)
+		;	(volume_test_objects tv_e21_cov_wraith0_2_unsafe (players))
+	;	)
 		15
 	)
 	
@@ -2738,7 +2739,7 @@ Covenant
 		
 	; Spawn the appropriate number of additional Wraiths
 	(if (not (volume_test_objects tv_e21_cov_wraith0_2_unsafe (players))) 
-		(ai_place e21_cov_wraiths0_2 (pin (- 2 (ai_living_count e21_cov_wraiths0)) 0 1))
+		(ai_place e21_cov_wraiths0_2)
 	)
 
 	; Reserve them so that Marines don't climb in
@@ -2797,11 +2798,13 @@ Covenant
 	; Infinite respawner! Well, not really...
 	(sleep_until 
 		(begin
+			(sleep 5_seconds)
+
 			; Is our count less than 2, and the player not nearby?
 			(if
 				(and
 					(< (ai_living_count e21_mars_inf0) 2)
-					(< (ai_spawn_count e21_mars_inf0) 10)
+					(< (ai_spawn_count e21_mars_inf0) 20)
 					(not (volume_test_objects tv_e21_mars_inf0_unsafe (players)))
 				)
 				
@@ -2811,7 +2814,7 @@ Covenant
 			
 			; End when e22 begins, or we exceed some limit
 			(or
-				(>= (ai_spawn_count e21_mars_inf0) 10)
+				(>= (ai_spawn_count e21_mars_inf0) 20)
 				g_e22_started
 			)
 		)
@@ -2826,7 +2829,7 @@ Covenant
 			(<= (ai_living_count e21_cov_wraiths0) 0)
 		)
 		30
-		one_minute
+		three_minutes
 	)
 	
 	; Wake the next encounter
@@ -2850,8 +2853,9 @@ Covenant
 
 	; Wake control scripts
 	(wake e21_mars_warthog0_main)
-;	(wake e21_mars_inf0_main)
-;	(wake e21_mars_inf1_main)
+	(wake e21_mars_inf0_main)
+	(wake e21_mars_inf1_main)
+	(wake e21_cov_creep0_main)
 	(wake e21_mars_pelican0_main)
 	(wake e21_mars_pelican1_main)
 	(wake e21_cov_inf0_main)
@@ -2875,15 +2879,6 @@ Covenant
 	(ai_disposable e21_cov true)
 	(ai_disposable e21_cov_phantom0 false)
 	(ai_disposable e21_cov_phantom1 false)
-)
-
-(script static void test_hospital_seige
-	(switch_bsp 1)
-	(sleep 1)
-	(object_teleport (player0) e21_test)
-	(object_destroy scarab)
-	(ai_place e21_mars_warthog0)
-	(if (not g_e21_started) (wake e21_main))
 )
 
 
@@ -2918,6 +2913,7 @@ Covenant
 
 (script dormant e20_cov_ghosts0_main
 	(ai_migrate e19_cov_ghosts0 e20_cov_ghosts0)
+	(print "e20_cov_ghosts0_main")
 	(ai_place e20_cov_ghosts0)
 )
 
@@ -2959,17 +2955,6 @@ Covenant
 	; Condemn
 	(ai_disposable e20_cov true)
 )
-
-(script static void test_road_skirmishes
-	(switch_bsp 1)
-	(sleep 1)
-	(object_teleport (player0) e20_test)
-	(object_destroy scarab)
-	(ai_place e20_mars_warthog0)
-	(wake e20_main)
-	(wake e21_main)
-)
-
 
 ;= ENCOUNTER 19 ==========================================================================
 ;*
@@ -3495,13 +3480,6 @@ Covenant
 
 	; Condemn
 	(ai_disposable e18_cov true)
-)
-
-(script static void test_park
-	(switch_bsp 1)
-	(object_teleport (player0) e18_test)
-	(ai_place e18_mars_inf0)
-	(if (not g_e18_started) (wake e18_main))
 )
 
 
@@ -4899,5 +4877,23 @@ Covenant
 	; Begin the mission
 	; Comment this out when you're testing individual encounters
 	(if (> (player_count) 0 ) (start))
+)
+
+(script static void test_park
+	(switch_bsp 1)
+	(object_teleport (player0) e18_test)
+	(ai_place e18_mars_inf0)
+	(if (not g_e18_started) (wake e18_main))
+)
+
+(script static void test_road_skirmishes
+    (test_park)
+	(switch_bsp 1)
+	(sleep 1)
+	(object_teleport (player0) e20_test)
+	(object_destroy scarab)
+	(ai_place e20_mars_warthog0)
+	(wake e20_main)
+	(wake e21_main)
 )
 
