@@ -3038,7 +3038,7 @@ Covenant
 			(if (<= (ai_living_count e19_cov_ghosts0) 0)
 				; We need to respawn
 				(begin
-					(sleep 300)
+					(sleep 60)
 					(sleep_until (not (volume_test_objects tv_e19_cov_ghosts0_1_unsafe (players))))
 					(ai_place e19_cov_ghosts0_1)
 				)
@@ -3294,10 +3294,7 @@ Covenant
 
 (script dormant e18_cov_ghosts0_main
 	(sleep_until
-		(or
-			(<= (ai_living_count e18_cov_inf1_1) 0)
-			(volume_test_objects tv_e19_main_begin1 (players))
-		)
+		(volume_test_objects tv_e18_cov_inf2_1_unsafe0 (players))
 	)
 	(if (not (volume_test_objects tv_e19_main_begin1 (players))) (ai_place e18_cov_ghosts0))
 )
