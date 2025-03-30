@@ -4482,19 +4482,19 @@ Covenant
 ; 	(ai_place e15_cov_inf2_1 (- 10 (ai_living_count e15_cov))) 
 ; )
 
-(script dormant e15_cov_inf1_main
-	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
-	(ai_place e15_cov_inf1)
+; (script dormant e15_cov_inf1_main
+; 	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
+; 	(ai_place e15_cov_inf1)
 	
-	; Launch the buggews
-	; (sleep 5)
-	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger0) 2 0 5)
-	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger1) 2 0 5)
-	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger2) 3 0 6)
-	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger3) 2 0 5)
-	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger4) 3 0 6)
-	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger5) 2 0 5)
-)
+; 	; Launch the buggews
+; 	; (sleep 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger0) 2 0 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger1) 2 0 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger2) 3 0 6)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger3) 2 0 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger4) 3 0 6)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger5) 2 0 5)
+; )
 
 (script dormant e15_cov_inf0_main
 	(ai_place e15_cov_inf0)
@@ -4519,7 +4519,7 @@ Covenant
 	; Wake control scripts
 	(wake e15_mars_inf0_main)
 	(wake e15_cov_inf0_main)
-	(wake e15_cov_inf1_main)
+;	(wake e15_cov_inf1_main)
 ;	(wake e15_cov_inf2_main)
 	(wake e15_cov_phantom0_main)
 	(wake e15_cov_phantom1_main)
@@ -4529,7 +4529,7 @@ Covenant
 	(sleep_until g_e17_started)
 	(sleep_forever e15_mars_inf0_main)
 	(sleep_forever e15_cov_inf0_main)
-	(sleep_forever e15_cov_inf1_main)
+;	(sleep_forever e15_cov_inf1_main)
 ;	(sleep_forever e15_cov_inf2_main)
 	(sleep_forever e15_cov_phantom0_main)
 	(sleep_forever e15_cov_banshees0_main)
