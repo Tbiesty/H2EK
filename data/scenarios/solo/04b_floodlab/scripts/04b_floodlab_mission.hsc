@@ -945,10 +945,10 @@
 		(ai_place disposal_infection_01 1)
 	)
 	
-	; (sleep_until (< (ai_swarm_count disposal_infection) 10) 30 300)
-	; (if (< (ai_swarm_count disposal_infection) 20)
-	; 	(ai_place disposal_infection_02 1)
-	; )
+	(sleep_until (< (ai_swarm_count disposal_infection) 10) 30 300)
+	(if (< (ai_swarm_count disposal_infection) 20)
+		(ai_place disposal_infection_02 1)
+	)
 
 	; (sleep_until (< (ai_swarm_count disposal_infection) 10) 30 300)
 	; (if (< (ai_swarm_count disposal_infection) 20)
@@ -1555,11 +1555,11 @@
 			)
 			(if (difficulty_legendary)
 				(begin
+					(ai_place silo_climbers_01 1)
+					(ai_place silo_climbers_02 1)
 					(sleep (random_range 30 60))
-					(begin_random
-						(ai_place silo_climbers_01 1)
-						(ai_place silo_climbers_02 1)
-					)
+					(ai_place silo_climbers_01 1)
+					(ai_place silo_climbers_02 1)
 				)
 			)
 			(garbage_collect_now)	
