@@ -5510,15 +5510,15 @@
 	;(cs_run_command_script dog_turret_men_06/left goto_dog_turret_06l)
 	;(cs_run_command_script dog_turret_men_06/right goto_dog_turret_06r)
 
-	(sleep_until (< (ai_living_count dog_turret_men_06) 2))
-	(sleep_until
-		(begin
-			(ai_place dog_sen_06 1)
-			(sleep 15)
-			(sleep_until (< (ai_living_count dog_sen_06) 3))
-			(= (ai_spawn_count dog_sen_06) 6)
-		)
-	)
+	; (sleep_until (< (ai_living_count dog_turret_men_06) 2))
+	; (sleep_until
+	; 	(begin
+	; 		(ai_place dog_sen_06 1)
+	; 		(sleep 15)
+	; 		(sleep_until (< (ai_living_count dog_sen_06) 3))
+	; 		(= (ai_spawn_count dog_sen_06) 6)
+	; 	)
+	; )
 
 	(sleep_until
 		(begin
@@ -5757,7 +5757,7 @@
 	;(wake near_dog_obj_02)
 	(wake near_dog_obj_03)
 	(wake near_dog_obj_04)
-	(wake near_dog_obj_05)
+	;(wake near_dog_obj_05)
 	(wake near_dog_obj_06)
 	(wake near_dog_obj_07)
 	;(wake dogfight_flak_warn)
@@ -6010,5 +6010,4 @@
 			)
 		)
 	)
-
 )
