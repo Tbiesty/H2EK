@@ -173,7 +173,7 @@
 )
 
 (script dormant music_05a_05_start
-	;after cortana says "…such nice places."
+	;after cortana says "ï¿½such nice places."
 	(print "music 05a_05 start")
 	(sound_looping_start "scenarios\solo\05a_deltaapproach\05a_music\05a_05" none 1.0)
 )
@@ -588,21 +588,21 @@
 
 	(if (difficulty_legendary)
 		(begin
-			(ai_place allies_lz_ledge 2)
+			(ai_place allies_lz_ledge 3)
 			;(ai_place allies_lz_ridge 2)
 			(ai_place LZ_jackals_ridge 1)
 		)
 	)
 	(if (difficulty_heroic)
 		(begin
-			(ai_place allies_lz_ledge 2)
+			(ai_place allies_lz_ledge 3)
 			(ai_place allies_lz_ridge 1)
 			(ai_place LZ_jackals_ridge 1)
 		)
 	)
 	(if (difficulty_normal)
 		(begin
-			(ai_place allies_lz_ledge 2)
+			(ai_place allies_lz_ledge 3)
 			(ai_place allies_lz_ridge 1)
 			(ai_place LZ_jackals_ridge 1)
 		)
@@ -784,7 +784,7 @@
 	(cs_run_command_script LZ_pelican_02/pilot other_LZ_pelican)
 	(sleep 120)
 
-	(ai_place allies_lz_pelican (- 2 (ai_living_count all_allies)))
+	(ai_place allies_lz_pelican (- 4 (ai_living_count all_allies)))
 	(ai_place LZ_pelican_01)
 	(ai_place LZ_warthog_01)
 	(object_cannot_take_damage (ai_vehicle_get_from_starting_location LZ_pelican_01/pilot))
@@ -1204,7 +1204,9 @@
 	(print "saving")
 	(game_save)
 
+	(print "Round 1: Waiting until no enemies'")
 	(sleep_until (< (ai_living_count lz_phantom_01) 1) 30 8000)
+	(print "Round 1: Done waiting until no enemies'")
 	(object_destroy (ai_vehicle_get_from_starting_location lz_phantom_01/pilot))
 )
 
@@ -1240,7 +1242,9 @@
 	(print "saving")
 	(game_save)
 	
+	(print "Round 2: Waiting until no enemies'")
 	(sleep_until (< (ai_living_count lz_phantom_02) 1) 30 8000)
+	(print "Round 3: Done waiting until no enemies'")
 	(object_destroy (ai_vehicle_get_from_starting_location lz_phantom_02/pilot))	
 )
 
@@ -1260,7 +1264,9 @@
 	(print "saving")
 	(game_save)
 	
+	(print "Round 3: Waiting until no enemies'")
 	(sleep_until (< (ai_living_count lz_phantom_01) 1) 30 8000)
+	(print "Round 3: Done waiting until no enemies'")
 	(object_destroy (ai_vehicle_get_from_starting_location lz_phantom_01/pilot))
 )
 
@@ -1426,7 +1432,7 @@
 	(sleep 90)
 	(ai_dialogue_enable FALSE)
 	(sleep 60)	
-	(print "CORTANA: 'Artillery disabled, Sergeant! Landing zone secure…for the moment.'")
+	(print "CORTANA: 'Artillery disabled, Sergeant! Landing zone secureï¿½for the moment.'")
 	(sleep (ai_play_line_on_object NONE 0320))
 	;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0320_cor))
 	(sleep 30)
@@ -1434,7 +1440,7 @@
 	(sleep (ai_play_line_on_object NONE 0330))
 	;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0330_jon))
 	(sleep 60)
-	(print "CORTANA: 'Easier said than done…Inbound Phantoms, Chief!'")
+	(print "CORTANA: 'Easier said than doneï¿½Inbound Phantoms, Chief!'")
 	(sleep (ai_play_line_on_object NONE 0340))
 	;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0340_cor))
 	(sleep 30)
@@ -1443,7 +1449,9 @@
 	(lz_phantom_01_start)
 	
 	(sleep_until (< (ai_living_count LZ_enemies_all) 1) 30 8000)
+	(print "Round 1: No enemies left'")
 	(sleep_until (= (ai_trigger_test "done_fighting" LZ_enemies_all) TRUE))
+	(print "Round 1: No enemies fighting'")
 
 	;again, should I have a timeout and ai_kill_silent in case you can't find a guy?
 	
@@ -1460,12 +1468,16 @@
 			(lz_phantom_02_start)
 
 			(sleep_until (< (ai_living_count LZ_enemies_all) 1) 30 8000)
+			(print "Round 2: No enemies left'")
 			(sleep_until (= (ai_trigger_test "done_fighting" LZ_enemies_all) TRUE))
+			(print "Round 2: No enemies fighting'")
 ;			(game_save)	
 			(lz_phantom_03_start)
 
 			(sleep_until (< (ai_living_count LZ_enemies_all) 1) 30 4000)
+	        (print "Round 3: No enemies left'")
 			(sleep_until (= (ai_trigger_test "done_fighting" LZ_enemies_all) TRUE))
+			(print "Round 3: No enemies fighting'")
 			(wake LZ_pelican)
 			(wake objective_lz_clear)
 		)
@@ -1481,7 +1493,9 @@
 			(lz_phantom_02_start)
 
 			(sleep_until (< (ai_living_count LZ_enemies_all) 1) 30 8000)
+			(print "Round 2: No enemies left'")
 			(sleep_until (= (ai_trigger_test "done_fighting" LZ_enemies_all) TRUE))
+			(print "Round 2: No enemies fighting'")
 			(wake LZ_pelican)
 			(wake objective_lz_clear)
 		)
@@ -1533,7 +1547,7 @@
 (script command_script overlook_remark
 	(cs_switch overlook_ally)
 	(cs_abort_on_damage TRUE)
-	(print "ALLY: 'Whoa…'")
+	(print "ALLY: 'Whoaï¿½'")
 	(cs_play_line 0390)
 	(sleep 30)
 	(print "ALLY: 'It's like a postcard.'")
@@ -1939,7 +1953,7 @@
 		(set bridge_vehicles_total 2)
 	)
 	(if (difficulty_legendary)
-		(set bridge_vehicles_total 3)
+		(set bridge_vehicles_total 2)
 	)
 	(sleep_until (> (ai_combat_status bridge_enemies_bunker) ai_combat_status_idle))	
 	(sleep_until (< (ai_living_count bridge_ghost_elites) 1) 30 300)
@@ -2000,25 +2014,25 @@
 		)
 	)
 	(game_save_no_timeout)
-	
-;*	(begin_random
-		(if (> bridge_vehicles_total 0)
-			(begin
-				(if (difficulty_normal)
-					(sleep_until (< (ai_living_count bridge_vehicles_all) 1))
-				)
-				(if (difficulty_heroic)
-					(sleep_until (< (ai_living_count bridge_vehicles_all) 1))
-				)
-				(if (difficulty_legendary)
-					(sleep_until (< (ai_living_count bridge_vehicles_all) 2))
-				)
-				(set bridge_vehicles_total (- bridge_vehicles_total 1))
-				(game_save)
-				(bridge_phantom_reinforce_01a)
-			)
-		)
-		(if (> bridge_vehicles_total 0)
+
+;	(begin_random
+		; (if (> bridge_vehicles_total 0)
+		; 	(begin
+		; 		(if (difficulty_normal)
+		; 			(sleep_until (< (ai_living_count bridge_vehicles_all) 1))
+		; 		)
+		; 		(if (difficulty_heroic)
+		; 			(sleep_until (< (ai_living_count bridge_vehicles_all) 1))
+		; 		)
+		; 		(if (difficulty_legendary)
+		; 			(sleep_until (< (ai_living_count bridge_vehicles_all) 2))
+		; 		)
+		; 		(set bridge_vehicles_total (- bridge_vehicles_total 1))
+		; 		(game_save)
+		; 		(bridge_phantom_reinforce_01a)
+		; 	)
+		; )
+;*		(if (> bridge_vehicles_total 0)
 			(begin
 				(if (difficulty_normal)
 					(sleep_until (< (ai_living_count bridge_vehicles_all) 1))
@@ -2279,7 +2293,7 @@
 	(set bridge_ally_comment_go TRUE)
 
 	(cs_abort_on_damage TRUE)
-	(print "ALLY: 'Good. The bridge is down. Now about those Wraiths…'")
+	(print "ALLY: 'Good. The bridge is down. Now about those Wraithsï¿½'")
 	(cs_play_line 0490)
 )
 
@@ -2432,7 +2446,7 @@
 	(game_save)
 	(wake music_05a_03_start)
 
-	(ai_place bridge_control_elites_01 1)
+	(ai_place bridge_control_elites_01)
 	(ai_place bridge_control_jackals_01 (random_range 0 3))
 	(ai_place bridge_control_grunts_01 (- 3 (ai_living_count bridge_control_jackals_01)))
 )
@@ -2533,7 +2547,7 @@
 			(begin
 				(ai_dialogue_enable FALSE)
 				(sleep 60)
-				(print "CORTANA: 'You don't want the tank?  O-kay…I guess we'll leave it for the others.'")
+				(print "CORTANA: 'You don't want the tank?  O-kayï¿½I guess we'll leave it for the others.'")
 				(sleep (ai_play_line_on_object NONE 0510))
 				;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0510_cor))
 				(sleep 30)
@@ -2657,7 +2671,7 @@
 (script dormant bridge_banshee_spawn
 	(sleep_until 
 		(OR
-			(< (ai_living_count bridge_farside_wraiths) 1)
+			(< (ai_living_count bridge_farside_wraiths) 3)
 			(= (volume_test_objects vol_winding_path (players)) TRUE)
 		)
 	)
@@ -2673,7 +2687,7 @@
 			)
 		)
 			(begin
-				(ai_place bridge_banshees 1)
+				(ai_place bridge_banshees/b1)
 				(cs_run_command_script bridge_banshees banshee_boost)		
 			)
 	)
@@ -2683,7 +2697,8 @@
 			(= (volume_test_objects vol_winding_path (players)) FALSE)
 		)
 			(begin
-				(ai_place bridge_banshees 2)			
+				(ai_place bridge_banshees/b1)			
+				(ai_place bridge_banshees/b2)			
 				(cs_run_command_script bridge_banshees banshee_boost)		
 			)
 	)
@@ -2706,7 +2721,7 @@
 			)
 		)
 			(begin
-				(ai_place bridge_banshees 1)			
+				(ai_place bridge_banshees/b3)			
 				(cs_run_command_script bridge_banshees banshee_boost)		
 			)
 	)
@@ -2716,7 +2731,8 @@
 			(= (volume_test_objects vol_winding_path (players)) FALSE)
 		)
 			(begin
-				(ai_place bridge_banshees 2)			
+				(ai_place bridge_banshees/b3)			
+				(ai_place bridge_banshees/b4)			
 				(cs_run_command_script bridge_banshees banshee_boost)		
 			)
 	)
@@ -2744,7 +2760,7 @@
 			(> (player_count) 0)
 			(< (ai_living_count bridge_farside_ghosts) 1)
 		)
-			(ai_place bridge_farside_ghosts 2)
+		(ai_place bridge_farside_ghosts 2)
 	)
 )
 
@@ -2836,21 +2852,21 @@
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location bridge_bunker_ghosts/r) TRUE)
 	(sleep 15)
 	(if (difficulty_legendary)
-		(ai_place bridge_bunker_turrets 4)
+		(ai_place bridge_bunker_turrets 7)
 	)
 	(if (difficulty_heroic)
-		(ai_place bridge_bunker_turrets 3)
+		(ai_place bridge_bunker_turrets 5)
 	)
 	(if (difficulty_normal)
-		(ai_place bridge_bunker_turrets 2)
+		(ai_place bridge_bunker_turrets 3)
 	)
 	(cs_run_command_script bridge_bunker_turrets stay_shooting)
 	
 	(sleep 15)
 ;	(sleep 15)
-;	(ai_place bridge_turret_grunts_01 2)
+	(ai_place bridge_turret_grunts_01 2)
 ;	(sleep 15)
-;	(ai_place bridge_turret_grunts_02 1)
+	(ai_place bridge_turret_grunts_02 1)
 	
 	(wake crack_spawn)
 	;(wake bunker_upper_spawn_01)
@@ -2919,7 +2935,7 @@
 		(begin
 			(ai_dialogue_enable FALSE)
 			(sleep 60)
-			(print "CORTANA: 'Good. The bridge is down. Now about those Wraiths…'")
+			(print "CORTANA: 'Good. The bridge is down. Now about those Wraithsï¿½'")
 			(sleep (ai_play_line_on_object NONE 2040))
 			;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_2040_cor))
 		)
@@ -3056,7 +3072,7 @@
 				(set w_path_turret_count (- w_path_turret_count 1))
 			)
 		)
-		(if (> w_path_turret_count 2)
+		(if (> w_path_turret_count 0)
 			(begin
 				(ai_place w_path_heavies/2)
 				(cs_run_command_script w_path_heavies/0 w_path_turret_2)
@@ -3102,7 +3118,7 @@
 					(= (volume_test_objects vol_winding_path_mid_01 (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_01 1)
+					(ai_place winding_path_ghosts_01 2)
 			)
 			(sleep_until (= (volume_test_objects vol_winding_path_mid_01 (players)) TRUE) 30 (random_range 30 90))
 			(if 
@@ -3110,7 +3126,7 @@
 					(= (volume_test_objects vol_winding_path_mid_01 (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_01 1)
+					(ai_place winding_path_ghosts_01 2)
 			)
 			(OR
 				(= (volume_test_objects vol_winding_path_mid_01 (players)) TRUE)
@@ -3124,7 +3140,7 @@
 
 ;9/12
 
-	(if (< (ai_living_count winding_path_enemies) 6)
+	(if (< (ai_living_count winding_path_enemies) 16)
 		(ai_place winding_path_grunts 4)
 	)
 	(wake w_path_turret_deploy)
@@ -3142,7 +3158,7 @@
 					(= (volume_test_objects vol_waterfall_on (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_02 1)
+					(ai_place winding_path_ghosts_02 2)
 			)
 			(sleep_until (= (volume_test_objects vol_waterfall_on (players)) TRUE) 30 (random_range 30 90))
 			(if 
@@ -3150,7 +3166,7 @@
 					(= (volume_test_objects vol_waterfall_on (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_02 1)
+					(ai_place winding_path_ghosts_02 2)
 			)
 			(OR
 				(= (volume_test_objects vol_waterfall_on (players)) TRUE)
@@ -3159,10 +3175,10 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_living_count winding_path_enemies) 6)
+	(if (< (ai_living_count winding_path_enemies) 16)
 		(ai_place winding_path_jackals 3)
 	)
-	(if (< (ai_living_count winding_path_enemies) 6)
+	(if (< (ai_living_count winding_path_enemies) 16)
 		(ai_place winding_path_ledge_grunts 3)
 	)
 	(cs_run_command_script winding_path_ledge_grunts throw_grenade)
@@ -3182,18 +3198,18 @@
 ;Old Temple Entrance
 
 ;Number of turrets in the area
-(global short temple_ent_near_turret 1)
-(global short temple_ent_far_turret 1)
+(global short temple_ent_near_turret 2)
+(global short temple_ent_far_turret 2)
 
 ;Places turrets, varying with difficulty
 (script dormant temple_ent_turret_spawn
 	(if (difficulty_legendary)
-		(set temple_ent_near_turret 3)
-		(set temple_ent_far_turret 3)
+		(set temple_ent_near_turret 4)
+		(set temple_ent_far_turret 4)
 	)
 	(if (difficulty_heroic)
-		(set temple_ent_near_turret 2)
-		(set temple_ent_far_turret 2)
+		(set temple_ent_near_turret 3)
+		(set temple_ent_far_turret 3)
 	)
 	(begin_random
 		(if (> temple_ent_near_turret 0)
@@ -3269,11 +3285,11 @@
 
 ;spawns ghosts, then banshees, then ghosts
 
-(global short temple_ent_spawn_count 5)
+(global short temple_ent_spawn_count 3)
 
 (script dormant temple_ent_veh_spawn
 	(if (= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location bridge_tank/driver) "" (players)) FALSE)
-		(set temple_ent_spawn_count 3)
+		(set temple_ent_spawn_count 2)
 	)
 	
 	(sleep_until 
@@ -3304,7 +3320,7 @@
 			(if (= (volume_test_objects vol_temple_ent_02 (players)) FALSE)
 				(ai_place temple_ent_ghosts_02 (- 2 (ai_living_count temple_ent_ghosts)))
 			)
-			(sleep_until (= (volume_test_objects vol_temple_ent_02 (players)) TRUE) 30 (random_range 30 90))
+			(sleep_until (= (volume_test_objects vol_temple_ent_02 (players)) TRUE) 30 30)
 			(if (= (volume_test_objects vol_temple_ent_02 (players)) FALSE)
 				(ai_place temple_ent_ghosts_02 (- 2 (ai_living_count temple_ent_ghosts)))
 			)
@@ -3347,7 +3363,7 @@
 			(if (= (volume_test_objects vol_temple_ent_03 (players)) FALSE)
 				(ai_place temple_ent_ghosts_02 (- 2 (ai_living_count temple_ent_ghosts)))
 			)
-			(sleep_until (= (volume_test_objects vol_temple_ent_03 (players)) TRUE) 30 (random_range 30 90))
+			(sleep_until (= (volume_test_objects vol_temple_ent_03 (players)) TRUE) 30 30)
 			(if (= (volume_test_objects vol_temple_ent_03 (players)) FALSE)
 				(ai_place temple_ent_ghosts_02 (- 2 (ai_living_count temple_ent_ghosts)))
 			)
@@ -3364,7 +3380,7 @@
 	(cs_switch ally01)
 	(cs_enable_pathfinding_failsafe TRUE)
 	(cs_abort_on_damage TRUE)
-	(print "ALLY: 'Kinda reminds me of back home…'")
+	(print "ALLY: 'Kinda reminds me of back homeï¿½'")
 	(cs_play_line 0530)
 
 	(cs_switch ally02)
@@ -3435,10 +3451,10 @@
 
 ;9/12
 
-	(if (< (ai_living_count temple_ent_enemies_all) 8)
+	(if (< (ai_living_count temple_ent_enemies_all) 16)
 		(ai_place temple_ent_elites_02r (- 1 (ai_living_count temple_ent_elites_01r)))
 	)
-	(if (< (ai_living_count temple_ent_enemies_all) 8)
+	(if (< (ai_living_count temple_ent_enemies_all) 16)
 		(ai_place temple_ent_elites_02l (- 1 (ai_living_count temple_ent_elites_01l)))
 	)
 	(wake temple_ent_veh_spawn)
@@ -3451,14 +3467,14 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_living_count temple_ent_enemies_all) 8)
+	(if (< (ai_living_count temple_ent_enemies_all) 16)
 		(ai_place temple_ent_jackals_02c 2)
 	)
 	(if 
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_03/1)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_03/1) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 8)
+			(< (ai_living_count temple_ent_enemies_all) 16)
 		)
 			(ai_place temple_ent_grunts_01l 1)
 	)
@@ -3466,7 +3482,7 @@
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_03/2)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_03/2) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 8)
+			(< (ai_living_count temple_ent_enemies_all) 16)
 		)
 			(ai_place temple_ent_grunts_01l 1)
 	)
@@ -3474,7 +3490,7 @@
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_04/1)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_04/1) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 8)
+			(< (ai_living_count temple_ent_enemies_all) 16)
 		)
 			(ai_place temple_ent_grunts_01r 1)
 	)
@@ -3482,7 +3498,7 @@
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_04/2)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_04/2) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 8)
+			(< (ai_living_count temple_ent_enemies_all) 16)
 		)
 			(ai_place temple_ent_grunts_01r 1)
 	)
@@ -3588,10 +3604,10 @@
 
 ;9/12
 
-	(if (< (ai_living_count tunnel_enemies_all) 6)
+	(if (< (ai_living_count tunnel_enemies_all) 16)
 		(ai_place tunnel_grunts 2)
 	)
-	(if (< (ai_living_count tunnel_enemies_all) 6)
+	(if (< (ai_living_count tunnel_enemies_all) 16)
 		(ai_place tunnel_heavies_01 2)
 	)
 	(cs_run_command_script tunnel_heavies_01/0 tunnel_turret_0)
@@ -3605,10 +3621,10 @@
 		
 	(sleep_until (= (volume_test_objects vol_tunnel_02 (players)) TRUE))
 	(game_save)
-	(if (< (ai_living_count tunnel_enemies_all) 6)
+	(if (< (ai_living_count tunnel_enemies_all) 16)
 		(ai_place tunnel_jackals 2)
 	)
-	(if (< (ai_living_count tunnel_enemies_all) 6)
+	(if (< (ai_living_count tunnel_enemies_all) 16)
 		(ai_place tunnel_heavies_02 2)
 	)
 	(cs_run_command_script tunnel_heavies_02/2 tunnel_turret_2)
@@ -4575,10 +4591,10 @@
 	(wake old_temple_perimeter_nuke)
 	
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_elites_01 (- 2 (ai_living_count old_temp_center_tough)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_grunts_01 (- 3 (ai_living_count old_temp_center_fodder)))
 	)
 	(wake old_temple_middle_ally)
@@ -4594,13 +4610,13 @@
 	(game_save)
 
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_grunts_03 (- 3 (ai_living_count old_temp_center_fodder)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_jackals_04 (- 2 (ai_living_count old_temp_center_tough)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_grunts_04 (- 6 (ai_living_count old_temp_center_fodder)))
 	)
 	
@@ -4614,10 +4630,10 @@
 	(game_save)
 
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_elites_05 (- 2 (ai_living_count old_temp_center_tough)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_center_jackals_05 (- 4 (ai_living_count old_temp_center_tough)))
 	)
 	
@@ -4656,10 +4672,10 @@
 ;Makes marines fight guys from center until you arrive
 (script dormant old_temple_playfight
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_playfight_e 2)
 	)
-	(if (< (ai_living_count old_temple_enemies) 8)
+	(if (< (ai_living_count old_temple_enemies) 16)
 		(ai_place old_temple_playfight_g 3)
 	)
 	(sleep_until
@@ -4872,7 +4888,7 @@
 				(set old_temple_chatter TRUE)
 				(ai_dialogue_enable FALSE)
 				(sleep 60)
-				(print "CORTANA: 'There should be a way through this debris…'")
+				(print "CORTANA: 'There should be a way through this debrisï¿½'")
 				(sleep (ai_play_line_on_object NONE 0680))
 				;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0680_cor))
 				(sleep 30)
@@ -5112,8 +5128,8 @@
 			(begin
 				(ai_dialogue_enable FALSE)
 				(sleep 60)
-				(print "CORTANA: 'What happened to this place? The stones…'")
-				(print "'this isn't normal wear and tear. It almost looks like battle-scarring…'")
+				(print "CORTANA: 'What happened to this place? The stonesï¿½'")
+				(print "'this isn't normal wear and tear. It almost looks like battle-scarringï¿½'")
 				(sleep (ai_play_line_on_object NONE 0590))
 				;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0590_cor))
 				(sleep 30)
@@ -5137,10 +5153,10 @@
 
 ;9/12
 
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_elites_01 2)
 	)
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_grunts_01 3)
 	)
 	;(wake old_temple_phantom_04)
@@ -5154,7 +5170,7 @@
 
 	(game_save)
 
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_grunts_02 (- 4 (ai_living_count old_temple_court_grunts_01)))
 	)
 	
@@ -5167,13 +5183,13 @@
 
 	(game_save)
 	(wake old_temple_holo_translate)
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_jackals_03 (- 2 (ai_living_count old_temple_court_elites_01)))
 	)
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_grunts_03 (- 3 (+ (ai_living_count old_temple_court_grunts_01) (ai_living_count old_temple_court_grunts_02))))
 	)
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_jackals_04 2)
 	)
 
@@ -5186,10 +5202,10 @@
 
 	(game_save)
 
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_elites_05 2)
 	)
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_jackals_05 2)
 	)
 	(wake old_temple_debris_reminder)
@@ -5204,10 +5220,10 @@
 ;	(wake old_temple_archaeologist)
 	(game_save)
 
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_jackals_06 2)
 	)
-	(if (< (ai_living_count old_temple_court_all) 8)
+	(if (< (ai_living_count old_temple_court_all) 16)
 		(ai_place old_temple_court_grunts_06 3)
 	)
 	
@@ -5394,7 +5410,7 @@
 	(cs_switch ally01)
 	(cs_enable_pathfinding_failsafe TRUE)
 	(cs_abort_on_damage TRUE)
-	(print "ODST: 'My girl would dig this place. So beautiful…'")
+	(print "ODST: 'My girl would dig this place. So beautifulï¿½'")
 	(cs_play_line 0700)
 	(sleep 30)
 
@@ -5429,7 +5445,7 @@
 				(ai_dialogue_enable FALSE)
 				(sleep 60)
 				(print "CORTANA: 'We're approaching another structure. It should be the...'") 
-				(print "'...lake access-point we've been looking for…'")
+				(print "'...lake access-point we've been looking forï¿½'")
 				(sleep (ai_play_line_on_object NONE 0750))
 				;(sleep (sound_impulse_language_time sound\dialog\levels\05_deltatemple\mission\L05_0750_cor))
 				(sleep 30)
@@ -5469,7 +5485,7 @@
 		)
 			(sleep_forever)
 	)
-	(if (< (ai_living_count grotto_enemies) 8)
+	(if (< (ai_living_count grotto_enemies) 16)
 		(ai_place grotto_crack_grunts 2)
 	)
 	
@@ -5488,7 +5504,7 @@
 		)
 			(sleep_forever)
 	)
-	(if (< (ai_living_count grotto_enemies) 8)
+	(if (< (ai_living_count grotto_enemies) 16)
 		(ai_place grotto_buggers_new_01 (- 4 (ai_living_count grotto_buggers)))
 	)
 	
@@ -5516,7 +5532,7 @@
 (script dormant grotto_buggers_reinforce
 	(if 
 		(AND
-			(< (ai_living_count grotto_enemies) 8)
+			(< (ai_living_count grotto_enemies) 16)
 			(difficulty_legendary)
 		)
 			(ai_place grotto_buggers_01 (- 4 (ai_living_count grotto_buggers)))
@@ -5525,7 +5541,7 @@
 	(sleep_until (= (volume_test_objects vol_grotto_mid_03 (players)) TRUE))
 	(ai_migrate grotto_buggers_01 grotto_buggers_02)
 
-	(if (< (ai_living_count grotto_enemies) 8)
+	(if (< (ai_living_count grotto_enemies) 16)
 		(ai_place grotto_buggers_02 (- 4 (ai_living_count grotto_buggers)))
 	)
 )
@@ -5572,7 +5588,7 @@
 	(data_mine_set_mission_segment "05a_9_grotto")
 	(game_save)
 	(wake 05a_title2)
-	(ai_place grotto_init_01 1)
+	(ai_place grotto_init_01)
 	(ai_place grotto_init_04 1)
 	(ai_place grotto_init_05 1)
 	;(ai_place grotto_init_06 1)
@@ -5593,18 +5609,18 @@
 	;	)
 	)
 	(game_save)
-	(if 
-		(OR
-			(difficulty_heroic)
-			(difficulty_legendary)
-		)
-			(set grotto_final_snipers 2)
-	)
+	; (if 
+	; 	(OR
+	; 		(difficulty_heroic)
+	; 		(difficulty_legendary)
+	; 	)
+	; 	(set grotto_final_snipers 2)
+	; )
 	(begin_random
 		(if 
 			(AND
 				(> grotto_final_snipers 0)
-				(< (ai_living_count grotto_enemies) 8)
+				(< (ai_living_count grotto_enemies) 16)
 			)
 				(begin
 					(ai_place grotto_cave_jackals_02 1)
@@ -5614,7 +5630,7 @@
 		(if
 			(AND
 				(> grotto_final_snipers 0)
-				(< (ai_living_count grotto_enemies) 8)
+				(< (ai_living_count grotto_enemies) 16)
 			)
 				(begin
 					(ai_place grotto_cave_jackals_03 1)
@@ -5622,11 +5638,11 @@
 				)
 		)
 	)
-	(if (< (ai_living_count grotto_enemies) 8)
+	(if (< (ai_living_count grotto_enemies) 16)
 		(ai_place grotto_cave_jackals_01 1)
 	)
-	(if (< (ai_living_count grotto_enemies) 8)
-		(ai_place grotto_cave_elites 1)
+	(if (< (ai_living_count grotto_enemies) 16)
+		(ai_place grotto_cave_elites 2)
 	)
 	(wake grotto_buggers_reinforce)
 
@@ -5640,35 +5656,35 @@
 
 	(wake grotto_reminder)
 	(ai_migrate grotto_buggers_02 grotto_buggers_03)
-	(if 
-		(AND
-			(< (ai_living_count grotto_enemies) 8)
-			(difficulty_legendary)
-		)
-			(ai_place grotto_buggers_03 (- 4 (ai_living_count grotto_buggers)))
-	)
+	; (if 
+	; 	(AND
+	; 		(< (ai_living_count grotto_enemies) 16)
+	; 		(difficulty_legendary)
+	; 	)
+	; 	(ai_place grotto_buggers_03 (- 4 (ai_living_count grotto_buggers)))
+	; )
 	(ai_set_orders grotto_buggers grotto_follow_03)
 
-	(if (< (ai_living_count grotto_enemies) 8)
-		(ai_place grotto_end_elites_01 1)
+	(if (< (ai_living_count grotto_enemies) 16)
+		(ai_place grotto_end_elites_01 2)
 	)
 	(sleep 30)
 ;	(ai_place grotto_end_jackals_01 1)
 ;	(sleep 30)
-	(if (< (ai_living_count grotto_enemies) 8)
+	(if (< (ai_living_count grotto_enemies) 16)
 		(ai_place grotto_end_jackals_02 2)
 	)
 	(sleep 30)
 ;	(ai_place grotto_end_jackals_03 1)
 ;	(sleep 30)
-	(if (< (ai_living_count grotto_enemies) 8)
-		(ai_place grotto_end_elites_02 1)
+	(if (< (ai_living_count grotto_enemies) 16)
+		(ai_place grotto_end_elites_02 2)
 	)
 
 	(sleep_until 
 	;	(OR
 			(= (volume_test_objects vol_grotto_end (players)) TRUE)
-	;		(< (ai_living_count grotto_enemies) 8)
+	;		(< (ai_living_count grotto_enemies) 16)
 	;	)
 	)
 	(wake music_05a_05_stop)
@@ -5810,28 +5826,30 @@
 		(AND
 			(= (volume_test_objects vol_approach_ramp (players)) FALSE)
 			(> (player_count) 0)
-			(< (ai_living_count approach_enemies) 8)
+			(< (ai_living_count approach_enemies) 16)
 		)
-			(ai_place approach_buggers 5)
+		(ai_place approach_buggers)
 	)
 	(sleep 2)
 	
-	(sleep_until (< (ai_living_count approach_buggers) 1))
-	(sleep_until
-		(AND
-			(OR
-				(= (volume_test_object vol_no_see_ramp (player0)) TRUE)
-				(= (volume_test_object vol_no_see_approach (player0)) TRUE)
-			)
-			(OR
-				(= (volume_test_object vol_no_see_ramp (player1)) TRUE)
-				(= (volume_test_object vol_no_see_approach (player1)) TRUE)
-				(= (game_is_cooperative) FALSE)
-			)
-		)
-	)
-	(if (< (ai_living_count approach_enemies) 8)
-		(ai_place approach_buggers_too 4)
+	(sleep_until (<= (ai_living_count approach_buggers) 1))
+	(sleep 150)
+
+	; (sleep_until
+	; 	(AND
+	; 		(OR
+	; 			(= (volume_test_object vol_no_see_ramp (player0)) TRUE)
+	; 			(= (volume_test_object vol_no_see_approach (player0)) TRUE)
+	; 		)
+	; 		(OR
+	; 			(= (volume_test_object vol_no_see_ramp (player1)) TRUE)
+	; 			(= (volume_test_object vol_no_see_approach (player1)) TRUE)
+	; 			(= (game_is_cooperative) FALSE)
+	; 		)
+	; 	)
+	; )
+	(if (< (ai_living_count approach_enemies) 16)
+		(ai_place approach_buggers_too 5)
 	)
 )
 
