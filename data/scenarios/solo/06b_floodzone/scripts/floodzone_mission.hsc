@@ -2925,8 +2925,8 @@ Open Issues
 	(wake e26_main)
 
 	; Wake control scripts
-	(wake e25_fld_inf0_main)
-	(wake e25_fld_inf1_main)
+	;(wake e25_fld_inf0_main)
+	;(wake e25_fld_inf1_main)
 	(wake e25_dialogue)
 	
 	; Shut down
