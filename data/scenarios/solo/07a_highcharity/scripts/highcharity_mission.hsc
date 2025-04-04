@@ -2823,10 +2823,10 @@
 		(begin
 			(if debug (print "hall a reinforcements"))
 			(ai_place hall_a_brute_rein)
-			(ai_place hall_a_grunt_rein (pin (- 6 (ai_living_count hall_a_prophets)) 0 2))
+			(ai_place hall_a_grunt_rein (pin (- 16 (ai_living_count hall_a_prophets)) 0 2))
 			(sleep 1)
 			(ai_place hall_a_brute_rein_bk)
-			(ai_place hall_a_grunt_rein_bk (pin (- 6 (ai_living_count hall_a_prophets)) 0 2))
+			(ai_place hall_a_grunt_rein_bk (pin (- 16 (ai_living_count hall_a_prophets)) 0 2))
 		)
 	)
 )
@@ -2847,25 +2847,25 @@
 	
 	(if	(and
 			(>= (ai_combat_status room_a_prophets) ai_combat_status_active)
-			(<= (ai_living_count room_a_prophets) 2)
+			(<= (ai_living_count room_a_prophets) 16)
 		)
 		(begin
 			(ai_place room_a_brutes_a)
 			(ai_place room_a_brutes_c)
 			(sleep 1)
-			(ai_place room_a_grunts_a (pin (- 4 (ai_living_count room_a_prophets)) 0 2))
-			(ai_place room_a_grunts_c (pin (- 4 (ai_living_count room_a_prophets)) 0 2))
+			(ai_place room_a_grunts_a (pin (- 16 (ai_living_count room_a_prophets)) 0 2))
+			(ai_place room_a_grunts_c (pin (- 16 (ai_living_count room_a_prophets)) 0 2))
 		)
 	)
 	
 	(sleep_until (volume_test_objects tv_room_a_bk (players)))
 	(if	(and
 			(>= (ai_combat_status room_a_prophets) ai_combat_status_active)
-			(<= (ai_living_count room_a_prophets) 4)
+			(<= (ai_living_count room_a_prophets) 16)
 		)
 		(begin
 			(ai_place room_a_brutes_b)
-			(ai_place room_a_grunts_b (pin (- 4 (ai_living_count room_a_prophets)) 0 2))
+			(ai_place room_a_grunts_b (pin (- 16 (ai_living_count room_a_prophets)) 0 2))
 		)
 	)
 )
@@ -3737,7 +3737,7 @@
 )
 
 (script dormant ai_corridor_b
-	(if (<= (+ (ai_living_count corridor_b_prophets) (ai_living_count corridor_b_covenant)) 8) (ai_place hall_c_elites))
+	(if (<= (+ (ai_living_count corridor_b_prophets) (ai_living_count corridor_b_covenant)) 16) (ai_place hall_c_elites))
 ;	(sleep 90)
 	(ai_place hall_c_buggers)
 	(sleep 1)
@@ -3775,7 +3775,7 @@
 					(volume_test_objects tv_ext_a_mid (players))
 				)
 	)
-	(if (<= (+ (ai_living_count ext_a_prophets) (ai_living_count ext_a_covenant)) 6) (ai_place ext_a_brute_door))
+	(if (<= (+ (ai_living_count ext_a_prophets) (ai_living_count ext_a_covenant)) 16) (ai_place ext_a_brute_door))
 )
 
 (script dormant ai_ext_a_prophet_migrate
@@ -3934,7 +3934,7 @@
 					g_midtower_prophet_rein
 				)
 	)
-		(if (<= (+ (ai_living_count midtower_prophets) (ai_living_count midtower_covenant)) 4)
+		(if (<= (+ (ai_living_count midtower_prophets) (ai_living_count midtower_covenant)) 16)
 			(begin
 				(ai_place midtower_elite_reins)
 				(if debug (print "covenant reinforcements"))
@@ -3955,7 +3955,7 @@
 	(if	(volume_test_objects tv_midtower_bk (players))
 			(begin
 				(ai_place midtower_brutes)
-				(if (<= (ai_living_count midtower_prophets) 3) (ai_place midtower_jackals))
+				(if (<= (ai_living_count midtower_prophets) 16) (ai_place midtower_jackals))
 				(set g_midtower_prophet_rein 1)
 				(if debug (print "exit prophets"))
 			)
@@ -3965,7 +3965,7 @@
 			(begin
 				(sleep_until (volume_test_objects tv_midtower_bk (players)) 10 (* 30 15))
 				(ai_place midtower_brutes)
-				(if (<= (ai_living_count midtower_prophets) 3) (ai_place midtower_jackals))
+				(if (<= (ai_living_count midtower_prophets) 16) (ai_place midtower_jackals))
 				(set g_midtower_prophet_rein 1)
 				(if debug (print "exit prophets"))
 			)
@@ -4032,7 +4032,7 @@
 	)
 	(if debug (print "far door covenant"))
 	(ai_place ext_b_grunt_bk_door)
-	(ai_place ext_b_elites_bk_door (pin (- 8 (ai_living_count all_enemies)) 1 3))
+	(ai_place ext_b_elites_bk_door (pin (- 16 (ai_living_count all_enemies)) 1 3))
 	(sleep 1)
 	
 	(sleep_until
@@ -4042,7 +4042,7 @@
 		)
 	)
 	(if debug (print "lower door brutes"))
-	(ai_place ext_b_brutes_low_door (pin (- 8 (ai_living_count all_enemies)) 1 4))
+	(ai_place ext_b_brutes_low_door (pin (- 16 (ai_living_count all_enemies)) 1 4))
 )
 
 (script command_script cs_ext_b_grunts_low
@@ -4147,8 +4147,8 @@
 	(ai_place maus_room_elite_rt)
 	(if	(<= (ai_living_count all_enemies) 6)
 			(begin
-				(ai_place maus_room_grunt_lt (pin (- 6 (ai_living_count all_enemies)) 0 2))
-				(ai_place maus_room_grunt_rt (pin (- 6 (ai_living_count all_enemies)) 0 2))
+				(ai_place maus_room_grunt_lt (pin (- 16 (ai_living_count all_enemies)) 0 2))
+				(ai_place maus_room_grunt_rt (pin (- 16 (ai_living_count all_enemies)) 0 2))
 			)
 	)
 
@@ -4158,11 +4158,11 @@
 				)
 	)
 
-	(ai_place maus_room_lt_elite_reins (pin (- 8 (ai_living_count all_enemies)) 0 1))
-	(ai_place maus_room_rt_elite_reins (pin (- 8 (ai_living_count all_enemies)) 0 1))
+	(ai_place maus_room_lt_elite_reins (pin (- 16 (ai_living_count all_enemies)) 0 1))
+	(ai_place maus_room_rt_elite_reins (pin (- 16 (ai_living_count all_enemies)) 0 1))
 	(sleep 1)
-	(ai_place maus_room_lt_grunt_reins (pin (- 6 (ai_living_count all_enemies)) 0 2))
-	(ai_place maus_room_rt_grunt_reins (pin (- 6 (ai_living_count all_enemies)) 0 2))
+	(ai_place maus_room_lt_grunt_reins (pin (- 16 (ai_living_count all_enemies)) 0 2))
+	(ai_place maus_room_rt_grunt_reins (pin (- 16 (ai_living_count all_enemies)) 0 2))
 )
 
 ;========== MAUSOLEUM BRIDGE SCRIPTS ==============================================================================
@@ -4171,9 +4171,9 @@
 
 (script dormant ai_maus_bridge_ini
 	(if debug (print "initial bridge"))
-	(if (< (ai_living_count all_enemies) 4) (ai_place maus_bridge_elite_turret 2) (ai_place maus_bridge_elite_turret 1))
+	(if (< (ai_living_count all_enemies) 16) (ai_place maus_bridge_elite_turret 2) (ai_place maus_bridge_elite_turret 1))
 	(ai_place maus_bridge_elites_ini)
-	(ai_place maus_bridge_brutes_ini (pin (- 10 (ai_living_count all_enemies)) 0 3))
+	(ai_place maus_bridge_brutes_ini (pin (- 16 (ai_living_count all_enemies)) 0 3))
 	(ai_place maus_bridge_jackals_ini)
 	
 	(sleep_until	(or
@@ -4185,7 +4185,7 @@
 
 	(sleep 1)
 	(if debug (print "bugger reinforcements"))
-	(ai_place maus_bridge_buggers_ini (pin (- 11 (ai_living_count all_enemies)) 0 5))
+	(ai_place maus_bridge_buggers_ini (pin (- 16 (ai_living_count all_enemies)) 0 4))
 )
 
 
@@ -4547,16 +4547,16 @@
 	
 		(if g_jail_prophets_ini_active (sleep_until (<= (ai_living_count jail_prophets) 0)) (sleep_forever ai_prophets_ini_active))
 		
-		(if (= (random_range 0 2) 0) (wake ai_jail_a) (wake ai_jail_b))
+		(if (= (random_range 0 1) 0) (wake ai_jail_a) (wake ai_jail_b))
 
 	(sleep_until (or g_jail_a_finished g_jail_b_finished))
 		(ai_jail_spawner)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(if g_jail_a_finished (wake ai_jail_b) (wake ai_jail_a))
 		
 	(sleep_until (and g_jail_a_finished g_jail_b_finished))
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(wake sc_jail_exit)
 
 		(ai_jail_spawner)
@@ -4582,7 +4582,7 @@
 		(data_mine_set_mission_segment enc_corridors_b)
 		(if debug (print "initialize corridor b encounters"))
 		(game_save)
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(set g_jail_exit_reminder 1)
 		(if	(and (not g_jail_a_finished) (not g_jail_b_finished))
 				(begin
@@ -4632,8 +4632,8 @@
 		(ai_disposable room_b_prophets true)
 		(ai_disposable room_b_covenant true)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
-		(if (<= (ai_living_count corridor_b_prophets) 4) (ai_place hall_c_bugger_reins))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
+		(if (<= (ai_living_count corridor_b_prophets) 12) (ai_place hall_c_bugger_reins))
 	
 	(sleep_until (volume_test_objects tv_hall_d (players)))
 ;		(game_save)
@@ -4641,13 +4641,13 @@
 	
 		(ai_place hall_d_elites)
 		(ai_place hall_d_brutes)
-		(if (<= (+ (ai_living_count corridor_b_prophets) (ai_living_count corridor_b_covenant)) 8) (ai_place hall_d_jackals_bk))
+		(if (<= (+ (ai_living_count corridor_b_prophets) (ai_living_count corridor_b_covenant)) 12) (ai_place hall_d_jackals_bk))
 	
 		(sleep 1)
-		(if (<= (+ (ai_living_count corridor_b_prophets) (ai_living_count corridor_b_covenant)) 8) (ai_place hall_d_jackals_fr))
+		(if (<= (+ (ai_living_count corridor_b_prophets) (ai_living_count corridor_b_covenant)) 12) (ai_place hall_d_jackals_fr))
 
 	(sleep_until (volume_test_objects tv_grand_b (players)))
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(game_save)
 		
 		(wake music_07a_04)
@@ -4668,7 +4668,7 @@
 		(if debug (print "initialize tower a exterior encounters"))
 		(game_save)
 	
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(if (difficulty_legendary) (wake ice_cream_angry))
 		
 		(ai_disposable corridor_b_prophets true)
@@ -4691,7 +4691,7 @@
 	10)
 		(ai_disposable grand_b_hunters true)
 	
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 	
 		(wake ai_ext_a_fliers)
 	
@@ -4724,7 +4724,7 @@
 		(wake music_07a_05)
 	
 	(sleep_until g_sc_ioc_finished)
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 ;		(wake ai_garden_a_ini)
 )
 
@@ -4762,7 +4762,7 @@
 		(game_save)
 		(set g_music_07a_05 0)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(wake ai_garden_a_rangers)
 
 	(sleep_until (volume_test_objects tv_garden_a_bk (players)))
@@ -4773,10 +4773,10 @@
 		
 ;		(ai_place garden_a_rangers)
 		(ai_place garden_a_elites_bk)
-		(ai_place garden_a_grunts_bk (pin (- 8 (ai_living_count all_enemies)) 0 2))
+		(ai_place garden_a_grunts_bk)
 		(sleep 1)
 		(ai_place garden_a_brutes_bk)
-		(ai_place garden_a_jackals_bk (pin (- 8 (ai_living_count all_enemies)) 0 2))
+		(ai_place garden_a_jackals_bk)
 		
 )
 
@@ -4790,7 +4790,7 @@
 		(if debug (print "initialize midspan tower encounters"))
 		(game_save)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(ai_disposable garden_a_prophet true)
 		(ai_disposable garden_a_covenant true)
@@ -4801,7 +4801,7 @@
 		(wake ai_midtower_ini)
 	
 	(sleep_until (volume_test_objects tv_mid_tower_room (players)))
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(game_save)
 		(ai_place midtower_elites)
 		(ai_place midtower_buggers_ini)
@@ -4817,7 +4817,7 @@
 		(if debug (print "initialize hanging gardens b encounters"))
 		(game_save)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(set g_music_07a_06 1)
 		
@@ -4837,7 +4837,7 @@
 
 	(sleep_until (volume_test_objects tv_garden_b_mid (players)))
 		(if debug (print "garden b mid"))
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(game_save)
 
 	(sleep_until (volume_test_objects tv_garden_b_bk (players)))
@@ -4853,7 +4853,7 @@
 		(if debug (print "initialize tower b exterior encounters"))
 		(game_save)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(ai_disposable garden_b_prophet true)
 		(ai_disposable garden_b_covenant true)
@@ -4868,7 +4868,7 @@
 		(if debug (print "initial enemies"))
 		(game_save)
 	
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(ai_place ext_b_elite_a)
 		(ai_place ext_b_brute_a)
 		(ai_place ext_b_grunts_b)
@@ -4885,7 +4885,7 @@
 		(if debug (print "placing left covenant"))
 		(game_save)
 
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(ai_place ext_b_grunts_lt)
 		(ai_place ext_b_elites_stealth)
@@ -4897,7 +4897,7 @@
 		(if debug (print "initialize mausoleum exterior encounters"))
 		(game_save)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(ai_disposable ext_b_prophets true)
 		(ai_disposable ext_b_covenant true)
@@ -4919,7 +4919,7 @@
 		(wake ai_maus_room_ini)
 	
 	(sleep_until (volume_test_objects tv_maus_room_bk (players)) 10)
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 		(ai_place maus_room_brute_bk)
 		(ai_place maus_room_jackal_bk_lt)
 		(ai_place maus_room_jackal_bk_rt)
@@ -4932,7 +4932,7 @@
 		(game_save)
 		(erase_cortana)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(ai_set_orders maus_hall_covenant maus_bridge_cov_screw)
 		(ai_set_orders maus_room_prophet maus_bridge_prophet_screw)
@@ -4953,11 +4953,11 @@
 		
 		(if debug (print "bridge reinforcements wave 1"))
 	
-		(ai_place maus_bridge_elite_rein (pin (- 12 (ai_living_count all_enemies)) 1 2))
+		(ai_place maus_bridge_elite_rein (pin (- 16 (ai_living_count all_enemies)) 1 2))
 		(sleep 1)
-		(ai_place maus_bridge_grunt_rein (pin (- 10 (ai_living_count all_enemies)) 0 4))
+		(ai_place maus_bridge_grunt_rein (pin (- 16 (ai_living_count all_enemies)) 0 4))
 		(sleep 1)
-		(ai_place maus_bridge_buggers_ini (pin (- 6 (ai_living_count all_enemies)) 2 5))
+		(ai_place maus_bridge_buggers_ini (pin (- 16 (ai_living_count all_enemies)) 2 5))
 		
 		(ai_set_orders maus_bridge_buggers_ini maus_bridge_buggers_rein)
 
@@ -4965,9 +4965,9 @@
 		(if debug (print "bridge reinforcements wave 2"))
 		(game_save)
 
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
-		(ai_place maus_bridge_grunt_rein_b (pin (- 8 (ai_living_count all_enemies)) 0 4))
+		(ai_place maus_bridge_grunt_rein_b (pin (- 16 (ai_living_count all_enemies)) 0 4))
 		(ai_place maus_bridge_hunters)
 )
 
@@ -4980,7 +4980,7 @@
 		
 		(set g_marine_mig_maus_int 1)
 		
-		(if (<= (ai_living_count marines) 3) (ai_renew marines))
+		(if (<= (ai_living_count marines) 5) (ai_renew marines))
 
 		(ai_disposable maus_room_prophet true)
 		(ai_disposable maus_room_covenant true)
@@ -4991,14 +4991,14 @@
 		(ai_set_orders maus_bridge_prophets maus_ent_collapse)
 		
 		(ai_place maus_inner_elites_ini)
-;		(ai_place maus_inner_turrets)
+		(ai_place maus_inner_turrets)
 		(ai_place maus_inner_brutes_ini)
 		(ai_place maus_inner_buggers_lt)
 		
 		(wake music_07a_07)
 		(wake sc_maus_interior)
 		
-		(sleep 120)
+		(sleep 150)
 		(kill_volume_enable kill_maus)
 
 	(sleep_until 	(or 
