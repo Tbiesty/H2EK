@@ -2840,6 +2840,8 @@ Open Issues
 ;- Event Scripts ---------------------------------------------------------------
 
 (script dormant e25_dialogue
+	(sleep_until g_key_library_entered 10)
+
 	; Elite scene
 	(sleep_until
 		(ai_scene e25_scene0 cs_e25_scene0 e21_cov_inf0)
@@ -2889,8 +2891,8 @@ Open Issues
 	(ai_place e25_fld_inf1_1)
 	
 	; Combat forms!
-	(sleep 60)
-	(ai_place e25_fld_inf1_2)
+	;(sleep 60)
+	;(ai_place e25_fld_inf1_2)
 )
 
 (script dormant e25_fld_inf0_main
@@ -2905,8 +2907,8 @@ Open Issues
 	(ai_place e25_fld_inf0_1)
 	
 	; Combat forms!
-	(sleep 60)
-	(ai_place e25_fld_inf0_2)
+	;(sleep 60)
+	;(ai_place e25_fld_inf0_2)
 )
 
 
@@ -2923,8 +2925,8 @@ Open Issues
 	(wake e26_main)
 
 	; Wake control scripts
-;	(wake e25_fld_inf0_main)
-;	(wake e25_fld_inf1_main)
+	(wake e25_fld_inf0_main)
+	(wake e25_fld_inf1_main)
 	(wake e25_dialogue)
 	
 	; Shut down
@@ -2969,16 +2971,42 @@ Open Issues
 
 ;- Command Scripts -------------------------------------------------------------
 
-(script command_script cs_e24_fld_inf1_load
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
-	(cs_face_object true key)
+; (script command_script cs_e24_fld_inf2_load
+; 	(cs_enable_moving false)
+; 	(cs_enable_targeting false)
+; 	(print "cs_e24_fld_inf2_load: Wait for it...")
+
+; 	; Wait for it...
+; 	(sleep 700)
+	
+; 	; Board it
+; 	(object_cannot_take_damage (ai_get_object ai_current_actor))
+
+; 	; Jump in
+; 	(cs_enable_moving true)
+; 	(cs_enable_targeting true)
+; 	(cs_move_in_direction 0 3 0)
+; 	(print "cs_e24_fld_inf2_load: cs_jump_to_point")
+
+; 	; Migrate them over
+; 	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	
+; 	; Wait for them to land
+; 	(sleep 150)
+; 	(object_can_take_damage (ai_get_object ai_current_actor))
+; )
+
+(script command_script cs_e24_fld_inf1_1_load
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
 
 	; Wait for it...
 	(sleep 210)
 	
 	; Board it
 	(object_cannot_take_damage (ai_get_object ai_current_actor))
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
 	(cs_face_object false key)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
@@ -3036,7 +3064,7 @@ Open Issues
 
 	; Wake control scripts
 ;	(wake e24_fld_inf0_main)
-;	(wake e24_fld_inf1_main)
+	(wake e24_fld_inf1_main)
 ;	(wake e24_fld_inf2_main)
 	
 	; Shut down
@@ -3091,6 +3119,46 @@ Open Issues
 	(cs_jump 15.0 3.0)
 )
 
+(script command_script cs_e23_fld_inf0_load
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+
+	; Wait until the key is close enough
+	(sleep_until g_key_cruise_halfway 1)
+	(sleep 15)
+	;(sleep 30)
+	
+	; Board it
+	(cs_face_object false key)
+	(unit_impervious ai_current_actor true)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	; (if (= (random_range 0 2) 0)
+	; 	(begin
+	; 		(cs_go_to e22_fld_inf0_load/p0_0)
+	; 		(cs_go_to e22_fld_inf0_load/p0_1)
+	; 	)
+	; 	(begin
+	; 		(cs_go_to e22_fld_inf0_load/p1_0)
+	; 		(cs_go_to e22_fld_inf0_load/p1_1)
+	; 	)
+	; )
+	;(cs_move_in_direction 0 3 0)
+	(cs_move_in_direction 0 3 0)
+	;(cs_jump 10.0 3.0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
+	(unit_impervious ai_current_actor false)
+
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+)
+
 (script command_script cs_e23_scene0
 	(cs_abort_on_combat_status ai_combat_status_visible)
 	
@@ -3134,15 +3202,15 @@ Open Issues
 	; Place the Flood
 	(ai_place e23_fld_inf0)
 	
-	; Wait until the key is close enough
-	(sleep_until g_key_cruise_halfway 10)
-	(sleep 90)
+	; ; Wait until the key is close enough
+	; (sleep_until g_key_cruise_halfway 10)
+	; (sleep 30)
 	
-	; Change orders, send them in
-	(ai_set_orders e23_fld_inf0_0 e23_fld_inf0_engage)
-	(ai_set_orders e23_fld_inf0_1 e23_fld_inf0_engage)
-	(cs_run_command_script e23_fld_inf0_0 cs_e23_fld_inf0_0_load)
-	(cs_run_command_script e23_fld_inf0_1 cs_e23_fld_inf0_1_load)
+	; ; Change orders, send them in
+	; (ai_set_orders e23_fld_inf0_0 e23_fld_inf0_engage)
+	; (ai_set_orders e23_fld_inf0_1 e23_fld_inf0_engage)
+	; (cs_run_command_script e23_fld_inf0_0 cs_e23_fld_inf0_0_load)
+	; (cs_run_command_script e23_fld_inf0_1 cs_e23_fld_inf0_1_load)
 )
 
 
@@ -3159,7 +3227,7 @@ Open Issues
 	(wake e24_main)
 
 	; Wake control scripts
-;	(wake e23_fld_inf0_main)
+	(wake e23_fld_inf0_main)
 	(wake e23_dialogue)
 	
 	; Shut down
@@ -3221,34 +3289,50 @@ Open Issues
 )
 
 (script command_script cs_e22_fld_inf0_0_load
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
 	(cs_face_object true key)
 	(sleep_until g_key_lock0_second_loadpoint 1)
 
 	; Wait for it...
-	(sleep 95)
+	(sleep 175)
 	
 	; Board it
 	(cs_face_object false key)
 	(unit_impervious ai_current_actor true)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
-	(if (= (random_range 0 2) 0)
-		(begin
-			(cs_go_to e22_fld_inf0_load/p0_0)
-			(cs_go_to e22_fld_inf0_load/p0_1)
-		)
-		(begin
-			(cs_go_to e22_fld_inf0_load/p1_0)
-			(cs_go_to e22_fld_inf0_load/p1_1)
-		)
-	)
-	(cs_move_in_direction 0 1 0)
+	; (if (= (random_range 0 2) 0)
+	; 	(begin
+	; 		(cs_go_to e22_fld_inf0_load/p0_0)
+	; 		(cs_go_to e22_fld_inf0_load/p0_1)
+	; 	)
+	; 	(begin
+	; 		(cs_go_to e22_fld_inf0_load/p1_0)
+	; 		(cs_go_to e22_fld_inf0_load/p1_1)
+	; 	)
+	; )
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
 	(unit_impervious ai_current_actor false)
+
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
 
 	; Migrate them over
 	(ai_migrate ai_current_actor e21_fld_inf0_0)
+
+		; Then go to the rally point
+	(if (= (structure_bsp_index) 3)
+		(begin
+			(cs_go_to e21_fld_bsp5/p4)
+		)
+		(begin
+			(cs_go_to e21_fld_bsp6/p4)
+		)
+	)
 )
 
 (script command_script cs_e22_scene0
@@ -3372,14 +3456,18 @@ Flood
 		(begin
 			(cs_go_to e21_fld_bsp5/p2)
 			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp5/p1_0)
-			(cs_go_to e21_fld_bsp5/p1_1)
+			(cs_go_to e21_fld_bsp5/p0_0)
+			(cs_go_to e21_fld_bsp5/p0_1)
+			(cs_go_to e21_fld_bsp5/p3)
+			(cs_go_to e21_fld_bsp5/p4)
 		)
 		(begin
 			(cs_go_to e21_fld_bsp6/p2)
 			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p1_0)
-			(cs_go_to e21_fld_bsp6/p1_1)
+			(cs_go_to e21_fld_bsp6/p0_0)
+			(cs_go_to e21_fld_bsp6/p0_1)
+			(cs_go_to e21_fld_bsp6/p3)
+			(cs_go_to e21_fld_bsp6/p4)
 		)
 	)	
 )
@@ -3389,17 +3477,25 @@ Flood
 	(cs_enable_pathfinding_failsafe true)
 
 	; Jump in
-;	(cs_jump_to_point 2.5 1)
-	
+	(cs_jump_to_point 2.5 1)
+
 	; Then go to the rally point
 	(if (= (structure_bsp_index) 3)
 		(begin
-			(cs_go_to e21_fld_bsp5/p1_0)
-			(cs_go_to e21_fld_bsp5/p1_1)
+			(cs_abort_on_combat_status ai_combat_status_clear_los)
+			(cs_go_to e21_fld_bsp6/p2)
+			(cs_go_to e21_fld_bsp5/p0_0)
+			(cs_go_to e21_fld_bsp5/p0_1)
+			(cs_go_to e21_fld_bsp5/p3)
+			(cs_go_to e21_fld_bsp5/p4)
 		)
 		(begin
-			(cs_go_to e21_fld_bsp6/p1_0)
-			(cs_go_to e21_fld_bsp6/p1_1)
+			(cs_abort_on_combat_status ai_combat_status_clear_los)
+			(cs_go_to e21_fld_bsp6/p2)
+			(cs_go_to e21_fld_bsp6/p0_0)
+			(cs_go_to e21_fld_bsp6/p0_1)
+			(cs_go_to e21_fld_bsp6/p3)
+			(cs_go_to e21_fld_bsp6/p4)
 		)
 	)	
 )
@@ -3407,7 +3503,7 @@ Flood
 (script command_script cs_e21_fld_inf0_low_entry
 	(cs_enable_pathfinding_failsafe true)
 	(cs_ignore_obstacles true)
-	(cs_move_in_direction 6 0 0)
+	(cs_move_in_direction 8 0 0)
 
 	; Head to the rally point
 	(if (= (structure_bsp_index) 3)
@@ -3416,12 +3512,16 @@ Flood
 			(cs_abort_on_combat_status ai_combat_status_clear_los)
 			(cs_go_to e21_fld_bsp5/p0_0)
 			(cs_go_to e21_fld_bsp5/p0_1)
+			(cs_go_to e21_fld_bsp5/p3)
+			(cs_go_to e21_fld_bsp5/p4)
 		)
 		(begin
 			(cs_go_to e21_fld_bsp6/p2)
 			(cs_abort_on_combat_status ai_combat_status_clear_los)
 			(cs_go_to e21_fld_bsp6/p0_0)
 			(cs_go_to e21_fld_bsp6/p0_1)
+			(cs_go_to e21_fld_bsp6/p3)
+			(cs_go_to e21_fld_bsp6/p4)
 		)
 	)	
 )
@@ -3431,43 +3531,66 @@ Flood
 	(cs_enable_pathfinding_failsafe true)
 
 	; Jump in
-;	(cs_jump_to_point 2.5 1)
-	
+	(cs_jump_to_point 2.5 1)
+
 	; Head to the rally point
 	(if (= (structure_bsp_index) 3)
 		(begin
+			(cs_abort_on_combat_status ai_combat_status_clear_los)
+			(cs_go_to e21_fld_bsp6/p2)
 			(cs_go_to e21_fld_bsp5/p0_0)
 			(cs_go_to e21_fld_bsp5/p0_1)
+			(cs_go_to e21_fld_bsp5/p3)
+			(cs_go_to e21_fld_bsp5/p4)
 		)
 		(begin
+			(cs_abort_on_combat_status ai_combat_status_clear_los)
+			(cs_go_to e21_fld_bsp6/p2)
 			(cs_go_to e21_fld_bsp6/p0_0)
 			(cs_go_to e21_fld_bsp6/p0_1)
+			(cs_go_to e21_fld_bsp6/p3)
+			(cs_go_to e21_fld_bsp6/p4)
 		)
 	)	
 )
 
 (script command_script cs_e21_fld_inf0_0_load
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
+
 	(sleep_until g_key_lock0_first_loadpoint 1)
 	
 	; Shoot at the key
 	(sleep 30)
-	(cs_shoot_point true key_bsp5/p0)
+	;(cs_shoot_point true key_bsp5/p0)
 
 	; Wait for it...
 	(sleep 148)
-	(cs_shoot_point false key_bsp5/p0)
+	;(cs_shoot_point false key_bsp5/p0)
 	
 	; Set their orders
 	(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
 
 	; Board it
+	(sleep 90)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
-	(cs_go_to e21_fld_load/left0)
-	(cs_go_to e21_fld_load/left1)
-	(cs_move_in_direction 0 1 0)
+	; (cs_go_to e21_fld_load/left0)
+	; (cs_go_to e21_fld_load/left1)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(cs_move_in_direction 0 3 0)
+
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+
+	; Then go to the rally point
+	(if (= (structure_bsp_index) 3)
+		(begin
+			(cs_go_to e21_fld_bsp5/p4)
+		)
+		(begin
+			(cs_go_to e21_fld_bsp6/p4)
+		)
+	)
 )
 
 (script command_script cs_e21_scene0
@@ -3500,29 +3623,32 @@ Flood
 	(= (structure_bsp_index) 4)
 )
 
+(script static boolean e21_in_bsp6
+	(= (structure_bsp_index) 6)
+)
 
 ;- Event Controls --------------------------------------------------------------
 ;- Squad Controls --------------------------------------------------------------
 
-(script dormant e21_fld_carriers1_main
-	; Migrate everyone over
-	(ai_migrate e21_fld_carriers0 e21_fld_carriers1)
+; (script dormant e21_fld_carriers1_main
+; 	; Migrate everyone over
+; 	(ai_migrate e21_fld_carriers0 e21_fld_carriers1)
 	
-	; Respawner
-	(sleep_until
-		(begin
-			; Replenish the carrier forms
-			(if (< (ai_swarm_count e21_fld_carriers1) 2)
-				; Respawn one
-				(ai_place e21_fld_carriers1 1)
-			)
+; 	; Respawner
+; 	(sleep_until
+; 		(begin
+; 			; Replenish the carrier forms
+; 			(if (< (ai_swarm_count e21_fld_carriers1) 1)
+; 				; Respawn one
+; 				(ai_place e21_fld_carriers1 1)
+; 			)
 		
-			; Loop until the shaft
-			g_key_lock1_second_arch
-		)
-		90
-	)
-)
+; 			; Loop until the shaft
+; 			g_key_lock1_second_arch
+; 		)
+; 		300
+; 	)
+; )
 
 (script static void e21_fld_inf1_spawn
 	; Is the player in the way of the lower spawner?
@@ -3534,6 +3660,7 @@ Flood
 				; He is, spawn from the opposite side
 				(begin
 					(ai_place e21_fld_inf1_2 1)
+					(cs_run_command_script e21_fld_inf1_2 cs_e21_fld_inf1_high_entry)
 					(ai_migrate e21_fld_inf1_2 e21_fld_inf1_0)
 					(sleep 5)
 					(ai_magically_see_object e21_fld_inf1_0 (player0))
@@ -3571,7 +3698,7 @@ Flood
 	(sleep_until
 		(begin
 			; Replenish the combat forms
-			(if (< (ai_nonswarm_count e21_fld_inf1_0) 8)
+			(if (< (ai_nonswarm_count e21_fld_inf1_0) 12)
 				; Respawn them
 				(sleep_until
 					(begin
@@ -3579,43 +3706,50 @@ Flood
 						
 						; Until there are enough or the ride is over
 						(or
-							(>= (ai_nonswarm_count e21_fld_inf1_0) 8)
+							(>= (ai_nonswarm_count e21_fld_inf1_0) 10)
 							g_key_lock1_second_arch
 						)
 					)
-					60
+					90
 				)
+			)
+
+			(if (>= (ai_nonswarm_count e21_fld_inf1_0) 12)
+                (print "e21_fld_inf1_main: Too many")
 			)
 			
 			; Loop until the shaft
 			g_key_lock1_second_arch
 		)
-		900
+		180
 	)
 )
 
-(script dormant e21_fld_carriers0_main
-	; Wait for that initial group to load on board
-	(sleep_until (= (structure_bsp_index) 4))
+; (script dormant e21_fld_carriers0_main
+; 	; Wait for that initial group to load on board
+; 	(sleep_until (= (structure_bsp_index) 4))
 
-	; Respawner
-	(sleep_until
-		(begin			
-			; Replenish the carrier forms
-			(if (< (ai_nonswarm_count e21_fld_carriers0) 2)
-				; Respawn one
-				(ai_place e21_fld_carriers0 1)
-			)
-		
-			; Loop until the shaft
-			g_key_shaft_rising
-		)
-		90
-	)
+; 	; Respawner
+; 	(sleep_until
+; 		(begin			
+; 			; Replenish the carrier forms
+; 			(if (< (ai_nonswarm_count e21_fld_carriers0) 2)
+; 				; Respawn one
+; 				(ai_place e21_fld_carriers0 1)
+; 			)
+; 			(if (>= (ai_nonswarm_count e21_fld_inf1_0) 16)
+;                 (print "e21_fld_carriers0_main: Too many")
+; 			)
+
+; 			; Loop until the shaft
+; 			g_key_shaft_rising
+; 		)
+; 		300
+; 	)
 	
-	; Switch sides
-	(wake e21_fld_carriers1_main)
-)
+; 	; Switch sides
+; 	(wake e21_fld_carriers1_main)
+; )
 
 (script static void e21_fld_inf0_spawn
 	; Is the player in the way of the lower spawner?
@@ -3627,7 +3761,7 @@ Flood
 				; He is, spawn from the opposite side
 				(begin
 					(ai_place e21_fld_inf1_2 1)
-					(cs_run_command_script e21_fld_inf1_2 cs_e21_fld_inf0_high_entry)
+					(cs_run_command_script e21_fld_inf1_2 cs_e21_fld_inf1_high_entry)
 					(ai_migrate e21_fld_inf1_2 e21_fld_inf0_0)
 					(sleep 5)
 					(ai_magically_see_object e21_fld_inf0_0 (player0))
@@ -3637,6 +3771,7 @@ Flood
 				; He is not, spawn from that side
 				(begin
 					(ai_place e21_fld_inf0_2 1)
+					(cs_run_command_script e21_fld_inf0_2 cs_e21_fld_inf1_high_entry)
 					(ai_migrate e21_fld_inf0_2 e21_fld_inf0_0)
 					(sleep 5)
 					(ai_magically_see_object e21_fld_inf0_0 (player0))
@@ -3679,7 +3814,7 @@ Flood
 	(sleep_until
 		(begin
 			; Replenish the combat forms
-			(if (< (ai_nonswarm_count e21_fld_inf0_0) 8)
+			(if (< (ai_nonswarm_count e21_fld_inf0_0) 12)
 				; Respawn them
 				(sleep_until
 					(begin
@@ -3687,18 +3822,20 @@ Flood
 						
 						; Until there are enough or the ride is over
 						(or
-							(>= (ai_nonswarm_count e21_fld_inf0_0) 8)
+							(>= (ai_nonswarm_count e21_fld_inf0_0) 10)
 							g_key_shaft_rising
 						)
 					)
-					60
+					90
 				)
 			)
-					
+			(if (>= (ai_nonswarm_count e21_fld_inf0_0) 12)
+                (print "e21_fld_inf0_main: Too many")
+			)					
 			; Loop until the shaft
 			g_key_shaft_rising
 		)
-		900
+		180
 	)
 	
 	; Switch sides
@@ -3756,7 +3893,7 @@ Flood
 	; Wake control scripts
 	(wake e21_cov_inf0_main)
 	(wake e21_fld_inf0_main)
-;	(wake e21_fld_carriers0_main)
+	;(wake e21_fld_carriers0_main)
 	
 	(wake sc_outer_wall) ; pbertone: dialogue 
 )
@@ -3765,8 +3902,10 @@ Flood
 	(switch_bsp_by_name sen_hq_bsp_5)
 	(sleep 1)
 	(object_teleport (player0) key_ent0)
+	(unit_add_equipment (player0) key_ride TRUE TRUE)
 	(object_set_velocity (player0) 5 0 0)
 	(object_teleport (player1) key_ent1)
+	(unit_add_equipment (player1) key_ride TRUE TRUE)
 	(object_set_velocity (player1) 5 0 0)
 	(wake key_main)
 	(wake key_ride_human_key_main)
@@ -4278,6 +4417,9 @@ Open Issues
 		(ai_erase_all)
 		(object_teleport (player0) key_ride_a)
 		(object_teleport (player1) key_ride_b)
+		(unit_add_equipment (player0) key_ride TRUE TRUE)
+		(unit_add_equipment (player1) key_ride TRUE TRUE)
+
 		(sleep 5)
 	
 		(if (= g_play_cinematics 1)
