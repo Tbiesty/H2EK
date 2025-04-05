@@ -814,7 +814,7 @@ Open Issues
 		(volume_test_objects tv_e10_second_half (players)) 
 		15
 	)
-	(ai_place e10_pro_inf3 (- 2 (ai_living_count e10_pro_inf3)))
+	(ai_place e10_pro_inf3)
 	
 	; Move their orders back
 	(ai_set_orders e10_pro_inf3 e10_pro_inf3_retreat0)
@@ -837,7 +837,7 @@ Open Issues
 		)
 		15
 	)
-	(ai_place e10_pro_inf2_0 (pin (- 7 (ai_living_count prophets)) 2 4))
+	(ai_place e10_pro_inf2_0)
 
 	; Spawn reinforcements as the player advances
 	(sleep_until (volume_test_objects tv_e10_pro_inf2_retreat0 (players)) 15)
@@ -847,11 +847,11 @@ Open Issues
 
 	; Continue
 	(sleep 60)
-	(ai_place e10_pro_inf2_1 (pin (- 7 (ai_living_count prophets)) 0 4))
+	(ai_place e10_pro_inf2_1)
 	(sleep_until (volume_test_objects tv_e10_near_exit (players)) 15)
-	(ai_place e10_pro_inf2_1 (pin (- 7 (ai_living_count prophets)) 0 4))
+	(ai_place e10_pro_inf2_1)
 	(sleep_until (volume_test_objects tv_e10_pro_inf2_retreat2 (players)) 15)
-	(ai_place e10_pro_inf2_1 (pin (- 7 (ai_living_count prophets)) 0 4))
+	(ai_place e10_pro_inf2_1)
 )
 
 (script dormant e10_pro_inf1_main
@@ -882,12 +882,12 @@ Open Issues
 	(sleep_until
 		(begin
 			; If necessary, spawn
-			(if (<= (ai_living_count e10_pro_inf1) 1)
+			(if (<= (ai_living_count e10_pro_inf1_2) 1)
 				(begin
 					; Spawn and pause
 					(game_save)
 					(sleep_until (volume_test_objects tv_e10_armory_entrance (players)) 15 150)
-					(ai_place e10_pro_inf1_2 (pin (- 4 (ai_living_count e10_pro_inf1)) 1 g_e10_pro_inf1_2_count))
+					(ai_place e10_pro_inf1_2)
 					(set g_e10_pro_inf1_2_count (- g_e10_pro_inf1_2_count 1))
 				)
 			)
@@ -913,6 +913,7 @@ Open Issues
 
 (script dormant e10_pro_inf0_main
 	(ai_place e10_pro_inf0_0)
+	(ai_place e10_pro_inf0_1)
 
 	; Slip in a save
 	(sleep_until 
@@ -928,12 +929,14 @@ Open Issues
 (script dormant e10_cov_inf0_main
 	; Wait until he's on the top level, and then until the Wraith is dead
 	(sleep_until
-	    (or
-	        (volume_test_objects tv_e10_bridge (players))
-	        (volume_test_objects tv_e10_inf1_2_init (players))
+	    (and
+			(or
+				(volume_test_objects tv_e10_bridge (players))
+				(volume_test_objects tv_e10_inf1_2_init (players))
+			)
+			(<= (ai_living_count e10_pro_wraith0_0) 0)
 		)
 	15)
-	(sleep_until (<= (ai_living_count e10_pro_wraith0_0) 0))
 	
 	; Send in the pods
 	;(wake e10_pod0_insertion)
@@ -943,7 +946,7 @@ Open Issues
 	(wake e10_pod2_insertion)
 	(sleep 15)
 	(wake e10_pod3_insertion)
-	
+
 	; Wake the scene
 	(wake e10_weapon_scene)
 )
@@ -968,7 +971,7 @@ Open Issues
 )
 
 (script dormant e10_main
-	(sleep_until (volume_test_objects tv_e10_main_begin (players)) 15)
+	(sleep_until (volume_test_objects tv_e10_main_begin (players)) 10)
 	(set g_e10_started true)
 	(print "e10_main")
 	(data_mine_set_mission_segment "e10_brute_camp")
@@ -1119,7 +1122,7 @@ Open Issues
 
 (script dormant e9_pro_inf2_main
 	(sleep_until (volume_test_objects tv_e9_first_drop (players)) 15)
-	(ai_place e9_pro_inf2 (pin (- 10 (ai_living_count prophets)) 2 4))
+	(ai_place e9_pro_inf2)
 )
 
 (script dormant e9_pro_inf1_main
@@ -1131,13 +1134,13 @@ Open Issues
 	
 	; Break them out if necessary
 	(sleep_until (volume_test_objects tv_e9_trap_trigger0 (players)) 5)
-	(sleep_until (< (ai_strength e9_pro_inf1) 0.9) 15 300)	
+	(sleep_until (< (ai_strength e9_pro_inf1) 0.9) 15 600)	
 	(cs_run_command_script e9_pro_inf1 cs_e9_pro_inf1_abort)
 )
 
 (script dormant e9_pro_inf0_main
-	(ai_place e9_pro_inf0_0 (pin (- 10 (ai_living_count prophets)) 0 2))
-	(ai_place e9_pro_inf0_1 (pin (- 10 (ai_living_count prophets)) 0 2))
+	(ai_place e9_pro_inf0_0)
+	(ai_place e9_pro_inf0_1)
 	
 	; Checkpoint
 	(sleep_until
@@ -1151,7 +1154,7 @@ Open Issues
 	
 	; Resume
 	(sleep_until (volume_test_objects tv_e9_trap_trigger0 (players)) 5)
-	(ai_place e9_pro_inf0_2 (pin (- 10 (ai_living_count prophets)) 0 2))
+	(ai_place e9_pro_inf0_2)
 )
 
 (script dormant e9_cov_ghosts0_main
@@ -1161,7 +1164,7 @@ Open Issues
 	(sleep_until 
 		(and
 			(<= (ai_living_count e8_pro_spectre0) 0)
-			(<= (ai_living_count e8_pro) 2)
+			(<= (ai_living_count e8_pro) 1)
 		)
 	)
 	(ai_migrate e8_cov_inf0 e9_cov_ghosts0)
