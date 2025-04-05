@@ -1518,8 +1518,16 @@ Open Issues
 	)
 )
 
-(script static short e11_pro_wraiths1_living_count
+(script static short e11_pro_wraiths_living_count
 	(+ 
+		(if (> (unit_get_health (ai_vehicle_get_from_starting_location e11_pro_wraith0_0/wraith0)) 0)
+			1
+			0
+		)
+		(if (> (unit_get_health (ai_vehicle_get_from_starting_location e11_pro_wraith0_1/wraith0)) 0)
+			1
+			0
+		)
 		(if (> (unit_get_health (ai_vehicle_get_from_starting_location e11_pro_wraith1_0/wraith)) 0)
 			1
 			0
@@ -1539,10 +1547,6 @@ Open Issues
 	)
 )
 
-(script static boolean e11_pro_wraiths1_weakened
-	(<= (e11_pro_wraiths1_living_count) 2)
-)
-
 (script static boolean e11_door_blocked
 	; The door is considered blocked if someone is running a command script through it
 	(or
@@ -1555,14 +1559,21 @@ Open Issues
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e11_pro_phantom1_main
+	; (sleep_until
+	; 	;(and
+	; 		(not (objects_can_see_flag (players) e11_pro_phantom1_spawn 80.0))
+	; 		;(<= (ai_living_count e11_pro_phantom0_0) 0) 
+	; 		;(<= (ai_living_count e11_pro_wraith0_0) 0) 
+	; 	;)
+	; 	30
+	; )
 	(sleep_until
-		(and
-			(not (objects_can_see_flag (players) e11_pro_phantom1_spawn 80.0))
-			(<= (ai_living_count e11_pro_phantom0_0) 0) 
-			(<= (ai_living_count e11_pro_wraith0_0) 0) 
-		)
+		(not (volume_test_objects tv_e11_outer_cove (players)))
 		30
 	)
+
+	; Send it in
+	(ai_place e11_pro_phantom0_1)
 	
 	; Load in the Wraiths
 	(ai_place_in_vehicle e11_pro_wraith0_1 e11_pro_phantom0_1)
@@ -1571,7 +1582,7 @@ Open Issues
 
 (script dormant e11_pro_phantom0_main
 	; Wait for the player to be back in the canyon
-	(sleep_until g_e11_door_open)
+	;(sleep_until g_e11_door_open)
 	(sleep_until
 		(not (volume_test_objects tv_e11_outer_cove (players)))
 		30
@@ -1586,8 +1597,8 @@ Open Issues
 )
 
 (script dormant e11_pro_banshees0_main
-	; Wait until all but one of the Wraiths are dead
-	(sleep_until (<= (e11_pro_wraiths1_living_count) 2))
+	; Wait until all the Wraiths are dead
+	(sleep_until (<= (e11_pro_wraiths_living_count) 0))
 	
 	; Banshee respawner
 	(sleep_until
@@ -1613,86 +1624,91 @@ Open Issues
 			)
 		
 			; Limit number of Banshees that can spawn
-			(>= (ai_spawn_count e11_pro_banshees0) 10)
+			(>= (ai_spawn_count e11_pro_banshees0) 2)
 		)
-		450
+		60
 	)
 )
 	
 (script dormant e11_pro_spectres0_main
-	; Wait until all but one of the Wraiths are dead, and the Banshees have been
-	; savaged a bunch
-	(sleep_until 
-		(and
-			(<= (e11_pro_wraiths1_living_count) 1)
-			(> (ai_spawn_count e11_pro_banshees0) 6)
-		)
-	)
+	; Wait till the door is clear
+	(sleep_until (not (e11_door_blocked)) 5)
+	(if (= (structure_bsp_index) 0) (ai_place e11_pro_spectres0))
+
+
+	; ; Wait until all but one of the Wraiths are dead, and the Banshees have been
+	; ; savaged a bunch
+	; (sleep_until 
+	; ;	(and
+	; 		(<= (e11_pro_wraiths1_living_count) 1)
+	; 	;	(> (ai_spawn_count e11_pro_banshees0) 6)
+	; 	;)
+	; )
 	
-	; Ghost respawner
-	(sleep_until
-		(begin
-			; If the living count is less than 1 and no player is near the door
-			(if
-				(and
-					(< (ai_living_count e11_pro_spectres0) 2)
-					(> (objects_distance_to_object (players) e11_door0) 50)
-				)
+	; ; Ghost respawner
+	; (sleep_until
+	; 	(begin
+	; 		; If the living count is less than 1 and no player is near the door
+	; 		(if
+	; 			(and
+	; 				(< (ai_living_count e11_pro_spectres0) 2)
+	; 				(> (objects_distance_to_object (players) e11_door0) 50)
+	; 			)
 				
-				; Spawn one
-				(begin
-					; Wait till the door is clear
-					(sleep_until (not (e11_door_blocked)) 5)
-					(if (= (structure_bsp_index) 0) (ai_place e11_pro_spectres0))
-				)
-			)
+	; 			; Spawn one
+	; 			(begin
+	; 				; Wait till the door is clear
+	; 				(sleep_until (not (e11_door_blocked)) 5)
+	; 				(if (= (structure_bsp_index) 0) (ai_place e11_pro_spectres0))
+	; 			)
+	; 		)
 		
-			; Spawn at most 3 Spectres (with two crew members each)
-			(>= (ai_spawn_count e11_pro_spectres0) 6)
-		)
-		150
-	)
+	; 		; Spawn at most 3 Spectres (with two crew members each)
+	; 		(>= (ai_spawn_count e11_pro_spectres0) 2)
+	; 	)
+	; 	150
+	; )
 )
 
-(script dormant e11_pro_ghosts0_main
-	(sleep_until g_e11_door_open)
+; (script dormant e11_pro_ghosts0_main
+; 	(sleep_until g_e11_door_open)
 
-	; Wait until all of the Wraiths are dead
-	(sleep_until (<= (e11_pro_wraiths1_living_count) 0))
+; 	; Wait until all of the Wraiths are dead
+; 	(sleep_until (<= (e11_pro_wraiths1_living_count) 0))
 	
-	; Ghost respawner
-	(sleep_until
-		(begin
-			; If the living count is less than 2 and no player is near the door
-			(if
-				(and
-					(< (ai_living_count e11_pro_ghosts0) 3)
-					(> (objects_distance_to_object (players) e11_door0) 50)
-				)
+; 	; Ghost respawner
+; 	(sleep_until
+; 		(begin
+; 			; If the living count is less than 2 and no player is near the door
+; 			(if
+; 				(and
+; 					(< (ai_living_count e11_pro_ghosts0) 3)
+; 					(> (objects_distance_to_object (players) e11_door0) 50)
+; 				)
 				
-				; Spawn one
-				(begin
-					; Wait till the door is clear
-					(sleep_until (not (e11_door_blocked)) 5)
-					(if (= (structure_bsp_index) 0) (ai_place e11_pro_ghosts0 1))
-				)
-			)
+; 				; Spawn one
+; 				(begin
+; 					; Wait till the door is clear
+; 					(sleep_until (not (e11_door_blocked)) 5)
+; 					(if (= (structure_bsp_index) 0) (ai_place e11_pro_ghosts0 1))
+; 				)
+; 			)
 		
-			; Spawn at most 16 Ghosts
-			(>= (ai_spawn_count e11_pro_ghosts0) 16)
-		)
-		150
-	)
-)
+; 			; Spawn at most 16 Ghosts
+; 			(>= (ai_spawn_count e11_pro_ghosts0) 16)
+; 		)
+; 		150
+; 	)
+; )
 
 (script dormant e11_pro_wraith_checkpoints
-	(sleep_until (<= (e11_pro_wraiths1_living_count) 3) 61)
+	(sleep_until (<= (e11_pro_wraiths_living_count) 3) 61)
 	(game_save)
-	(sleep_until (<= (e11_pro_wraiths1_living_count) 2) 61)
+	(sleep_until (<= (e11_pro_wraiths_living_count) 2) 61)
 	(game_save)
-	(sleep_until (<= (e11_pro_wraiths1_living_count) 1) 61)
+	(sleep_until (<= (e11_pro_wraiths_living_count) 1) 61)
 	(game_save)
-	(sleep_until (<= (e11_pro_wraiths1_living_count) 0) 61)
+	(sleep_until (<= (e11_pro_wraiths_living_count) 0) 61)
 	(game_save)
 )
 
@@ -1856,12 +1872,15 @@ Open Issues
 	; Place two Wraiths
 	(ai_place e11_pro_wraith1_0)
 	(ai_place e11_pro_wraith1_1)
-	
-	; Sleep until they're dead
-	(sleep_until (<= (ai_living_count e11_pro_wraith1) 0))
-	
+
 	; Start up the Phantom scripts
 	(wake e11_pro_phantom0_main)
+	(wake e11_pro_phantom1_main)
+
+	; Sleep until they're dead
+	;(sleep_until (<= (ai_living_count e11_pro_wraith1) 0))
+	
+	(wake e11_pro_banshees0_main)
 )
 
 (script dormant e11_cov_banshees0_main
@@ -1937,7 +1956,13 @@ Open Issues
 	(sleep_until
 		(begin
 			(scarab_idle_var0)
-			(volume_test_objects tv_e11_outer_cove (players))
+			(and
+			    (or
+				    (volume_test_objects tv_e11_inner_cove (players))
+				    (volume_test_objects tv_e11_outer_cove (players))
+				)
+			    (<= (e11_pro_wraiths_living_count) 0)
+			)
 		)
 		1
 	)
@@ -2155,7 +2180,7 @@ Open Issues
 	; e12_main awakened by e11_scarab
 
 	; Wake control scripts
-	(wake e11_pro_banshees0_main)
+	;(wake e11_pro_banshees0_main)
 	(wake e11_pro_wraith1_main)
 	(wake e11_cov_banshees0_main)
 	(wake e11_key)
@@ -2166,8 +2191,8 @@ Open Issues
 	(sleep_forever e11_pro_banshees0_main)
 	(sleep_forever e11_pro_phantom0_main)
 	(sleep_forever e11_pro_phantom1_main)
-	(sleep_forever e11_pro_ghosts0_main)	; REVIEW
-	(sleep_forever e11_pro_spectres0_main)	; REVIEW
+;	(sleep_forever e11_pro_ghosts0_main)	; REVIEW
+;	(sleep_forever e11_pro_spectres0_main)	; REVIEW
 	(sleep_forever e11_pro_wraith_checkpoints)
 	(ai_erase e11_pro)
 	(ai_erase e11_cov)
@@ -2292,24 +2317,24 @@ Open Issues
 	(ai_place e9_pro_spectres0_0)
 
 	; That stink is fear. I can smell it.
-	(sleep 1)
-	(ai_vehicle_reserve_seat (ai_vehicle_get e9_pro_spectres0_0/spectre0) "spectre_p_l" true)
+	; (sleep 1)
+	; (ai_vehicle_reserve_seat (ai_vehicle_get e9_pro_spectres0_0/spectre0) "spectre_p_l" true)
 	
-	; Wait until the player is at the end or the count has been reduced
-	(sleep_until
-		(or
-			(volume_test_objects tv_e9_second_bend (players))
-			(<= (ai_living_count e9_pro_spectres0) 1)
-		)
-		15
-	)
+	; ; Wait until the player is at the end or the count has been reduced
+	; (sleep_until
+	; 	(or
+	; 		(volume_test_objects tv_e9_second_bend (players))
+	; 		(<= (ai_living_count e9_pro_spectres0) 1)
+	; 	)
+	; 	15
+	; )
 	
-	; Place another two
-	(ai_place e9_pro_spectres0_1)
+	; ; Place another two
+	; (ai_place e9_pro_spectres0_1)
 
-	; That stink is fear. I can smell it.
-	(sleep 1)
-	(ai_vehicle_reserve_seat (ai_vehicle_get e9_pro_spectres0_1/starting_locations_0) "spectre_p_l" true)
+	; ; That stink is fear. I can smell it.
+	; (sleep 1)
+	; (ai_vehicle_reserve_seat (ai_vehicle_get e9_pro_spectres0_1/starting_locations_0) "spectre_p_l" true)
 )
 
 (script dormant e9_pro_phantom0_main
@@ -2324,7 +2349,6 @@ Open Issues
 			(<= (object_get_health (ai_vehicle_get e9_pro_phantom0/phantom0)) 0.05) 
 		)
 		15
-		450
 	)
 	
 	; Signal the retreat
@@ -2353,17 +2377,17 @@ Open Issues
 		(begin
 			; Spawn more if appropriate
 			(if
-				(or
+				;(or
 					; Living count reduced to 0
-					(<= (ai_living_count e9_pro_banshees0) 0)
+				(<= (ai_living_count e9_pro_banshees0) 0)
 					
 					; Living count reduced to 1, and the turrets are mostly dead
-					(and
-						(<= (ai_living_count e9_pro_banshees0) 1)
-						(<= (ai_living_count e9_pro_inf0) 2)		
-						(<= (ai_living_count e9_pro_spectres0) 0)		
-					)
-				)
+					;(and
+					;	(<= (ai_living_count e9_pro_banshees0) 1)
+					;	(<= (ai_living_count e9_pro_inf0) 2)		
+					;	(<= (ai_living_count e9_pro_spectres0) 0)		
+				;	)
+				;)
 				(ai_place e9_pro_banshees0 1)
 			)
 		
@@ -2478,7 +2502,7 @@ Open Issues
 		
 			; Phantom is retreating, and the Brutes are ousted
 			(and
-				true ;g_e9_pro_phantom0_retreating
+				g_e9_pro_phantom0_retreating ;g_e9_pro_phantom0_retreating
 				(not (volume_test_objects tv_scarab (ai_actors e9_pro_inf3)))
 			)
 		)
@@ -2531,7 +2555,7 @@ Open Issues
 	(wake e9_pro_inf0_main)
 	(wake e9_pro_inf3_main)
 	(wake e9_pro_spectres0_main)
-;	(wake e9_pro_phantom0_main)
+	(wake e9_pro_phantom0_main)
 	(wake e9_pro_banshees0_main)
 	
 	; Condemn
@@ -4702,7 +4726,7 @@ Open Issues
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e5_pro_phantom0_main
-	(sleep_until (volume_test_objects tv_e5_pro_phantom0_begin (players)) 15)
+	(sleep_until (volume_test_objects tv_e5_main_begin (players)) 15)
 	(ai_place e5_pro_phantom0)
 	
 	; Wait until it should retreat
@@ -4713,7 +4737,6 @@ Open Issues
 			(volume_test_objects tv_e7_main_begin (players))
 		)
 		30
-		one_minute
 	)
 	(cs_run_command_script e5_pro_phantom0/phantom0 cs_e5_pro_phantom0_exit)
 )
@@ -5430,7 +5453,7 @@ Open Issues
 	)
 
 	; Dialogue
-	(sleep (ai_play_line_at_player (object_get_ai g_cov_commander) 0520)) ; "There, that Scarab..."
+	(sleep (ai_play_line_on_object none 0520)) ; "There, that Scarab..."
 
 	; And do it again
 	(sleep_until 
@@ -5448,7 +5471,7 @@ Open Issues
 	)
 	
 	; Dialogue
-	(sleep (ai_play_line_at_player (object_get_ai g_cov_commander) 0530)) ; "At the end of the beach is a door..."
+	(sleep (ai_play_line_on_object none 0530)) ; "At the end of the beach is a door..."
 	(game_save)
 	
 	; Objectives
@@ -5466,7 +5489,7 @@ Open Issues
 	)
 	
 	; More dialogue
-	(sleep (ai_play_line_at_player (object_get_ai g_cov_commander) 0540)) ; "I'll cover your back"
+	(sleep (ai_play_line_on_object none 0540)) ; "I'll cover your back"
 )
 
 (script dormant e2_door_unlocker
@@ -5522,7 +5545,7 @@ Open Issues
 			(>= (object_model_targets_destroyed (ai_vehicle_get e2_pro_phantom0_0/phantom0) "target_front") 3) 
 		)
 		30
-		one_minute
+		30_seconds
 	)
 	
 	; Retreat
@@ -5853,24 +5876,24 @@ Open Issues
 
 (script dormant e1_pro_phantom0_main
 	(sleep_until (volume_test_objects tv_e1_advance1 (players)) 15)
-;	(ai_place e1_pro_phantom0)
-;	(sleep 2)
-;	(ai_place_in_vehicle e1_pro_wraith0 e1_pro_phantom0)
-;	(ai_braindead e1_pro_wraith0 true)
+	(ai_place e1_pro_phantom0)
+	(sleep 2)
+	(ai_place_in_vehicle e1_pro_wraith0 e1_pro_phantom0)
+	(ai_braindead e1_pro_wraith0 true)
 	(ai_place e1_pro_wraith0)
 	
 	; Wait for the retreat
-;*	(sleep_until
+	(sleep_until
 		(or
 			(<= (object_get_health (ai_vehicle_get e1_pro_phantom0/phantom0)) 0.05) 
 			(>= (object_model_targets_destroyed (ai_vehicle_get e1_pro_phantom0/phantom0) "target_front") 3) 
 			(volume_test_objects tv_e1_advance3 (players))
 		)
 		30
-		one_minute
+		15_seconds
 	)
 	(cs_run_command_script e1_pro_phantom0/phantom0 cs_e1_pro_phantom0_exit)
-*;
+
 	; Music
 	(sleep_until (volume_test_objects tv_e1_advance3 (players)) 15)
 	(wake music_08b_01_start_alt)
