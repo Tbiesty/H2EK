@@ -3730,7 +3730,10 @@ Prophets
 	(wake e6_main)
 	
 	; Wait for the mission to end
-	(sleep_until (volume_test_objects tv_mission_end (players)) 15)
+	(sleep_until
+		g_e10_started
+	    (and (volume_test_objects tv_mission_end (players))
+	15)
 	(wake music_08a_05_start)
 		
 	; For playtests
