@@ -2153,7 +2153,7 @@ Also, scripts which drive Tartarus's dropship, and the human key.
 		3
 	)
 	(set g_key_cruise_halfway true)
-	
+
 	; Sleep until the key is into the vertical rise
 	(sleep_until 
 		(>= (device_get_position key) 1.0)
@@ -2879,37 +2879,38 @@ Open Issues
 
 ;- Squad Controls --------------------------------------------------------------
 
-(script dormant e25_fld_inf1_main
-	; Wait until the key is near the second arch
-	(sleep_until g_key_lock1_second_arch 10)
-	
-	; First volley!
-	(ai_place e25_fld_inf1_0)
+(script dormant e25_fld_inf0_main
+	; Small sentinel and flood fight
+	(ai_place e25_fld_inf0_0)
+	(ai_place e25_fld_inf0_1)
+ 	(sleep_until g_key_lock1_first_arch 10)
+	(ai_place e25_sen_inf0_0)
+	(ai_place e25_sen_inf0_1)
 	
 	; Second volley
-	(sleep 60)
-	(ai_place e25_fld_inf1_1)
+	; (sleep 60)
+	; (ai_place e25_fld_inf1_1)
 	
 	; Combat forms!
 	;(sleep 60)
 	;(ai_place e25_fld_inf1_2)
 )
 
-(script dormant e25_fld_inf0_main
-	; Wait until the key is near the first arch
-	(sleep_until g_key_lock1_first_arch 10)
+; (script dormant e25_fld_inf0_main
+; 	; Wait until the key is near the first arch
+; 	(sleep_until g_key_lock1_first_arch 10)
 	
-	; First volley!
-	(ai_place e25_fld_inf0_0)
+; 	; First volley!
+; 	(ai_place e25_fld_inf0_0)
 	
-	; Second volley
-	(sleep 60)
-	(ai_place e25_fld_inf0_1)
+; 	; Second volley
+; 	(sleep 60)
+; 	(ai_place e25_fld_inf0_1)
 	
-	; Combat forms!
-	;(sleep 60)
-	;(ai_place e25_fld_inf0_2)
-)
+; 	; Combat forms!
+; 	;(sleep 60)
+; 	;(ai_place e25_fld_inf0_2)
+; )
 
 
 ;- Init and Cleanup ------------------------------------------------------------
@@ -2919,20 +2920,24 @@ Open Issues
 	(sleep_until g_key_lock1_entered 10)
 	(set g_e25_started true)
 	(print "e25_main")
-	(game_save)
+	(game_save_no_timeout)
 	
 	; Wake subsequent scripts
 	(wake e26_main)
 
 	; Wake control scripts
-	;(wake e25_fld_inf0_main)
+	(wake e25_fld_inf0_main)
 	;(wake e25_fld_inf1_main)
 	(wake e25_dialogue)
 	
 	; Shut down
 	(sleep_until g_e26_started)
 	(sleep_forever e25_fld_inf0_main)
-	(sleep_forever e25_fld_inf1_main)
+	(ai_disposable e25_fld_inf0_0 true)
+	(ai_disposable e25_fld_inf0_1 true)
+	(ai_disposable e25_sen_inf0_0 true)
+	(ai_disposable e25_sen_inf0_1 true)
+	;(sleep_forever e25_fld_inf1_main)
 )
 
 
@@ -3064,7 +3069,7 @@ Open Issues
 
 	; Wake control scripts
 ;	(wake e24_fld_inf0_main)
-	(wake e24_fld_inf1_main)
+;	(wake e24_fld_inf1_main)
 ;	(wake e24_fld_inf2_main)
 	
 	; Shut down
@@ -3117,6 +3122,45 @@ Open Issues
 	(cs_go_to e23_fld_inf0_load/p1_0)
 	(cs_go_to e23_fld_inf0_load/p1_1)
 	(cs_jump 15.0 3.0)
+)
+
+(script command_script cs_e23_fld_inf0_0_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+
+	(sleep_until g_key_cruise_first_loadpoint 1)
+	(sleep 330)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p1)
+
+	; Wait for it...
+	(sleep 150)
+	(cs_shoot_point false key_bsp6/p1)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
+(script command_script cs_e23_fld_inf0_1_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(sleep_until g_key_cruise_first_loadpoint 1)
+	(sleep 330)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p0)
+
+	; Wait for it...
+	(sleep 150)
+	(cs_shoot_point false key_bsp6/p0)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
 )
 
 (script command_script cs_e23_fld_inf0_load
@@ -3333,6 +3377,46 @@ Open Issues
 			(cs_go_to e21_fld_bsp6/p4)
 		)
 	)
+)
+
+(script command_script cs_e22_fld_inf0_0_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until (= (structure_bsp_index) 4))
+	(sleep 30)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p1)
+
+	; Wait for it...
+	(sleep 250)
+	(cs_shoot_point false key_bsp6/p1)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
+(script command_script cs_e22_fld_inf0_1_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until (= (structure_bsp_index) 4))
+	(sleep 30)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p0)
+
+	; Wait for it...
+	(sleep 250)
+	(cs_shoot_point false key_bsp6/p0)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
 )
 
 (script command_script cs_e22_scene0
@@ -3591,6 +3675,46 @@ Flood
 			(cs_go_to e21_fld_bsp6/p4)
 		)
 	)
+)
+
+(script command_script cs_e21_fld_inf0_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 20)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp5/p1)
+
+	; Wait for it...
+	(sleep 148)
+	(cs_shoot_point false key_bsp5/p1)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
+(script command_script cs_e21_fld_inf0_turret1
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 20)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp5/p0)
+
+	; Wait for it...
+	(sleep 148)
+	(cs_shoot_point false key_bsp5/p0)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
 )
 
 (script command_script cs_e21_scene0
@@ -3864,7 +3988,7 @@ Flood
 	
 	; Wait for that initial group to load on board
 	(sleep_until g_key_lock0_first_loadpoint 5)
-	(game_save)
+	(game_save_no_timeout)
 
 	; Set the orders
 	(ai_set_orders e21_cov_inf0_0 e21_cov_inf0_0_guard_left)
@@ -4485,7 +4609,8 @@ Open Issues
 	(object_teleport (player0) player0_start)
 	(object_teleport (player1) player1_start)
 
-	(wake enc_cov_charge)
+    ; ADD THIS
+	(wake enc_cov_charge)	
 	(if (difficulty_legendary) (wake ice_cream_superman))
 
 	(camera_control off)
@@ -4493,6 +4618,10 @@ Open Issues
 	(cache_block_for_one_frame)
 	(sleep 1)
 	(cinematic_fade_from_white_bars)
+
+    ; REMOVE THIS
+   ; (test_key_ride)
+
 	(wake chapter_mirror)
 	(wake objective_push_set)
 	(wake breadcrumbs_nav_points_06b)
