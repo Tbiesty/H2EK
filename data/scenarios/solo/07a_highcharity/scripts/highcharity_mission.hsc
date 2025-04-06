@@ -1877,7 +1877,7 @@
 	(if (> (ai_living_count council_brute_ini) 0)
 		(begin
 			(ai_set_orders council_brute_ini council_floor_all)
-			(ai_berserk council_brute_ini 1)
+			;(ai_berserk council_brute_ini 1)
 			(sleep_until g_council_initial)
 			(wake sc_brutes_berserk)
 		)
@@ -2132,14 +2132,14 @@
 	(data_mine_set_mission_segment enc_council_wave_1)
 
 	(sc_council_mid)
-	(game_save)
-	(sleep 120)
+	;(game_save)
+	;(sleep 120)
 	(sleep_until
 		(begin
 			(sleep_until (<= (ai_living_count council_prophets_floor) 0))
 			(game_save)
 			
-			(sleep (random_range sleep_lower_bound sleep_upper_bound))
+			(sleep 240)
 			(if debug (print "begin wave 1"))
 			(set g_council_wave 1)
 			(set g_council_count 0)
@@ -2149,7 +2149,7 @@
 				((volume_test_objects tv_council_rt_bk (players)) (ai_council_rt_bk))
 				((volume_test_objects tv_council_lt_fr (players)) (ai_council_lt_fr))
 				((volume_test_objects tv_council_lt_bk (players)) (ai_council_lt_bk))
-				((volume_test_objects tv_council_bk (players)) (ai_council_bk))
+				((TRUE) (ai_council_bk))
 			)
 			(set g_council_floor_wave_count (+ g_council_floor_wave_count 1))
 			(if (= g_council_floor_wave_count g_council_floor_wave_limit) (set g_council_floor_wave 1))
@@ -2161,7 +2161,7 @@
 	(set g_council_floor_wave_count 0)
 	
 	(sleep_until (<= (ai_living_count council_prophets_floor) 0))
-	(sleep 150)
+	(sleep 240)
 	(data_mine_set_mission_segment enc_council_pedestal)
 	
 	(game_save)
@@ -2211,7 +2211,7 @@
 				(game_save)
 				(data_mine_set_mission_segment enc_council_wave_2)
 				
-				(sleep (random_range sleep_lower_bound sleep_upper_bound))
+			    (sleep 240)
 				(if debug (print "begin wave 2"))
 				(set g_council_wave 1)
 				(set g_council_count 0)
@@ -2221,7 +2221,7 @@
 					((volume_test_objects tv_council_rt_bk (players)) (ai_council_rt_bk))
 					((volume_test_objects tv_council_lt_fr (players)) (ai_council_lt_fr))
 					((volume_test_objects tv_council_lt_bk (players)) (ai_council_lt_bk))
-					((volume_test_objects tv_council_bk (players)) (ai_council_bk))
+					((TRUE) (ai_council_bk))
 				)
 				(set g_council_floor_wave_count (+ g_council_floor_wave_count 1))
 				(if (= g_council_floor_wave_count g_council_floor_wave_limit) (set g_council_floor_wave 1))
@@ -4001,7 +4001,7 @@
 )
 
 (script command_script garden_b_brute_berserk
-	(ai_berserk garden_b_brute_ini 1)
+	;(ai_berserk garden_b_brute_ini 1)
 	(ai_magically_see garden_b_prophet garden_b_covenant)
 )
 
@@ -4402,7 +4402,7 @@
 		
 	;	(sleep_until (not (volume_test_objects_all tv_start (players))) 1 150)
 		(ai_place council_brute_ini)
-		(wake ai_council_brutes_berserk)
+	;	(wake ai_council_brutes_berserk)
 		(sleep 90)
 		(wake sc_council_ini)
 	

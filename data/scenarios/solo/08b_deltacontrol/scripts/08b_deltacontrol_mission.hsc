@@ -997,7 +997,7 @@ Open Issues
 	(cs_enable_targeting true)
 	(sleep_until (> (ai_combat_status ai_current_actor) ai_combat_status_active))
 	(sleep (random_range 0 30))
-	(ai_berserk ai_current_actor true)
+	;(ai_berserk ai_current_actor true)
 )
 
 (script command_script cs_e12_cov_banshee0_entry
