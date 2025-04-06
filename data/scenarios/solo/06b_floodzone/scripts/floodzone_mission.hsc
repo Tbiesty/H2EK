@@ -2520,6 +2520,7 @@ Also, scripts which drive Tartarus's dropship, and the human key.
 
 (script dormant key_ride_tartarus_main
 	(ai_place key_ride_tartarus)
+	(ai_disregard (ai_actors key_ride_tartarus) TRUE)
 
 	; e21 stuff
 	(cs_run_command_script key_ride_tartarus/tartarus cs_e21_tartarus)
@@ -3108,21 +3109,21 @@ Open Issues
 
 ;- Command Scripts -------------------------------------------------------------
 
-(script command_script cs_e23_fld_inf0_0_load
-	(cs_enable_pathfinding_failsafe true)
-	(cs_ignore_obstacles true)
-	(cs_go_to e23_fld_inf0_load/p0_0)
-	(cs_go_to e23_fld_inf0_load/p0_1)
-	(cs_jump 15.0 3.0)
-)
+; (script command_script cs_e23_fld_inf0_0_load
+; 	(cs_enable_pathfinding_failsafe true)
+; 	(cs_ignore_obstacles true)
+; 	(cs_go_to e23_fld_inf0_load/p0_0)
+; 	(cs_go_to e23_fld_inf0_load/p0_1)
+; 	(cs_jump 15.0 3.0)
+; )
 
-(script command_script cs_e23_fld_inf0_1_load
-	(cs_enable_pathfinding_failsafe true)
-	(cs_ignore_obstacles true)
-	(cs_go_to e23_fld_inf0_load/p1_0)
-	(cs_go_to e23_fld_inf0_load/p1_1)
-	(cs_jump 15.0 3.0)
-)
+; (script command_script cs_e23_fld_inf0_1_load
+; 	(cs_enable_pathfinding_failsafe true)
+; 	(cs_ignore_obstacles true)
+; 	(cs_go_to e23_fld_inf0_load/p1_0)
+; 	(cs_go_to e23_fld_inf0_load/p1_1)
+; 	(cs_jump 15.0 3.0)
+; )
 
 (script command_script cs_e23_fld_inf0_0_turret0
     (cs_enable_moving false)
@@ -3163,7 +3164,7 @@ Open Issues
 	(ai_kill_silent ai_current_actor)
 )
 
-(script command_script cs_e23_fld_inf0_load
+(script command_script cs_e23_fld_inf0_0_load
 	(cs_enable_moving false)
 	(cs_enable_targeting false)
 	(cs_face_object true key)
@@ -3171,36 +3172,130 @@ Open Issues
 	; Wait until the key is close enough
 	(sleep_until g_key_cruise_halfway 1)
 	(sleep 15)
-	;(sleep 30)
 	
 	; Board it
 	(cs_face_object false key)
 	(unit_impervious ai_current_actor true)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
-	; (if (= (random_range 0 2) 0)
-	; 	(begin
-	; 		(cs_go_to e22_fld_inf0_load/p0_0)
-	; 		(cs_go_to e22_fld_inf0_load/p0_1)
-	; 	)
-	; 	(begin
-	; 		(cs_go_to e22_fld_inf0_load/p1_0)
-	; 		(cs_go_to e22_fld_inf0_load/p1_1)
-	; 	)
-	; )
-	;(cs_move_in_direction 0 3 0)
 	(cs_move_in_direction 0 3 0)
-	;(cs_jump 10.0 3.0)
 	(cs_enable_moving true)
 	(cs_enable_targeting true)
 	(sleep 15)
 	(unit_impervious ai_current_actor false)
 
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
 	(ai_magically_see_object e21_fld_inf1_0 (player0))
 	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e23_fld_inf0_1_load
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+
+	; Wait until the key is close enough
+	(sleep_until g_key_cruise_halfway 1)
+	(sleep 15)
+	
+	; Board it
+	(cs_face_object false key)
+	(unit_impervious ai_current_actor true)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
+	(unit_impervious ai_current_actor false)
 
 	; Migrate them over
 	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
 )
 
 (script command_script cs_e23_scene0
@@ -3346,35 +3441,122 @@ Open Issues
 	(unit_impervious ai_current_actor true)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
-	; (if (= (random_range 0 2) 0)
-	; 	(begin
-	; 		(cs_go_to e22_fld_inf0_load/p0_0)
-	; 		(cs_go_to e22_fld_inf0_load/p0_1)
-	; 	)
-	; 	(begin
-	; 		(cs_go_to e22_fld_inf0_load/p1_0)
-	; 		(cs_go_to e22_fld_inf0_load/p1_1)
-	; 	)
-	; )
 	(cs_move_in_direction 0 3 0)
 	(cs_enable_moving true)
 	(cs_enable_targeting true)
 	(sleep 15)
 	(unit_impervious ai_current_actor false)
 
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
 	(ai_magically_see_object e21_fld_inf1_0 (player0))
 	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e22_fld_inf0_1_load
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until g_key_lock0_second_loadpoint 1)
+
+	; Wait for it...
+	(sleep 175)
+	
+	; Board it
+	(cs_face_object false key)
+	(unit_impervious ai_current_actor true)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
+	(unit_impervious ai_current_actor false)
 
 	; Migrate them over
 	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
 
-		; Then go to the rally point
-	(if (= (structure_bsp_index) 3)
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
 		(begin
-			(cs_go_to e21_fld_bsp5/p4)
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
 		(begin
-			(cs_go_to e21_fld_bsp6/p4)
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
 	)
 )
@@ -3531,29 +3713,49 @@ Flood
 ;- Command Scripts -------------------------------------------------------------
 
 (script command_script cs_e21_fld_inf1_low_entry
-	(cs_enable_pathfinding_failsafe true)
 	(cs_ignore_obstacles true)
-	(cs_move_in_direction 6 0 0)
 
-	; Head to the rally point
-	(if (= (structure_bsp_index) 3)
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(sleep 240)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
 		(begin
-			(cs_go_to e21_fld_bsp5/p2)
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp5/p0_0)
-			(cs_go_to e21_fld_bsp5/p0_1)
-			(cs_go_to e21_fld_bsp5/p3)
-			(cs_go_to e21_fld_bsp5/p4)
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
 		(begin
-			(cs_go_to e21_fld_bsp6/p2)
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p0_0)
-			(cs_go_to e21_fld_bsp6/p0_1)
-			(cs_go_to e21_fld_bsp6/p3)
-			(cs_go_to e21_fld_bsp6/p4)
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
-	)	
+	)
 )
 
 (script command_script cs_e21_fld_inf1_high_entry
@@ -3563,31 +3765,276 @@ Flood
 	; Jump in
 	(cs_jump_to_point 2.5 1)
 
-	; Then go to the rally point
-	(if (= (structure_bsp_index) 3)
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
 		(begin
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p2)
-			(cs_go_to e21_fld_bsp5/p0_0)
-			(cs_go_to e21_fld_bsp5/p0_1)
-			(cs_go_to e21_fld_bsp5/p3)
-			(cs_go_to e21_fld_bsp5/p4)
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
 		(begin
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p2)
-			(cs_go_to e21_fld_bsp6/p0_0)
-			(cs_go_to e21_fld_bsp6/p0_1)
-			(cs_go_to e21_fld_bsp6/p3)
-			(cs_go_to e21_fld_bsp6/p4)
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
-	)	
+	)
 )
 
 (script command_script cs_e21_fld_inf0_low_entry
-	(cs_enable_pathfinding_failsafe true)
 	(cs_ignore_obstacles true)
-	(cs_move_in_direction 8 0 0)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(sleep 240)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e21_fld_inf0_high_entry
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+	(cs_enable_pathfinding_failsafe true)
+
+	; Jump in
+	(cs_jump_to_point 2.5 1)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e21_fld_inf0_0_left
+
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 30)
+	(sleep 148)
+	;(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
+
+	; Board it
+	(sleep 90)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(cs_move_in_direction 0 3 0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e21_fld_inf0_0_right
+
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 30)
+	(sleep 148)
+	;(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
+
+	; Board it
+	(sleep 90)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(cs_move_in_direction 0 3 0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+
+
+;*
 
 	; Head to the rally point
 	(if (= (structure_bsp_index) 3)
@@ -3607,75 +4054,11 @@ Flood
 			(cs_go_to e21_fld_bsp6/p3)
 			(cs_go_to e21_fld_bsp6/p4)
 		)
-	)	
-)
-
-(script command_script cs_e21_fld_inf0_high_entry
-	(cs_abort_on_combat_status ai_combat_status_clear_los)
-	(cs_enable_pathfinding_failsafe true)
-
-	; Jump in
-	(cs_jump_to_point 2.5 1)
-
-	; Head to the rally point
-	(if (= (structure_bsp_index) 3)
-		(begin
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p2)
-			(cs_go_to e21_fld_bsp5/p0_0)
-			(cs_go_to e21_fld_bsp5/p0_1)
-			(cs_go_to e21_fld_bsp5/p3)
-			(cs_go_to e21_fld_bsp5/p4)
-		)
-		(begin
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p2)
-			(cs_go_to e21_fld_bsp6/p0_0)
-			(cs_go_to e21_fld_bsp6/p0_1)
-			(cs_go_to e21_fld_bsp6/p3)
-			(cs_go_to e21_fld_bsp6/p4)
-		)
-	)	
-)
-
-(script command_script cs_e21_fld_inf0_0_load
-
-	(sleep_until g_key_lock0_first_loadpoint 1)
-	
-	; Shoot at the key
-	(sleep 30)
-	;(cs_shoot_point true key_bsp5/p0)
-
-	; Wait for it...
-	(sleep 148)
-	;(cs_shoot_point false key_bsp5/p0)
-	
-	; Set their orders
-	(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
-
-	; Board it
-	(sleep 90)
-	(cs_ignore_obstacles true)
-	(cs_enable_pathfinding_failsafe true)
-	; (cs_go_to e21_fld_load/left0)
-	; (cs_go_to e21_fld_load/left1)
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
-	(cs_move_in_direction 0 3 0)
-
-	(ai_magically_see_object e21_fld_inf1_0 (player0))
-	(ai_magically_see_object e21_fld_inf1_0 (player1))
-
-	; Then go to the rally point
-	(if (= (structure_bsp_index) 3)
-		(begin
-			(cs_go_to e21_fld_bsp5/p4)
-		)
-		(begin
-			(cs_go_to e21_fld_bsp6/p4)
-		)
 	)
-)
+
+*;
+
+
 
 (script command_script cs_e21_fld_inf0_turret0
     (cs_enable_moving false)
@@ -3738,8 +4121,10 @@ Flood
 	; Shoot a random combat form
 	(cs_shoot_point true e21_fld_load/p0)
 	(sleep 90)
+	(cs_shoot_point false e21_fld_load/p0)
+	(sleep 30)
+	(unit_add_equipment (ai_get_unit ai_current_actor) key_ride TRUE TRUE)
 )
-
 
 ;- Order Scripts ---------------------------------------------------------------
 
@@ -3777,39 +4162,31 @@ Flood
 (script static void e21_fld_inf1_spawn
 	; Is the player in the way of the lower spawner?
 	(if (volume_test_objects tv_key_near_lower_spawner (players))
-		; He is, so spawn from up top
+		; He is, so spawn two from up top
 		(begin
+			(ai_place e21_fld_inf1_2 1)
+			(ai_place e21_fld_inf1_1 1)
+			(sleep 60)
+		)
+		
+		; He is not, so spawn one from down low and one from on top
+		(begin
+			(if (= (random_range 0 2) 0)
+				(ai_place e21_fld_inf1_1/carrier0)
+			)
 			; Is the other one on the upper left side?
 			(if (volume_test_objects tv_key_upper_left_side (players))
 				; He is, spawn from the opposite side
 				(begin
 					(ai_place e21_fld_inf1_2 1)
-					(cs_run_command_script e21_fld_inf1_2 cs_e21_fld_inf1_high_entry)
-					(ai_migrate e21_fld_inf1_2 e21_fld_inf1_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf1_0 (player0))
-					(ai_magically_see_object e21_fld_inf1_0 (player1))
 				)
 				
 				; He is not, spawn from that side
 				(begin
-					(ai_place e21_fld_inf0_2 1)
-					(cs_run_command_script e21_fld_inf0_2 cs_e21_fld_inf1_high_entry)
-					(ai_migrate e21_fld_inf0_2 e21_fld_inf1_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf1_0 (player0))
-					(ai_magically_see_object e21_fld_inf1_0 (player1))
+					(ai_place e21_fld_inf1_1 1)
 				)
 			)
-		)
-		
-		; He is not, so spawn from down low
-		(begin
-			(ai_place e21_fld_inf1_1 1)
-			(ai_migrate e21_fld_inf1_1 e21_fld_inf1_0)
-			(sleep 5)
-			(ai_magically_see_object e21_fld_inf1_0 (player0))
-			(ai_magically_see_object e21_fld_inf1_0 (player1))
+			(sleep 60)
 		)
 	)
 )
@@ -3830,11 +4207,11 @@ Flood
 						
 						; Until there are enough or the ride is over
 						(or
-							(>= (ai_nonswarm_count e21_fld_inf1_0) 10)
+							(>= (ai_nonswarm_count e21_fld_inf1_0) 12)
 							g_key_lock1_second_arch
 						)
 					)
-					90
+					120
 				)
 			)
 
@@ -3878,39 +4255,31 @@ Flood
 (script static void e21_fld_inf0_spawn
 	; Is the player in the way of the lower spawner?
 	(if (volume_test_objects tv_key_near_lower_spawner (players))
-		; He is, so spawn from up top
+		; He is, so spawn two from up top
 		(begin
+			(ai_place e21_fld_inf0_1 1)
+			(ai_place e21_fld_inf0_2 1)
+			(sleep 60)
+		)
+		
+		; He is not, so spawn one from down low and one from on top
+		(begin
+			(if (= (random_range 0 2) 0)
+				(ai_place e21_fld_inf0_1/carrier0)
+			)			
 			; Is the other one on the upper left side?
 			(if (volume_test_objects tv_key_upper_left_side (players))
 				; He is, spawn from the opposite side
 				(begin
-					(ai_place e21_fld_inf1_2 1)
-					(cs_run_command_script e21_fld_inf1_2 cs_e21_fld_inf1_high_entry)
-					(ai_migrate e21_fld_inf1_2 e21_fld_inf0_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf0_0 (player0))
-					(ai_magically_see_object e21_fld_inf0_0 (player1))
+					(ai_place e21_fld_inf0_1 1)
 				)
 				
 				; He is not, spawn from that side
 				(begin
 					(ai_place e21_fld_inf0_2 1)
-					(cs_run_command_script e21_fld_inf0_2 cs_e21_fld_inf1_high_entry)
-					(ai_migrate e21_fld_inf0_2 e21_fld_inf0_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf0_0 (player0))
-					(ai_magically_see_object e21_fld_inf0_0 (player1))
 				)
 			)
-		)
-		
-		; He is not, so spawn from down low
-		(begin
-			(ai_place e21_fld_inf0_1 1)
-			(ai_migrate e21_fld_inf0_1 e21_fld_inf0_0)
-			(sleep 5)
-			(ai_magically_see_object e21_fld_inf0_0 (player0))
-			(ai_magically_see_object e21_fld_inf0_0 (player1))
+			(sleep 60)
 		)
 	)
 )
@@ -3928,10 +4297,11 @@ Flood
 			
 			; Until there are enough or the ride is over
 			(or
-				(>= (ai_nonswarm_count e21_fld_inf0_0) 8)
+				(>= (ai_nonswarm_count e21_fld_inf0_0) 12)
 				g_key_shaft_rising
 			)
 		)
+		120
 	)
 
 	; Respawner
@@ -3946,11 +4316,11 @@ Flood
 						
 						; Until there are enough or the ride is over
 						(or
-							(>= (ai_nonswarm_count e21_fld_inf0_0) 10)
+							(>= (ai_nonswarm_count e21_fld_inf0_0) 12)
 							g_key_shaft_rising
 						)
 					)
-					90
+					120
 				)
 			)
 			(if (>= (ai_nonswarm_count e21_fld_inf0_0) 12)
@@ -4620,7 +4990,7 @@ Open Issues
 	(cinematic_fade_from_white_bars)
 
     ; REMOVE THIS
-   ; (test_key_ride)
+    ;(test_key_ride)
 
 	(wake chapter_mirror)
 	(wake objective_push_set)
