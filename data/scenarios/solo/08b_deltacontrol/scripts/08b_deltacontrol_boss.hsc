@@ -316,13 +316,13 @@
 )
 
 (script static void boss_tartarus_berserk_on
-	(ai_berserk boss_tartarus 1)
+	;(ai_berserk boss_tartarus 1)
 	(set boss_tartarus_berserk TRUE)
 	(print "BERSERK")
 )
 
 (script static void boss_tartarus_berserk_off
-	(ai_berserk boss_tartarus 0)
+	;(ai_berserk boss_tartarus 0)
 	(set boss_tartarus_berserk FALSE)
 )
 
