@@ -1547,6 +1547,10 @@ Open Issues
 	)
 )
 
+(script static boolean e11_pro_wraiths1_weakened
+	(<= (e11_pro_wraiths_living_count) 2)
+)
+
 (script static boolean e11_door_blocked
 	; The door is considered blocked if someone is running a command script through it
 	(or
@@ -1554,7 +1558,6 @@ Open Issues
 		(cs_command_script_queued e11_pro_spectres0 cs_e11_spectre_door0_entry)
 	)
 )
-
 
 ;- Squad Controls --------------------------------------------------------------
 
@@ -4524,8 +4527,37 @@ Open Issues
 	(ai_play_line ai_current_actor 0610) ; "Free our bros, death to the fuzz!"
 )
 
+(script command_script cs_e6_cov_hunters1_init
+	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_targeting true)
+	(cs_enable_looking true)
+	(cs_enable_moving true)
+	(cs_ignore_obstacles true)
+	(ai_magically_see_object ai_current_squad (player0))
+	(cs_approach (player0) 2 4 3)
+)
+
+(script command_script cs_e6_cov_hunters1_engage
+	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_targeting true)
+	(cs_enable_looking true)
+	(cs_enable_moving true)
+	(cs_ignore_obstacles true)
+	(cs_enable_dialogue true)
+	(cs_force_combat_status 4)
+	; Release prisoners
+	(cs_run_command_script e6_cov_hunters1 cs_e6_jailbreak_behavior)
+)
 
 ;- Squad Controls --------------------------------------------------------------
+
+(script dormant e6_cov_hunters1_main
+	(ai_migrate e5_cov_hunters0 e6_cov_hunters1)
+    (ai_teleport_to_starting_location_if_outside_bsp e6_cov_hunters1)
+	(sleep 15)
+	(cs_run_command_script e6_cov_hunters1 cs_e6_cov_hunters1_init)
+	(ai_set_orders e6_cov_hunters1 e6_cov_hunters1_init)
+)
 
 (script dormant e6_pro_inf0_main
 	(ai_place e6_pro_inf0_0)
@@ -4553,7 +4585,7 @@ Open Issues
 )
 
 (script dormant e6_cov_hunters0_main
-	(ai_migrate e5_cov_hunters0 e6_cov_hunters0)
+	;(ai_migrate e5_cov_hunters0 e6_cov_hunters0)
 
 	; If we have a pair, we're done
 	(if (>= (ai_living_count e6_cov_hunters0) 2)
@@ -4568,6 +4600,16 @@ Open Issues
 	; Set their orders appropriately for freed Hunters
 	(ai_set_orders e6_cov_hunters0 e6_cov_hunters0_engage1)
 )
+
+; (script dormant e5_cov_hunters0_continue1
+;     (cs_enable_pathfinding_failsafe true)
+; 	(cs_enable_targeting true)
+; 	(cs_enable_looking true)
+; 	(cs_enable_moving true)
+; 	(cs_ignore_obstacles true)
+; 	(cs_enable_dialogue true)
+;     (cs_go_to e5_bridge/p0)
+; )
 
 (script dormant e6_cov_inf1_main
 ;	(ai_place e6_cov_inf1_0)
@@ -4584,7 +4626,9 @@ Open Issues
 
 (script dormant e6_cov_inf0_main
 	(ai_migrate e5_cov_inf0 e6_cov_inf0)
-	
+	(ai_migrate e5_cov_hunters0 e6_cov_inf0)
+	;(wake e6_cov_hunters1_main)
+
 	; Wait until we're inside the main room
 	(sleep_until
 		(volume_test_objects tv_e6_main_room (ai_actors e6_cov_inf0))		
@@ -4637,6 +4681,7 @@ Open Issues
 	(wake e6_cov_inf0_main)
 	(wake e6_cov_inf1_main)
 	(wake e6_cov_hunters0_main)
+	(wake e6_cov_hunters1_main)
 	(wake e6_pro_inf0_main)
 	
 	; Shut down
@@ -4644,6 +4689,7 @@ Open Issues
 	(sleep_forever e6_cov_inf0_main)
 	(sleep_forever e6_cov_inf1_main)
 	(sleep_forever e6_cov_hunters0_main)
+	(sleep_forever e6_cov_hunters1_main)
 	(sleep_forever e6_pro_inf0_main)
 	
 	; Condemn
@@ -4655,6 +4701,11 @@ Open Issues
 	(sleep 1)
 	(object_teleport (player0) e6_test)
 	(ai_place e6_cov_inf0)
+	(ai_migrate e5_cov_inf0 e6_cov_inf0)
+	(ai_migrate e5_cov_hunters0 e6_cov_hunters1)
+	(ai_place e6_cov_hunters1)
+	(ai_renew e6_cov)
+	(ai_disposable e6_cov false)
 	(if (not g_e6_started) (wake e6_main))
 )
 
@@ -4721,6 +4772,27 @@ Open Issues
 	(ai_erase ai_current_squad)
 )
 
+(script command_script cs_e5_cov_hunters0_0_continue1
+    ;(cs_enable_pathfinding_failsafe true)
+	(cs_enable_targeting true)
+	(cs_enable_looking true)
+	(cs_enable_moving true)
+	(cs_ignore_obstacles true)
+	(cs_enable_dialogue true)
+    (cs_go_to e5_bridge/p1)
+	(sleep_forever)
+)
+
+(script command_script cs_e5_cov_hunters0_1_continue1
+    ;(cs_enable_pathfinding_failsafe true)
+	(cs_enable_targeting true)
+	(cs_enable_looking true)
+	(cs_enable_moving true)
+	(cs_ignore_obstacles true)
+	(cs_enable_dialogue true)
+    (cs_go_to e5_bridge/p1_1)
+	(sleep_forever)
+)
 
 ;- Order Scripts ---------------------------------------------------------------
 ;- Squad Controls --------------------------------------------------------------
@@ -4734,9 +4806,10 @@ Open Issues
 		(or
 			(<= (object_get_health (ai_vehicle_get e5_pro_phantom0/phantom0)) 0.05) 
 			(>= (object_model_targets_destroyed (ai_vehicle_get e5_pro_phantom0/phantom0) "target_front") 3) 
-			(volume_test_objects tv_e7_main_begin (players))
+			(volume_test_objects tv_e5_bridge_exit (players))
 		)
 		30
+		two_minutes
 	)
 	(cs_run_command_script e5_pro_phantom0/phantom0 cs_e5_pro_phantom0_exit)
 )
@@ -4785,38 +4858,62 @@ Open Issues
 )
 
 (script dormant e5_cov_hunters0_main
-	; Wait until they've moved on from the previous encounter
-	(sleep_until 
-		(and
-			(<= (ai_living_count e4_pro_inf0) 0)
-			(<= (ai_living_count e4_pro_inf1) 0)
-			(<= (ai_living_count e4_pro_inf3) 0)
-		)
-	)
-	(sleep_until (= (structure_bsp_index) 1) 15)
-	(sleep_until (= (structure_bsp_index) 0) 15)
-	
 	; Migrate them, teleport them
 	(ai_migrate e4_cov_hunters0 e5_cov_hunters0)
 	(ai_teleport_to_starting_location_if_outside_bsp e5_cov_hunters0)
+	(sleep 1)
+	(ai_set_orders e5_cov_hunters0 e5_cov_hunters0_init)
+	(sleep_until (and (volume_test_objects tv_e5_bridge_exit (players)) (<= (ai_living_count e5_pro_inf2) 0)))
+	(print "running cs_e5_cov_hunters0_continue1")
+	(cs_run_command_script e5_cov_hunters0/hunter0 cs_e5_cov_hunters0_0_continue1)
+	(cs_run_command_script e5_cov_hunters0/hunter1 cs_e5_cov_hunters0_1_continue1)
+	(sleep 90)
+	(ai_set_orders e5_cov_hunters0 e5_cov_hunters0_continue1)
 )
 
 (script dormant e5_cov_inf0_main
-	; Wait until they've moved on from the previous encounter
-	(sleep_until 
-		(and
-			(<= (ai_living_count e4_pro_inf0) 0)
-			(<= (ai_living_count e4_pro_inf1) 0)
-			(<= (ai_living_count e4_pro_inf3) 0)
-		)
-	)
-	(sleep_until (= (structure_bsp_index) 1) 15)
-	(sleep_until (= (structure_bsp_index) 0) 15)
-	
 	; Migrate them, teleport them
 	(ai_migrate e4_cov_inf0 e5_cov_inf0)
 	(ai_teleport_to_starting_location_if_outside_bsp e5_cov_inf0)
+	(sleep 1)
+	(ai_set_orders e5_cov_inf0 e5_cov_inf0_init)
 )
+
+
+
+; (script dormant e5_cov_hunters0_main
+; 	; Wait until they've moved on from the previous encounter
+; 	(sleep_until 
+; 		(and
+; 			(<= (ai_living_count e4_pro_inf0) 0)
+; 			(<= (ai_living_count e4_pro_inf1) 0)
+; 			(<= (ai_living_count e4_pro_inf3) 0)
+; 		)
+; 	)
+; 	(sleep_until (= (structure_bsp_index) 1) 15)
+; 	(sleep_until (= (structure_bsp_index) 0) 15)
+	
+; 	; Migrate them, teleport them
+; 	(ai_migrate e4_cov_hunters0 e5_cov_hunters0)
+; 	(ai_teleport_to_starting_location_if_outside_bsp e5_cov_hunters0)
+; )
+
+; (script dormant e5_cov_inf0_main
+; 	; Wait until they've moved on from the previous encounter
+; 	(sleep_until 
+; 		(and
+; 			(<= (ai_living_count e4_pro_inf0) 0)
+; 			(<= (ai_living_count e4_pro_inf1) 0)
+; 			(<= (ai_living_count e4_pro_inf3) 0)
+; 		)
+; 	)
+; 	(sleep_until (= (structure_bsp_index) 1) 15)
+; 	(sleep_until (= (structure_bsp_index) 0) 15)
+	
+; 	; Migrate them, teleport them
+; 	(ai_migrate e4_cov_inf0 e5_cov_inf0)
+; 	(ai_teleport_to_starting_location_if_outside_bsp e5_cov_inf0)
+; )
 
 
 ;- Init and Cleanup ------------------------------------------------------------
@@ -5871,7 +5968,6 @@ Open Issues
 	(weather_change_intensity 60 1.0)
 )
 
-
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e1_pro_phantom0_main
@@ -5880,7 +5976,7 @@ Open Issues
 	(sleep 2)
 	(ai_place_in_vehicle e1_pro_wraith0 e1_pro_phantom0)
 	(ai_braindead e1_pro_wraith0 true)
-	(ai_place e1_pro_wraith0)
+	;(ai_place e1_pro_wraith0)
 	
 	; Wait for the retreat
 	(sleep_until
@@ -6144,4 +6240,3 @@ Open Issues
 	; Comment this out when you're testing individual encounters
 	(if (> (player_count) 0 ) (start))
 )
-
