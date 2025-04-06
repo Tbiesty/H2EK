@@ -3215,7 +3215,9 @@ Prophets
 	(sleep (ai_play_line_at_player ai_current_actor 0200))
 	(set g_e1_cov_inf0_should_die true)
 	(sleep 45)
-	;(unit_stop_custom_animation (ai_get_unit ai_current_actor))
+
+	; Wait till the player leaves
+	(sleep_until (volume_test_objects tv_e1_second_wall (players)) 15)
 
 	; Sray him. Sray him dead.
 	(unit_kill (ai_get_unit ai_current_actor))
@@ -3731,9 +3733,9 @@ Prophets
 	
 	; Wait for the mission to end
 	(sleep_until
-		g_e10_started
-	    (and (volume_test_objects tv_mission_end (players))
-	15)
+	    (and
+		    g_e10_started
+		    (volume_test_objects tv_mission_end (players))) 15)
 	(wake music_08a_05_start)
 		
 	; For playtests
