@@ -5669,7 +5669,7 @@ Open Issues
 )
 
 (script dormant e2_pro_ghosts0_main
-	(ai_place e2_pro_ghosts0)
+	(ai_place e2_pro_ghosts0_1)
 )
 
 (script dormant e2_pro_inf0_main
@@ -5705,7 +5705,7 @@ Open Issues
 	(wake e2_cov_spectre0_main)
 	(wake e2_cov_wraith0_main)
 	(wake e2_pro_inf0_main)
-;	(wake e2_pro_ghosts0_main)
+	(wake e2_pro_ghosts0_main)
 	(wake e2_pro_wraiths0_main)
 	(wake e2_pro_phantoms0_main)
 	(wake e2_dialogue)
