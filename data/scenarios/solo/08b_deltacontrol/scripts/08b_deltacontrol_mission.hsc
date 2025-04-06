@@ -816,13 +816,13 @@ Open Issues
 
 (script dormant e13_cinematic_main
 	(sleep_until
-		(or
+		; (or
 			(volume_test_objects tv_e13_cutscene_trigger1 (players))
-			(and
-				(volume_test_objects tv_e13_cutscene_trigger0 (players))
-				(objects_can_see_flag (players) e13_cutscene_trigger 15)
-			)
-		)
+			; (and
+			; 	(volume_test_objects tv_e13_cutscene_trigger0 (players))
+			; 	(objects_can_see_flag (players) e13_cutscene_trigger 15)
+			; )
+		; )
 		15
 	)
 	
