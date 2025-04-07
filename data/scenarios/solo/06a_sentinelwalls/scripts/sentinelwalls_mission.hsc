@@ -2118,12 +2118,12 @@
 						)
 						(ai_plug_launch_em_g))
 						((and
-							(not (unit_is_emitting plug_launch_em_g))
-							(> (object_get_health plug_launch_em_g) 0)
-							(> (objects_distance_to_object (players) plug_launch_em_g) 10)
+							(not (unit_is_emitting plug_launch_em_h))
+							(> (object_get_health plug_launch_em_h) 0)
+							(> (objects_distance_to_object (players) plug_launch_em_h) 10)
 							(<= (random_range 0 10) 3)
 						)
-						(ai_plug_launch_em_g))
+						(ai_plug_launch_em_h))
 						
 						(true (begin (ai_place plug_launch_sen) (set g_plug_launch_count (+ g_plug_launch_count 1))))
 					)
