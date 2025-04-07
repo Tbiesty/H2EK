@@ -2335,6 +2335,7 @@
 	(sleep_until (<= (absorber_totalcount) 0))
 	(if debug (print "absorber activated!"))
 	
+	(sleep 30)
 	(set g_flip_switch 1)
 	(device_set_position plug_switch_housing 1)
 	(ai_set_orders covenant plug_cov)
@@ -2678,7 +2679,7 @@
 (script dormant ai_plug_holder_em
 	(cond ; g_plug_launch_index is increased when 4 absorbers are destroyed 
 		((difficulty_normal) (begin (set g_plug_holder_limit 0) (set g_plug_holder_index 2) (set g_plug_holder_wave_limit 1)))
-		((difficulty_heroic) (begin (set g_plug_holder_limit 0) (set g_plug_holder_index 3) (set g_plug_holder_wave_limit 2)))
+		((difficulty_heroic) (begin (set g_plug_holder_limit 1) (set g_plug_holder_index 3) (set g_plug_holder_wave_limit 2)))
 		((difficulty_legendary) (begin (set g_plug_holder_limit 1) (set g_plug_holder_index 4) (set g_plug_holder_wave_limit 3)))
 	)
 
@@ -4249,6 +4250,8 @@
 	(ai_renew covenant)
 	(ai_set_orders covenant plug_launch_cov_ini)
 	(ai_place plug_launch_enforcer)
+	(ai_place plug_launch_sen/elim0)
+	(ai_place plug_launch_sen/elim1)
 
 	(sleep_until (>= (ai_combat_status plug_launch_enforcer) ai_combat_status_active) 30 210)
 		(wake sc_enforcer)
