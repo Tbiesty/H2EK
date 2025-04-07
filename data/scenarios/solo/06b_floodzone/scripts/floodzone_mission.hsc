@@ -4396,10 +4396,10 @@ Flood
 	(switch_bsp_by_name sen_hq_bsp_5)
 	(sleep 1)
 	(object_teleport (player0) key_ent0)
-	(unit_add_equipment (player0) key_ride TRUE TRUE)
+	;(unit_add_equipment (player0) key_ride TRUE TRUE)
 	(object_set_velocity (player0) 5 0 0)
 	(object_teleport (player1) key_ent1)
-	(unit_add_equipment (player1) key_ride TRUE TRUE)
+	;(unit_add_equipment (player1) key_ride TRUE TRUE)
 	(object_set_velocity (player1) 5 0 0)
 	(wake key_main)
 	(wake key_ride_human_key_main)
@@ -4911,8 +4911,8 @@ Open Issues
 		(ai_erase_all)
 		(object_teleport (player0) key_ride_a)
 		(object_teleport (player1) key_ride_b)
-		(unit_add_equipment (player0) key_ride TRUE TRUE)
-		(unit_add_equipment (player1) key_ride TRUE TRUE)
+		;(unit_add_equipment (player0) key_ride TRUE TRUE)
+		;(unit_add_equipment (player1) key_ride TRUE TRUE)
 
 		(sleep 5)
 	
