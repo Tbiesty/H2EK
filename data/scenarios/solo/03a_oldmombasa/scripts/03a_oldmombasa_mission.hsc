@@ -5790,7 +5790,7 @@ Open Issues
 (script static boolean e1_cov_inf2_spawn_ready
 	(and
 		(<= (ai_living_count e1_cov_inf2) 2)
-		(<= (ai_fighting_count e1_cov_inf2) 0)
+		(<= (ai_fighting_count e1_cov_inf2) 1)
 	)
 )
 
@@ -6137,7 +6137,7 @@ Open Issues
 			)
 		
 			; Until enough have spawned
-			(>= (ai_spawn_count e1_cov_inf3) 16)
+			(>= (ai_spawn_count e1_cov_inf3) 14)
 		)
 	)
 	
@@ -6204,8 +6204,8 @@ Open Issues
 	(sleep_until 
 		(and
 			(> (ai_spawn_count e1_cov_inf3_1) 0)
-			(<= (ai_living_count e1_cov_inf3) 2)
-			(<= (ai_fighting_count e1_cov_inf3) 0)
+			(<= (ai_living_count e1_cov_inf3) 3)
+			(<= (ai_fighting_count e1_cov_inf3) 1)
 		)
 		30
 		two_minutes
