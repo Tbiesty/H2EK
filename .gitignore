@@ -4,6 +4,8 @@
 *.tif~
 !health_meter.tif
 !health_meter.bitmap
+!arbiter_health_meter.tif
+!arbiter_health_meter.bitmap
 *.model_animation_graph
 *.sound
 # Ignore auto backup files
