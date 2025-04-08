@@ -1625,8 +1625,8 @@ Covenant
 	; Wake control scripts
 	(wake e23_mars_inf0_main)
 	(wake e23_mars_inf1_main)
-	(wake e23_mars_pelican0_main)
-	(wake e23_mars_pelican1_main)
+;	(wake e23_mars_pelican0_main)
+;	(wake e23_mars_pelican1_main)
 	(wake e23_mars_pelican2_main)
 	(wake e23_cov_inf0_main)
 	(wake e23_cov_inf1_main)
@@ -2854,7 +2854,7 @@ Covenant
 	; Wake control scripts
 	(wake e21_mars_warthog0_main)
 	(wake e21_mars_inf0_main)
-	(wake e21_mars_inf1_main)
+;	(wake e21_mars_inf1_main)
 	(wake e21_cov_creep0_main)
 	(wake e21_mars_pelican0_main)
 	(wake e21_mars_pelican1_main)
@@ -2868,7 +2868,7 @@ Covenant
 	(sleep_until g_e22_started)
 	(sleep_forever e21_mars_warthog0_main)
 	(sleep_forever e21_mars_inf0_main)
-	(sleep_forever e21_mars_inf1_main)
+;	(sleep_forever e21_mars_inf1_main)
 	(sleep_forever e21_cov_creep0_main)
 	(sleep_forever e21_cov_wraiths0_main)
 ;	(sleep_forever e21_cov_phantom0_main)
@@ -4044,22 +4044,26 @@ Covenant
 				(or
 					(and
 						(<= (ai_living_count e16_cov_wraiths0) 0)
-						(< (ai_living_count e16_cov_ghosts0) 4)
+						(< (ai_living_count e16_cov_ghosts0) 3)
 					)
-					(< (ai_living_count e16_cov_ghosts0) 3)
+                    (and
+					    (difficulty_legendary)
+						(< (ai_living_count e16_cov_ghosts0) 3)
+					)
+					(< (ai_living_count e16_cov_ghosts0) 2)
 				)
 				(begin
-					(ai_place e16_cov_ghosts0_1)					
+					(ai_place e16_cov_ghosts0_1)				
 				)
 			)
 			
 			; Loop until
 			(or
 				(volume_test_objects tv_e16_bridge_end (players))
-				(>= (ai_spawn_count e16_cov_ghosts0) 12)
+				(>= (ai_spawn_count e16_cov_ghosts0) 10)
 			)
 		)
-		90
+		120
 	)
 	
 	; Put in a save
@@ -4532,6 +4536,7 @@ Covenant
 ;	(sleep_forever e15_cov_inf1_main)
 ;	(sleep_forever e15_cov_inf2_main)
 	(sleep_forever e15_cov_phantom0_main)
+	(sleep_forever e15_cov_phantom1_main)
 	(sleep_forever e15_cov_banshees0_main)
 	
 	; Condemn
