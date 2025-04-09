@@ -1593,7 +1593,7 @@ Covenant
 (script dormant e23_mars_inf1_main
 	(ai_migrate e22_mars_inf1 e23_mars_inf1)
 ;	(ai_migrate e22_mars_inf0/perez e23_mars_inf1)
-	(ai_place e23_mars_inf1 (- 3 (ai_living_count e23_mars_inf1)))
+	(ai_place e23_mars_inf1)
 )
 
 (script dormant e23_mars_inf0_main
