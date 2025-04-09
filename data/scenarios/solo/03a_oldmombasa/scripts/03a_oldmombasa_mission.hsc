@@ -6125,7 +6125,6 @@ Open Issues
 	; Send them in
 	(ai_place e1_cov_inf3_0)
 	(sleep 30)
-	(ai_place e1_cov_inf2_7)
 	(ai_play_line e1_mars_johnson/johnson0 0270)
 	
 	; Respawn a few
@@ -6133,11 +6132,10 @@ Open Issues
 		(begin
 			(if (< (ai_living_count e1_cov_inf3) 4)
 				(ai_place e1_cov_inf3_1 2)
-				(ai_place e1_cov_inf2_7 2)
 			)
 		
 			; Until enough have spawned
-			(>= (ai_spawn_count e1_cov_inf3) 14)
+			(>= (ai_spawn_count e1_cov_inf3) 12)
 		)
 	)
 	
