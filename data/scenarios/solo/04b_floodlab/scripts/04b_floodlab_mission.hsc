@@ -1227,7 +1227,7 @@
 	(objects_attach elev_silo can_entry dummy_can can_top)
 	(sleep 285)
 	(object_destroy dummy_can)
-	(sleep 60)
+	(sleep 270)
 )
 (script static void silo_crane_02
 	(device_set_overlay_track elev_silo crane_right)
@@ -1238,7 +1238,7 @@
 	(objects_attach elev_silo can_entry dummy_can can_top)
 	(sleep 285)
 	(object_destroy dummy_can)
-	(sleep 60)
+	(sleep 270)
 )
 (script static void silo_crane_03
 	(device_set_overlay_track elev_silo crane_right)
@@ -1249,7 +1249,7 @@
 	(objects_attach elev_silo can_entry dummy_can can_top)
 	(sleep 285)
 	(object_destroy dummy_can)
-	(sleep 60)
+	(sleep 270)
 )
 (script static void silo_crane_04
 	(device_set_overlay_track elev_silo crane_center)
@@ -1271,7 +1271,7 @@
 	(objects_attach elev_silo can_entry dummy_can can_top)
 	(sleep 285)
 	(object_destroy dummy_can)
-	(sleep 60)
+	(sleep 270)
 )
 (script static void silo_crane_06
 	(device_set_overlay_track elev_silo crane_center)
@@ -1598,7 +1598,7 @@
 	(wake music_04b_02_stop)
 	
 	(silo_down_400)
-	(sleep 150)
+	(sleep 300)
 	;(wake silo_infection_rain_01)
 	
 	(silo_rot_90_plus)
@@ -1616,7 +1616,7 @@
 	30 300)
 	(print "down 600")
 	(silo_down_600)
-	(sleep 150)
+	(sleep 450)
 	;(sleep_forever silo_infection_rain_01)
 	;(set silo_sentinels_total 10)
 	;(set silo_flood_total 10)
@@ -1666,7 +1666,7 @@
 	(kill_volume_disable kill_silo_toggle)
 		
 	(silo_down_800)
-	(sleep 150)
+	(sleep 600)
 	;(sleep_forever silo_infection_rain_02)
 	;(wake silo_infection_rain_03)
 	
@@ -1686,7 +1686,7 @@
 ;	(set silo_sentinels_total 0)
 	(print "down 400")
 	(silo_down_400)
-	(sleep 150)
+	(sleep 300)
 
 	(silo_rot_90_plus)
 	(sleep 150)
@@ -2215,7 +2215,7 @@
 					(set lab_flood_count (+ lab_flood_count 1))
 				)
 			)
-			FALSE
+			(> lab_flood_count 8)
 		)
 	30 900)
 )
@@ -2228,7 +2228,7 @@
 					(set lab_flood_count (+ lab_flood_count 1))
 				)
 			)
-			FALSE
+			(> lab_flood_count 12)
 		)
 	30 900)
 )
@@ -2241,8 +2241,8 @@
 	
 	(set silo_killer_power FALSE)
 
-	(ai_place lab_heretics_01 3)
-	(ai_place lab_turret_grunts_01 5)
+	(ai_place lab_heretics_01 2)
+	(ai_place lab_turret_grunts_01 3)
 	(ai_place lab_exit_turrets 2)
 	(ai_place lab_carriers_01/init1)
 	(ai_place lab_carriers_01/init2)
@@ -2302,7 +2302,7 @@
 			(= (volume_test_objects_all vol_lab_floor (players)) TRUE)
 			(> (player_count) 0)
 		)
-	30 8000)
+	30 4000)
 	(data_mine_set_mission_segment "04b_8_flood_lab_mid_01")
 	(game_save_no_timeout)
 	(ai_place lab_heretics_above 3)
