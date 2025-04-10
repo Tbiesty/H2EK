@@ -6200,7 +6200,7 @@
 	(device_operates_automatically_set control_room_ext FALSE)
 	(device_operates_automatically_set lab_exit_ext FALSE)
 	(device_operates_automatically_set arm_02_entry_ext FALSE)
-	(ai_place dogfighters_init 2)
+	(ai_place dogfighters_init 1)
 	(activate_team_nav_point_flag default_red player he_went_here 0)
 	(set g_breadcrumb_nav_index 13)
 
