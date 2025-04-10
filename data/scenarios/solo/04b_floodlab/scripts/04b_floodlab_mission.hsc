@@ -2059,22 +2059,22 @@
 	(sleep_until 
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/1)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/2)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/3)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/4)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/5)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/6)
 				)
 				(if (< (ai_nonswarm_count lab_flood) 5)
@@ -2099,7 +2099,7 @@
 	(sleep_until
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_02 1)
 				)
 				(if (< (ai_nonswarm_count lab_flood) 5)
@@ -2209,13 +2209,13 @@
 (script dormant lab_wave_new_01
 	(sleep_until
 		(begin
-			(if (< (ai_nonswarm_count lab_flood) 4)
+			(if (< (ai_nonswarm_count lab_flood) 3)
 				(begin
 					(ai_place lab_carriers_02 1)
 					(set lab_flood_count (+ lab_flood_count 1))
 				)
 			)
-			(> lab_flood_count 5)
+			(> lab_flood_count 4)
 		)
 	30 8000)
 )
@@ -2231,7 +2231,7 @@
 			)
 			FALSE
 		)
-	30 1350)
+	30 1800)
 )
 
 ;Overall script for the lab
@@ -2356,31 +2356,31 @@
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r1)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r2)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r3)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r4)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r5)
 						(sleep (random_range 10 40))
@@ -2423,10 +2423,10 @@
 
 	(set lab_flood_count 0)
 	(wake lab_wave_new_02)	
-	(sleep 450)
+	(sleep 1800)
 	
-	(sleep_until (< (ai_nonswarm_count lab_flood) 2) 30 450)
-	(sleep_until (= (ai_trigger_test "done_fighting" lab_flood) TRUE) 30 1200)	
+	(sleep_until (< (ai_nonswarm_count lab_flood) 2) 30 900)
+	(sleep_until (= (ai_trigger_test "done_fighting" lab_flood) TRUE) 30 900)	
 	(data_mine_set_mission_segment "04b_9_flood_lab_mid_02")
 	(game_save_no_timeout)
 
