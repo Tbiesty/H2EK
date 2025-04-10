@@ -3082,7 +3082,7 @@
 	)
 )
 
-(global short w_path_spawn_count 5)
+(global short w_path_spawn_count 6)
 
 (script command_script throw_grenade
 	(cs_enable_moving TRUE)
@@ -3118,7 +3118,7 @@
 					(= (volume_test_objects vol_winding_path_mid_01 (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_01 2)
+				(ai_place winding_path_ghosts_01 1)
 			)
 			(sleep_until (= (volume_test_objects vol_winding_path_mid_01 (players)) TRUE) 30 (random_range 30 90))
 			(if 
@@ -3126,7 +3126,7 @@
 					(= (volume_test_objects vol_winding_path_mid_01 (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_01 2)
+				(ai_place winding_path_ghosts_01 1)
 			)
 			(OR
 				(= (volume_test_objects vol_winding_path_mid_01 (players)) TRUE)
@@ -3158,7 +3158,7 @@
 					(= (volume_test_objects vol_waterfall_on (players)) FALSE)
 					(> (player_count) 0)
 				)
-					(ai_place winding_path_ghosts_02 2)
+				(ai_place winding_path_ghosts_02 1)
 			)
 			(sleep_until (= (volume_test_objects vol_waterfall_on (players)) TRUE) 30 (random_range 30 90))
 			(if 
@@ -5819,38 +5819,34 @@
 			(= (volume_test_objects vol_approach_ramp (players)) TRUE)
 		)
 	)
+	(ai_place approach_buggers)
 
 ;9/12
 
-	(if 
-		(AND
-			(= (volume_test_objects vol_approach_ramp (players)) FALSE)
-			(> (player_count) 0)
-			(< (ai_living_count approach_enemies) 16)
-		)
-		(ai_place approach_buggers)
-	)
-	(sleep 2)
-	
-	(sleep_until (<= (ai_living_count approach_buggers) 1))
-	(sleep 150)
-
-	; (sleep_until
+	; (if 
 	; 	(AND
-	; 		(OR
-	; 			(= (volume_test_object vol_no_see_ramp (player0)) TRUE)
-	; 			(= (volume_test_object vol_no_see_approach (player0)) TRUE)
-	; 		)
-	; 		(OR
-	; 			(= (volume_test_object vol_no_see_ramp (player1)) TRUE)
-	; 			(= (volume_test_object vol_no_see_approach (player1)) TRUE)
-	; 			(= (game_is_cooperative) FALSE)
-	; 		)
+	; 		(= (volume_test_objects vol_approach_ramp (players)) FALSE)
+	; 		(> (player_count) 0)
+	; 		(< (ai_living_count approach_enemies) 16)
 	; 	)
+	; 	(ai_place approach_buggers)
 	; )
-	(if (< (ai_living_count approach_enemies) 16)
-		(ai_place approach_buggers_too 5)
+	(sleep 30)
+	(sleep_until (<= (ai_living_count approach_buggers) 1))
+	(sleep_until
+		(AND
+			(OR
+				(= (volume_test_object vol_no_see_ramp (player0)) TRUE)
+				(= (volume_test_object vol_no_see_approach (player0)) TRUE)
+			)
+			(OR
+				(= (volume_test_object vol_no_see_ramp (player1)) TRUE)
+				(= (volume_test_object vol_no_see_approach (player1)) TRUE)
+				(= (game_is_cooperative) FALSE)
+			)
+		)
 	)
+	(ai_place approach_buggers_too)
 )
 
 
