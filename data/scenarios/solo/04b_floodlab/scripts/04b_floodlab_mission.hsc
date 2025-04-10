@@ -2059,22 +2059,22 @@
 	(sleep_until 
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_01/1)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_01/2)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_01/3)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_01/4)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_01/5)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_01/6)
 				)
 				(if (< (ai_nonswarm_count lab_flood) 5)
@@ -2099,7 +2099,7 @@
 	(sleep_until
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(ai_place lab_carriers_02 1)
 				)
 				(if (< (ai_nonswarm_count lab_flood) 5)
@@ -2209,16 +2209,17 @@
 (script dormant lab_wave_new_01
 	(sleep_until
 		(begin
-			(if (< (ai_nonswarm_count lab_flood) 5)
+			(if (< (ai_nonswarm_count lab_flood) 4)
 				(begin
 					(ai_place lab_carriers_02 1)
 					(set lab_flood_count (+ lab_flood_count 1))
 				)
 			)
-			(> lab_flood_count 8)
+			(> lab_flood_count 5)
 		)
-	30 900)
+	30 8000)
 )
+
 (script dormant lab_wave_new_02
 	(sleep_until
 		(begin
@@ -2228,9 +2229,9 @@
 					(set lab_flood_count (+ lab_flood_count 1))
 				)
 			)
-			(> lab_flood_count 12)
+			FALSE
 		)
-	30 900)
+	30 1350)
 )
 
 ;Overall script for the lab
@@ -2355,31 +2356,31 @@
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(begin
 						(ai_place lab_carriers_02/r1)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(begin
 						(ai_place lab_carriers_02/r2)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(begin
 						(ai_place lab_carriers_02/r3)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(begin
 						(ai_place lab_carriers_02/r4)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 5)
+				(if (< (ai_nonswarm_count lab_flood) 4)
 					(begin
 						(ai_place lab_carriers_02/r5)
 						(sleep (random_range 10 40))
@@ -2422,10 +2423,10 @@
 
 	(set lab_flood_count 0)
 	(wake lab_wave_new_02)	
-	(sleep 600)
+	(sleep 450)
 	
-	(sleep_until (< (ai_nonswarm_count lab_flood) 2) 30 600)
-	(sleep_until (= (ai_trigger_test "done_fighting" lab_flood) TRUE) 30 1800)	
+	(sleep_until (< (ai_nonswarm_count lab_flood) 2) 30 450)
+	(sleep_until (= (ai_trigger_test "done_fighting" lab_flood) TRUE) 30 1200)	
 	(data_mine_set_mission_segment "04b_9_flood_lab_mid_02")
 	(game_save_no_timeout)
 
@@ -2613,10 +2614,10 @@
 
 ;9/12
 
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_heretics_R_02 2)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_h_grunts_R_03 (- 4 (+ (ai_living_count bridge_h_grunts_init) (ai_living_count bridge_runners))))
 	)
 
@@ -2627,7 +2628,7 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_heretics_R_04 (- 2 (ai_living_count bridge_heretics_R_02)))
 	)
 
@@ -2637,7 +2638,7 @@
 			(= (volume_test_objects vol_wrap_right_03 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_sentinels_R_05 3)
 	)
 
@@ -2648,10 +2649,10 @@
 		)
 	)
 	(set bridge_final_gone TRUE)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_heretics_final (- 2 (+ (ai_living_count bridge_heretics_R_04) (ai_living_count bridge_heretics_L_04))))
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_h_grunts_final 2)
 	)
 )
@@ -2662,10 +2663,10 @@
 			(= (volume_test_objects vol_wrap_left_01 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_heretics_L_02 2)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_h_grunts_L_03 (- 4 (+ (ai_living_count bridge_h_grunts_init) (ai_living_count bridge_runners))))
 	)
 
@@ -2676,7 +2677,7 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_heretics_L_04 (- 2 (ai_living_count bridge_heretics_L_02)))
 	)
 	
@@ -2686,7 +2687,7 @@
 			(= (volume_test_objects vol_wrap_left_03 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_sentinels_L_05 3)
 	)
 
@@ -2697,10 +2698,10 @@
 		)
 	)
 	(set bridge_final_gone TRUE)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_heretics_final (- 2 (+ (ai_living_count bridge_heretics_R_04) (ai_living_count bridge_heretics_L_04))))
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 16)
 		(ai_place bridge_h_grunts_final 2)
 	)
 )
