@@ -3122,7 +3122,7 @@
 *;
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count ledge_a_flood) 3))
+			(sleep_until (<= (ai_living_count ledge_a_flood) 2))
 			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
 			(cond
 				((= g_ledge_a_player_loc 2) (ai_ledge_a_flood_b))
@@ -3133,7 +3133,7 @@
 				((= g_ledge_a_player_loc 7) (ai_ledge_a_flood_f))
 			)
 			(or ; exit conditions 
-				(>= (ai_spawn_count ledge_a_flood) 24)
+				(>= (ai_spawn_count ledge_a_flood) 16)
 				g_ledge_a_spawn
 			)
 		)
@@ -3971,8 +3971,8 @@
 
 (script dormant ai_qz_cov_def_flood_spawn
 	(cond
-		((difficulty_normal) (set g_qz_cov_def_limit 2))
-		((difficulty_heroic) (set g_qz_cov_def_limit 4))
+		((difficulty_normal) (set g_qz_cov_def_limit 4))
+		((difficulty_heroic) (set g_qz_cov_def_limit 5))
 		((difficulty_legendary) (set g_qz_cov_def_limit 6))
 	)
 
