@@ -25,7 +25,7 @@
 (script command_script cs_invul_8
 	(cs_enable_moving 1)
 	(object_cannot_take_damage (ai_get_object ai_current_actor))
-	(sleep (* 30 6))
+	(sleep (* 30 8))
 	(object_can_take_damage (ai_get_object ai_current_actor))
 )
 
@@ -427,12 +427,12 @@
 	(sleep (ai_play_line_on_object none 0620))
 	(sleep dialogue_pause)
 
-	(if dialogue (print "SPEC-OPS: Impossible! It's never done that before!"))
-	(sleep (ai_play_line_on_object none 0640))
-	(sleep dialogue_pause)
+	; (if dialogue (print "SPEC-OPS: Impossible! It's never done that before!"))
+	; (sleep (ai_play_line_on_object none 0630))
+	; (sleep dialogue_pause)
 
 	(if dialogue (print "SPEC-OPS: No matter. It will die all the same!"))
-	(sleep (ai_play_line_on_object none 0650))
+	(sleep (ai_play_line_on_object none 0640))
 	(sleep dialogue_pause)
 )
 
@@ -463,22 +463,22 @@
 	(sleep (ai_play_line_on_object none 0260))
 	(sleep dialogue_pause)
 
-	(if dialogue (print "COMMANDER: Human fools. I almost feel sorry for them."))
-	(sleep (ai_play_line_on_object none 0290))
-	(sleep dialogue_pause)
+	; (if dialogue (print "COMMANDER: Human fools. I almost feel sorry for them."))
+	; (sleep (ai_play_line_on_object none 0290))
+	; (sleep dialogue_pause)
 )
 
 ; plays in the gateway to the final vehicle space (right after the crashed factory exit) 
 (script dormant sc_factory_exit
 	(sleep 60)
-	(if dialogue (print "SPEC-OPS: Humans and parasites!"))
-	(if dialogue (print "This ring has been befouled, but we will wipe it clean!"))
-	(sleep (ai_play_line_on_object none 0270))
-	(sleep dialogue_pause)
+	; (if dialogue (print "SPEC-OPS: Humans and parasites!"))
+	; (if dialogue (print "This ring has been befouled, but we will wipe it clean!"))
+	; (sleep (ai_play_line_on_object none 0270))
+	; (sleep dialogue_pause)
 
-	(if dialogue (print "SPEC-OPS: Honoring those who built it!"))
-	(sleep (ai_play_line_on_object none 0280))
-	(sleep dialogue_pause)
+	; (if dialogue (print "SPEC-OPS: Honoring those who built it!"))
+	; (sleep (ai_play_line_on_object none 0280))
+	; (sleep dialogue_pause)
 )
 
 ; plays at the exit from the crashed sentinel factory 
@@ -490,6 +490,15 @@
 
 ; plays when the exterior b covenant reinforcements get dropped off 
 (script dormant sc_ext_b
+	(if dialogue (print "SPEC-OPS: Humans and parasites!"))
+	(if dialogue (print "This ring has been befouled, but we will wipe it clean!"))
+	(sleep (ai_play_line_on_object none 0270))
+	(sleep dialogue_pause)
+
+	(if dialogue (print "SPEC-OPS: Honoring those who built it!"))
+	(sleep (ai_play_line_on_object none 0280))
+	(sleep dialogue_pause)
+
 	(if dialogue (print "SPEC-OPS: Forward to the Icon!"))
 	(sleep (ai_play_line_on_object none 0700))
 	(sleep dialogue_pause)
@@ -1005,32 +1014,32 @@
 	)
 	(sleep g_order_delay)
 
-	(sleep_until
-		(begin	
-			(cond
-				((passenger_seat_test)	(begin
-										(if debug (print "player is passenger"))
-										(ai_set_orders covenant_infantry cov_follow_ext_a_fact_ent)
-										(ai_set_orders covenant_vehicles cov_drive_ext_a_f)
-									)
-				)
-				(true (ai_set_orders covenant cov_follow_ext_a_fact_ent))
-			)
-			(or ; exit conditions 
-				(and
-					(volume_test_objects tv_ext_a_f (players))
-					(ai_trigger_test "done_fighting" covenant)
-				)
-				(and
-					(volume_test_objects tv_ext_a_f (players))
-					(<= (ai_living_count ext_a_sen_f) 0)
-					(<= (ai_living_count ext_a_flood_f) 0)
-				)
-				g_ext_a_fact_ent_migrate
-			)
-		)
-	)
-	(sleep g_order_delay)
+	; (sleep_until
+	; 	(begin	
+	; 		(cond
+	; 			((passenger_seat_test)	(begin
+	; 									(if debug (print "player is passenger"))
+	; 									(ai_set_orders covenant_infantry cov_follow_ext_a_fact_ent)
+	; 									(ai_set_orders covenant_vehicles cov_drive_ext_a_f)
+	; 								)
+	; 			)
+	; 			(true (ai_set_orders covenant cov_follow_ext_a_fact_ent))
+	; 		)
+	; 		(or ; exit conditions 
+	; 			(and
+	; 				(volume_test_objects tv_ext_a_f (players))
+	; 				(ai_trigger_test "done_fighting" covenant)
+	; 			)
+	; 			(and
+	; 				(volume_test_objects tv_ext_a_f (players))
+	; 				(<= (ai_living_count ext_a_sen_f) 0)
+	; 				(<= (ai_living_count ext_a_flood_f) 0)
+	; 			)
+	; 			g_ext_a_fact_ent_migrate
+	; 		)
+	; 	)
+	; )
+	; (sleep g_order_delay)
 
 	(sleep_until
 		(begin	
@@ -1175,15 +1184,18 @@
 	
 	(cs_run_command_script covenant cs_ext_b_exit) ; new order set in the command script 
 	
-	(sleep_until (= (structure_bsp_index) 3))
-	(ai_migrate covenant key_cov_dump)
-	(sleep 5)
+	; (sleep_until (= (structure_bsp_index) 3))
+	; (ai_erase covenant)
+	; (ai_place e20_cov_inf0 1)
+	; (object_cannot_die (ai_get_object e20_cov_inf0/soc) true)
+	; (sleep 5)
 	
-	(ai_teleport_to_starting_location_if_outside_bsp key_cov_dump)
-	(sleep 5)
-	(ai_set_orders covenant cov_follow_key_ent)
-)
+	; (ai_teleport_to_starting_location_if_outside_bsp key_cov_dump)
+	; (ai_migrate key_cov_dump e20_cov_inf0)
+	; (ai_set_orders e20_cov_inf0 cov_follow_key_ent)
 
+	; (sleep 5)
+)
 
 ;====== COVENANT DEFENSE =================================================================
 (script command_script cs_cov_def_phantom
@@ -1314,11 +1326,11 @@
 (script command_script cs_ext_a_pelican
 ;	(cs_enable_pathfinding_failsafe true)
 	(cs_shoot false)
-		(vehicle_load_magic
-			(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/pelican)
-			"pelican_lc"
-			(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/scorpion)
-		)
+	; (vehicle_load_magic
+	; 	(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/pelican)
+	; 	"pelican_lc"
+	; 	(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/scorpion)
+	; )
 	
 	(cs_fly_by qz_ext_a_pelican/p0 3)
 ;	(cs_fly_by qz_ext_a_pelican/p1 3)
@@ -1339,7 +1351,7 @@
 (global vehicle v_ext_a_phantom none)
 
 (script command_script cs_ext_a_phantom
-	(ai_place qz_ext_a_spec_ops (pin (- 3 (ai_living_count covenant)) 2 3))
+	(ai_place qz_ext_a_spec_ops)
 	(ai_place qz_ext_a_ghosts)
 	(cs_shoot true)
 	(cs_enable_pathfinding_failsafe true)
@@ -1471,7 +1483,7 @@
 		(begin
 			(sleep_until (<= (ai_living_count qz_ext_a_flood_ghosts) 1))
 			(sleep (random_range 60 120))
-			(ai_place qz_ext_a_flood_ghosts)
+			(if (= g_qz_ext_a_flood_ghosts 0) (ai_place qz_ext_a_flood_ghosts))
 			(set g_qz_ext_a_flood_ghosts_count (+ g_qz_ext_a_flood_ghosts_count 1))
 			(if (= g_qz_ext_a_flood_ghosts_count g_qz_ext_a_flood_ghosts_index) (set g_qz_ext_a_flood_ghosts 1))
 		g_qz_ext_a_flood_ghosts)
@@ -1750,7 +1762,7 @@
 			(sleep 60)
 			(ai_place gorge_sen)
 			(set g_gorge_sen_count (+ g_gorge_sen_count 1))
-			(if (= g_gorge_sen_count g_gorge_sen_index) (set g_fact_ent_sen_spawn 1))
+			(if (= g_gorge_sen_count g_gorge_sen_index) (set g_gorge_sen_spawn 1))
 		g_gorge_sen_spawn)
 	)
 )
@@ -4454,11 +4466,14 @@ Open Issues
 ;- Order Scripts ---------------------------------------------------------------
 ;- Squad Controls --------------------------------------------------------------
 
-; (script dormant e20_cov_inf0_main
-; 	; FILL THIS WITH MIGRATION COMMANDS
-; 	(sleep 1)
-; )
-
+(script dormant e20_cov_inf0_main
+	;(sleep_until (= (structure_bsp_index) 3))
+	(ai_erase covenant)
+	(ai_place e20_cov_inf0 1)
+	(object_cannot_die (ai_get_object e20_cov_inf0/soc) true)
+	(sleep 5)
+		;(ai_migrate key_cov_dump e20_cov_inf0)
+)
 
 ;- Init and Cleanup ------------------------------------------------------------
 
@@ -4470,7 +4485,7 @@ Open Issues
 	; Wake subsequent scripts
 
 	; Wake control scripts
-	;(wake e20_cov_inf0_main)
+	(wake e20_cov_inf0_main)
 	(ai_place e20_fld_combats0_0)
 	(ai_place e20_fld_combats0_1)
 
@@ -4557,28 +4572,28 @@ Open Issues
 	(game_save)
 	(ai_renew covenant)
 
-		(ai_disposable cov_def_sentinels true)
-		(ai_disposable cov_def_enf true)
-	
-		(set g_veh_int_migrate_a 1)
-		(set g_music_06b_01 1)
-	
-		(wake music_06b_01)
-		(wake sc_qz_veh_int)
-	
-		(ai_place veh_int_enf_a) ; 2 
-		(ai_place veh_int_enf_b) ; 1 
-		(ai_place veh_int_enf_d) ; 2 
-		(ai_place veh_int_sen_elim_ini)  ; 2 
-		(ai_place veh_int_scorpion) ; 0 
-		(ai_place veh_int_flood_ghosts_ini) ; 2 
-		(ai_place veh_int_wraith/wraith)
-		(ai_place veh_int_turrets)
-		(ai_place veh_int_hog_ab) ; 0 
-		(ai_place veh_int_ghost_ab) ;0 
-		(sleep 15)
-	
-		(device_operates_automatically_set veh_int_door_a 1)
+	(ai_disposable cov_def_sentinels true)
+	(ai_disposable cov_def_enf true)
+
+	(set g_veh_int_migrate_a 1)
+	(set g_music_06b_01 1)
+
+	(wake music_06b_01)
+	(wake sc_qz_veh_int)
+
+	(ai_place veh_int_enf_a) ; 2 
+	(ai_place veh_int_enf_b) ; 1 
+	(ai_place veh_int_enf_d) ; 2 
+	(ai_place veh_int_sen_elim_ini)  ; 2 
+	(ai_place veh_int_scorpion) ; 0 
+	(ai_place veh_int_flood_ghosts_ini) ; 2 
+	(ai_place veh_int_wraith/wraith)
+	;(ai_place veh_int_turrets)
+	(ai_place veh_int_hog_ab) ; 0 
+	(ai_place veh_int_ghost_ab) ;0 
+	(sleep 15)
+
+	(device_operates_automatically_set veh_int_door_a 1)
 
 	(sleep_until (volume_test_objects tv_veh_int_b (players)))
 		(game_save)
@@ -4671,8 +4686,7 @@ Open Issues
 		(ai_place qz_ext_a_enf_a)
 		(ai_place qz_ext_a_flood_rocket)
 	
-		(wake sc_ext_a)
-		(ai_place qz_ext_a_phantom)
+		(if (<= (ai_living_count covenant) 1) (begin (wake sc_ext_a) (ai_place qz_ext_a_phantom)))
 		(set v_ext_a_phantom (ai_vehicle_get_from_starting_location qz_ext_a_phantom/phantom))
 
 
@@ -4713,7 +4727,7 @@ Open Issues
 	
 	(sleep_until (volume_test_objects tv_ext_a_f (players)))
 		(data_mine_set_mission_segment enc_ext_a_fact_ent)
-		(game_save_no_timeout)
+		(game_save)
 		
 		(set g_ext_a_migrate_f 1)
 		(set g_music_06b_02 1)
@@ -4787,7 +4801,7 @@ Open Issues
 		(ai_disposable factory2_enemies true)
 	
 		(wake music_06b_04)
-		(wake sc_factory_exit)
+		;(wake sc_factory_exit)
 		(wake objective_push_clear)
 		(wake objective_link_set)
 		(wake ext_b_vehicle_orders)
@@ -4802,8 +4816,8 @@ Open Issues
 		(ai_place qz_ext_b_enf_a)
 		
 	(sleep_until (volume_test_objects tv_ext_b_fact_mid (players)))
-		(game_save)
-		(ai_place qz_ext_b_fact_warthog)
+	(game_save)
+	(ai_place qz_ext_b_fact_ghost_bk)
 
 	(sleep_until	(or
 					(and 
@@ -4863,7 +4877,7 @@ Open Issues
 		(ai_place qz_ext_b_ent_enf)
 		(ai_place qz_ext_b_ent_scorpion)
 		(ai_place qz_ext_b_ent_wraith_a)
-		(ai_place qz_ext_b_ent_cov_phantom)
+		;(ai_place qz_ext_b_ent_cov_phantom)
 	
 	(sleep_until (volume_test_objects tv_ext_b_exit (players)) 5)
 		(data_mine_set_mission_segment enc_qz_ext_b_exit)
@@ -4897,7 +4911,7 @@ Open Issues
 (script dormant enc_key_ride
 		(print "initialize key ride scripts")
 		(game_save)
-		(ai_renew covenant)
+		; (ai_renew covenant)
 		
 		(wake music_06b_05)
 		(wake music_06b_06)
@@ -5008,7 +5022,7 @@ Open Issues
 	(sleep_until (volume_test_objects tv_qz_ext_b (players)))
 	(wake enc_qz_ext_b)
 
-	(sleep_until (volume_test_objects tv_key_ride (players)))
+	(sleep_until (= (structure_bsp_index) 3))
 	(wake enc_key_ride)
 	
 	; TODO: Paul should change this to test g_e26_ended, like this:
