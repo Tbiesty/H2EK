@@ -2039,13 +2039,13 @@
 								(set g_plug_launch_limit 0)
 								(set g_plug_launch_index 2)
 								(if debug (print "emitters off"))
-								(sleep_forever)
+								;(sleep_forever)
 							)
 		)
 		((difficulty_heroic)	(begin
 								(set g_plug_launch_limit 0)
 								(set g_plug_launch_index 3)
-								(sleep_until g_plug_launch_em_heroic)
+								;(sleep_until g_plug_launch_em_heroic)
 								(if debug (print "emitters on"))
 							)
 		)
@@ -2124,8 +2124,7 @@
 							(<= (random_range 0 10) 3)
 						)
 						(ai_plug_launch_em_h))
-						
-						(true (begin (ai_place plug_launch_sen) (set g_plug_launch_count (+ g_plug_launch_count 1))))
+						(true (begin (set g_plug_launch_count (+ g_plug_launch_count 1))))
 					)
 					(if (= g_plug_launch_count g_plug_launch_index) (set g_plug_launch_wave 1))
 					(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
@@ -2286,7 +2285,6 @@
 
 ;	(device_set_position_immediate plug_holder_lock_lt 1)
 ;	(device_set_position_immediate plug_holder_lock_rt 1)
-
 	(game_save)
 	
 	(wake plug_rods08)
@@ -2297,7 +2295,7 @@
 ;	(wake plug_rods03)
 ;	(wake plug_rods02)
 ;	(wake plug_rods01)
-	
+	(sleep 90)
 	(wake sc_plug_launch)
 ;*
 	(sleep_until (<= (absorber_totalcount) 7))
@@ -2323,11 +2321,11 @@
 	
 	(sleep_until (<= (absorber_totalcount) 3))
 	(if debug (print "absorber activated!"))
-	
+
 	(sleep_until (<= (absorber_totalcount) 2))
 	(if debug (print "absorber activated!"))
-	(set g_plug_launch_em_heroic 1)
-	
+	;(set g_plug_launch_em_heroic 1)
+
 	(sleep_until (<= (absorber_totalcount) 1))
 	(if debug (print "absorber activated!"))
 	(set g_final_lock 1)
@@ -4106,17 +4104,17 @@
 	(wake music_06a_01)
 	(sleep 1)
 	
-	(if (not (difficulty_legendary))
-			(sleep_until	(or
-							(< (ai_strength ins_cons) 1)
-							(volume_test_objects tv_insertion_tube (players))
-						)
-			5)
-			(begin (sleep 60) (wake ai_insertion_emitters))
-	)
+	; (if (not (difficulty_legendary))
+			; (sleep_until	(or
+			; 				(< (ai_strength ins_cons) 1)
+			; 				(volume_test_objects tv_insertion_tube (players))
+			; 			)
+			; 5)
+	(begin (sleep 60) (wake ai_insertion_emitters))
+	; )
 	(if (< (ai_strength ins_cons) 1)
 		(begin
-			(wake ai_insertion_emitters)
+			; (wake ai_insertion_emitters)
 ;			(ai_disregard (ai_actors constructors) true)
 			(if (= (device_get_position piston_ins) 0) (begin
 												(ai_set_orders ins_con_mid ins_run_away)
