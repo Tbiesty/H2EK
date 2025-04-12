@@ -3655,27 +3655,18 @@
 (global boolean g_jail_round_lift_spawned 0)
 
 (script dormant ai_jail_down_lift
-	(sleep_until (and (volume_test_objects tv_jail_top (players)) (<= (ai_living_count jail_prophets) 2)) 30 (* 30 30))
+	(sleep_until (volume_test_objects tv_jail_top (players)))
 	(data_mine_set_mission_segment enc_jail_down_lift)
 	(sleep 60)
 	
 	(wake sc_lift_reins)
-	
-	(begin_random
-		(begin
-			(ai_place jail_jackals_down)
-			(sleep_until (volume_test_objects_all tv_jail_top (ai_actors jail_jackals_down)) 30 450)
-		)
-		(begin
-			(ai_place jail_grunts_down)
-			(sleep_until (volume_test_objects_all tv_jail_top (ai_actors jail_grunts_down)) 30 450)
-		)
-	)
+	(ai_place jail_grunts_down)
+	(sleep 180)
+    (ai_actors jail_jackals_down)
+	(sleep 180)
 	(ai_place jail_brutes_down)
-	(sleep_until (volume_test_objects_all tv_jail_top (ai_actors jail_brutes_down))30 450)
-	(sleep 90)
+	(sleep 180)
 	(set g_jail_round_lift_spawned 1)
-	
 	(wake sc_jail_clear)
 )
 
