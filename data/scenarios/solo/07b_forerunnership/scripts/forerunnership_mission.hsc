@@ -812,7 +812,7 @@
 					(sleep (ai_play_line_on_object none 2950))
 					(sleep (ai_play_line_at_player cortana 2950))
 			)
-			(sleep (ai_play_line_on_object none 2950))
+			;(sleep (ai_play_line_on_object none 2950))
 			(sleep dialogue_pause)
 ;		)	*;
 ;		(begin
@@ -1246,12 +1246,9 @@
 
 (script dormant e11_start
 	(sleep_until (volume_test_objects tv_e10_screen (players)) 5)
+	(sleep 150)
     (ai_place e11_fld_inf1)
-	(if
-		(random_range 0 2)
-		(sound_impulse_start sound\characters\flood\flood_howls e8_howler1 1)
-		(sound_impulse_start sound\characters\flood\flood_howls e8_howler3 1)
-	)
+	(sound_impulse_start sound\characters\flood\flood_howls e11_howler1 1)
 )
 
 (script dormant e12_main
@@ -1389,34 +1386,34 @@
 	;Start the Flood waves off real easy
 	(begin_random
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 1)
-			; 	(begin 
-			(ai_place e10_fld_inf1/guy1)
-			(ai_place e10_fld_inf1/guy2)
-			(sleep 1)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 1)
+				(begin 
+					(ai_place e10_fld_inf1/guy1)
+					(ai_place e10_fld_inf1/guy2)
+					(sleep 60)
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 1)
-			; 	(begin 
-			(ai_place e10_fld_inf1/guy4)
-			(ai_place e10_fld_inf1/guy5)
-			(sleep 1)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 1)
+				(begin 
+					(ai_place e10_fld_inf1/guy4)
+					(ai_place e10_fld_inf1/guy5)
+					(sleep 60)
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 1)
-			; 	(begin 
-			(ai_place e10_fld_inf1/guy3)
-			(ai_place e10_fld_inf1/guy6)
-			(sleep 1)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 1)
+				(begin 
+					(ai_place e10_fld_inf1/guy3)
+					(ai_place e10_fld_inf1/guy6)
+					(sleep 60)
+				)
+			)
 		)
 	)
 	;Wave two of the Flood after more Covenant are dead as well as all the previous Flood
@@ -1424,48 +1421,48 @@
 	(set g_e10_talk 1)
 	(begin_random
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 2)
-			; 	(begin
-			(ai_place e10_fld_inf1/guy1)
-			(ai_place e10_fld_inf1/guy2)
-			(ai_place e10_fld_inf1/guy3)
-			(sleep 15)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 2)
+				(begin
+					(ai_place e10_fld_inf1/guy1)
+					(ai_place e10_fld_inf1/guy2)
+					(ai_place e10_fld_inf1/guy3)
+					(sleep 60)
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 2)
-			; 	(begin
-			(ai_place e10_fld_inf1/guy4)
-			(ai_place e10_fld_inf1/guy5)
-			(ai_place e10_fld_inf1/guy6)
-			(sleep 15)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 2)
+				(begin
+					(ai_place e10_fld_inf1/guy4)
+					(ai_place e10_fld_inf1/guy5)
+					(ai_place e10_fld_inf1/guy6)
+					(sleep 60)
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 2)
-			; 	(begin
-			(ai_place e10_fld_inf1/guy1)
-			(ai_place e10_fld_inf1/guy5)
-			(ai_place e10_fld_inf1/guy6)
-			(sleep 15)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 2)
+				(begin
+					(ai_place e10_fld_inf1/guy1)
+					(ai_place e10_fld_inf1/guy5)
+					(ai_place e10_fld_inf1/guy6)
+					(sleep 60)
+				)
+			)
 		)		
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 2)
-			; 	(begin
-			(ai_place e10_fld_inf1/guy2)
-			(ai_place e10_fld_inf1/guy3)
-			(ai_place e10_fld_inf1/guy4)
-			(sleep 15)
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 2)
+				(begin
+					(ai_place e10_fld_inf1/guy2)
+					(ai_place e10_fld_inf1/guy3)
+					(ai_place e10_fld_inf1/guy4)
+					(sleep 60)
+				)
+			)
 		)
 	)
 	; Unleash the final wave(s?) of Flood after the last of the Covenant defenders are dead as disco! 
@@ -1473,80 +1470,101 @@
 ;	(set g_e10_talk 2) ; tyson: never did anything except potentially break e10_talking_points
 	(begin_random
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 3)
-			; 	;Wave on the right side of the Room
-			; 	(begin
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler1 1)
-			(ai_place e10_fld_inf1/guy1)
-			(ai_place e10_fld_inf1/guy2)
-			(ai_place e10_fld_inf1/guy3)
-			(sleep (random_range 90 150))
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler3 1)
-			(ai_place e10_fld_inf1/guy7)
-			(ai_place e10_fld_inf1/guy8)
-			(ai_place e10_fld_inf1/guy9)
-			; (if
-			; 	(difficulty_legendary)
-			; 	(ai_set_orders e10_fld_inf1 e10_fld_storm_z)
-			; )
-			(sleep (random_range 90 150))
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 3)
+				;Wave on the right side of the Room
+				(begin
+					(sound_impulse_start sound\characters\flood\flood_howls e10_howler1 1)
+					(ai_place e10_fld_inf1/guy1)
+					(ai_place e10_fld_inf1/guy2)
+					(ai_place e10_fld_inf1/guy3)
+					(sleep (random_range 90 150))
+					(if
+						(<= (ai_living_count e10_flood_storm) 3)
+						;Wave on the right side of the Room
+						(begin
+							(sound_impulse_start sound\characters\flood\flood_howls e10_howler3 1)
+							(ai_place e10_fld_inf1/guy7)
+							(ai_place e10_fld_inf1/guy8)
+							(ai_place e10_fld_inf1/guy9)
+							; (if
+							; 	(difficulty_legendary)
+							; 	(ai_set_orders e10_fld_inf1 e10_fld_storm_z)
+							; )
+						)
+					)
+					(sleep (random_range 90 150))
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 3)
-			; 	;Wave on the left side of the Room
-			; 	(begin
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler2 1)
-			(ai_place e10_fld_inf1/guy4)
-			(ai_place e10_fld_inf1/guy5)
-			(ai_place e10_fld_inf1/guy6)
-			(sleep (random_range 90 150))
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler4 1)
-			(ai_place e10_fld_inf1/guy10)
-			(ai_place e10_fld_inf1/guy11)
-			(ai_place e10_fld_inf1/guy12)
-			(sleep (random_range 90 150))
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 3)
+				;Wave on the left side of the Room
+				(begin
+					(sound_impulse_start sound\characters\flood\flood_howls e10_howler2 1)
+					(ai_place e10_fld_inf1/guy4)
+					(ai_place e10_fld_inf1/guy5)
+					(ai_place e10_fld_inf1/guy6)
+					(sleep (random_range 90 150))
+					(if
+						(<= (ai_living_count e10_flood_storm) 3)
+						(begin
+							(sound_impulse_start sound\characters\flood\flood_howls e10_howler4 1)
+							(ai_place e10_fld_inf1/guy10)
+							(ai_place e10_fld_inf1/guy11)
+							(ai_place e10_fld_inf1/guy12)
+						)
+					)
+					(sleep (random_range 90 150))
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 3)
-			; 	;Wave diagonal front-right, back left
-			; 	(begin
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler1 1)
-			(ai_place e10_fld_inf1/guy1)
-			(ai_place e10_fld_inf1/guy2)
-			(ai_place e10_fld_inf1/guy3)
-			(sleep (random_range 90 150))
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler4 1)
-			(ai_place e10_fld_inf1/guy10)
-			(ai_place e10_fld_inf1/guy11)
-			(ai_place e10_fld_inf1/guy12)
-			(sleep (random_range 90 150))
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 3)
+				;Wave diagonal front-right, back left
+				(begin
+					(sound_impulse_start sound\characters\flood\flood_howls e10_howler1 1)
+					(ai_place e10_fld_inf1/guy1)
+					(ai_place e10_fld_inf1/guy2)
+					(ai_place e10_fld_inf1/guy3)
+					(sleep (random_range 90 150))
+					(if
+						(<= (ai_living_count e10_flood_storm) 3)
+						(begin
+							(sound_impulse_start sound\characters\flood\flood_howls e10_howler4 1)
+							(ai_place e10_fld_inf1/guy10)
+							(ai_place e10_fld_inf1/guy11)
+							(ai_place e10_fld_inf1/guy12)
+						)
+					)
+					(sleep (random_range 90 150))
+				)
+			)
 		)
 		(begin
-			; (if
-			; 	(<= (ai_living_count e10_flood_storm) 3)
-			; 	;Wave diagonal front-left, back right
-			; 	(begin
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler2 1)
-			(ai_place e10_fld_inf1/guy4)
-			(ai_place e10_fld_inf1/guy5)
-			(ai_place e10_fld_inf1/guy6)
-			(sleep (random_range 90 150))
-			(sound_impulse_start sound\characters\flood\flood_howls e10_howler3 1)
-			(ai_place e10_fld_inf1/guy7)
-			(ai_place e10_fld_inf1/guy8)
-			(ai_place e10_fld_inf1/guy9)
-			(sleep (random_range 90 150))
-			; 	)
-			; )
+			(if
+				(<= (ai_living_count e10_flood_storm) 3)
+				;Wave diagonal front-left, back right
+				(begin
+					(sound_impulse_start sound\characters\flood\flood_howls e10_howler2 1)
+					(ai_place e10_fld_inf1/guy4)
+					(ai_place e10_fld_inf1/guy5)
+					(ai_place e10_fld_inf1/guy6)
+					(sleep (random_range 90 150))
+					(if
+						(<= (ai_living_count e10_flood_storm) 3)
+						(begin
+							(sound_impulse_start sound\characters\flood\flood_howls e10_howler3 1)
+							(ai_place e10_fld_inf1/guy7)
+							(ai_place e10_fld_inf1/guy8)
+							(ai_place e10_fld_inf1/guy9)
+						)
+					)
+					(sleep (random_range 90 150))
+				)
+			)
 		)
 	)
 	(set g_e10_move_on 1)
@@ -1707,7 +1725,7 @@
 		(game_safe_to_save)
 		(game_save)
 	)
-	(sleep 5)
+	(sleep 150)
 	; (if
 		; (game_safe_to_save)
 		; (begin
@@ -1717,34 +1735,22 @@
 		(begin
 			(ai_place e9_fld_inf1/guy1)
 			;)
-			(if
-				(random_range 0 2)
-				(sound_impulse_start sound\characters\flood\flood_howls e8_howler1 1)
-				(sound_impulse_start sound\characters\flood\flood_howls e8_howler3 1)
-			)
-			(sleep (random_range 60 90))
+			(sound_impulse_start sound\characters\flood\flood_howls e8_howler4 1)
+			(sleep (random_range 90 120))
 		)
 		(begin
 			;(if
 			;	(<= (ai_living_count e9_fld_inf1) 0)
 			(ai_place e9_fld_inf1/guy2)
 			;)
-			(if
-				(random_range 0 2)
-				(sound_impulse_start sound\characters\flood\flood_howls e8_howler1 1)
-				(sound_impulse_start sound\characters\flood\flood_howls e8_howler3 1)
-			)
-			(sleep (random_range 60 90))
+			(sound_impulse_start sound\characters\flood\flood_howls e8_howler4 1)
+			(sleep (random_range 90 120))
 		)
 		(begin
 			(ai_place e9_fld_inf1/guy3)
 			;)
-			(if
-				(random_range 0 2)
-				(sound_impulse_start sound\characters\flood\flood_howls e8_howler1 1)
-				(sound_impulse_start sound\characters\flood\flood_howls e8_howler3 1)
-			)
-			(sleep (random_range 60 90))
+			(sound_impulse_start sound\characters\flood\flood_howls e8_howler4 1)
+			(sleep (random_range 90 120))
 		)
 	)
 			; )
@@ -3042,10 +3048,10 @@
 
 	; tyson: instead, a single wave of reinforcements
 	(sleep_until (<= (ai_living_count e5_pro_bug1) 3))
-	(ai_place e5_pro_bug2_c)
+	(ai_place e5_pro_bug2_c 5)
 
 	(sleep_until (volume_test_objects tv_e5_platform_a2 (players)) 15)
-	(ai_place e5_pro_bug2_c)
+	(ai_place e5_pro_bug2_c 4)
 )				
 
 (script dormant e5_start_the_fight
@@ -3140,7 +3146,7 @@
 ; tyson	(wake e6_start)
 	(wake e5_talking_points)
 	(ai_place e5_pro_inf1)
-	(ai_place e5_pro_inf2)
+	;(ai_place e5_pro_inf2)
 )
 
 ;STARTING THE ENCOUNTER
@@ -3153,7 +3159,7 @@
 	; tyson: Initial conditions for e5_start
 	(sleep_until (volume_test_objects tv_e1_trigger2 (players)) 15)
 	(sleep_until (volume_test_objects tv_e2_trigger1 (players)) 15)
-	(wake e2_start)
+	;(wake e2_start)
 	(wake e5_start)
 	
 	; Start e6
