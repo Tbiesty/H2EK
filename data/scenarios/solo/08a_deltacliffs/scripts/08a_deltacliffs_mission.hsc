@@ -1600,10 +1600,18 @@ Open Issues
 )
 
 (script dormant e7_cov_ghosts0_main
-	(ai_migrate e6_cov e7_cov_ghosts0)
+	; Free them!
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost0) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost1) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost2) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost3) false)
 	
-	; Start the Grunts
-	(wake e7_cov_ghosts1_main)
+	; Grab the Elites (and give them time to enter their vehicles)
+	(ai_migrate e6_cov_inf0 e6_cov_ghosts0)
+	(ai_migrate e6_cov_gold_elite e6_cov_ghosts0)
+	(ai_enter_squad_vehicles e6_cov_ghosts0)
+	(sleep 300)
+	(ai_migrate e6_cov_ghosts0 e7_cov_ghosts0)
 )
 
 
@@ -1631,6 +1639,7 @@ Open Issues
 
 	; Wake control scripts
 	(wake e7_cov_ghosts0_main)
+	(wake e7_cov_ghosts1_main)
 	(wake e7_pro_inf0_main)
 	(wake e7_pro_inf1_main)
 	(wake e7_pro_inf2_main)
@@ -1921,7 +1930,7 @@ Open Issues
 			(player_in_vehicle)
 		)
 		30
-		two_minutes
+		one_minute
 	)
 	
 	; Free them!
@@ -3604,6 +3613,7 @@ Prophets
 	(set g_cov_stealth_major (ai_get_unit e1_cov_inf1/stealth_major))
 	
 	; Greeting scene
+	(sleep_until (<= (ai_living_count e1_pro) 0))
 	(sleep_until
 		(or
 			(ai_scene e1_stealth_major_scene cs_e1_stealth_major_scene e1_cov_inf1)
