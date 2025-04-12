@@ -986,7 +986,7 @@
 	(sleep 15)
 	(if dialogue (print "CORTANA: Here, Chief! Jump in!"))
 	(sleep (ai_play_line_at_player cortana_room_a 2300))
-	(ai_place room_a_tube_fodder)
+	;(ai_place room_a_tube_fodder)
 	(device_set_power room_a_lift 0)
 	(device_set_position room_a_lift_effect 1)
 	(sleep 30)
@@ -1197,7 +1197,7 @@
 		)
 	)
 	
-;	(sleep_until (<= (ai_living_count jail_prophets) 0))
+	(sleep_until (<= (+ (ai_living_count jail_brutes_down) (ai_living_count jail_jackals_down) (ai_living_count jail_grunts_down)) 0) 30 1200)
 	(sleep 90)
 	(object_destroy jail_down)
 	(device_set_position jail_up_effect 1)
@@ -2853,8 +2853,8 @@
 			(ai_place room_a_brutes_a)
 			(ai_place room_a_brutes_c)
 			(sleep 1)
-			(ai_place room_a_grunts_a (pin (- 16 (ai_living_count room_a_prophets)) 0 2))
-			(ai_place room_a_grunts_c (pin (- 16 (ai_living_count room_a_prophets)) 0 2))
+			(ai_place room_a_grunts_a (pin (- 8 (ai_living_count room_a_prophets)) 0 2))
+			(ai_place room_a_grunts_c (pin (- 8 (ai_living_count room_a_prophets)) 0 2))
 		)
 	)
 	
@@ -2865,7 +2865,7 @@
 		)
 		(begin
 			(ai_place room_a_brutes_b)
-			(ai_place room_a_grunts_b (pin (- 16 (ai_living_count room_a_prophets)) 0 2))
+			(ai_place room_a_grunts_b (pin (- 8 (ai_living_count room_a_prophets)) 0 2))
 		)
 	)
 )
@@ -3110,6 +3110,11 @@
 )
 
 (script command_script cs_lift_grunt_a
+	(object_cannot_take_damage (ai_get_object ai_current_actor))
+	(object_cannot_die (ai_get_object ai_current_actor) true)
+	(sleep (* 30 4))
+	(object_can_take_damage (ai_get_object ai_current_actor))
+	(object_cannot_die (ai_get_object ai_current_actor) false)
 	(cs_enable_pathfinding_failsafe true)
 ;	(sleep_until (volume_test_objects_all tv_jail_top (ai_actors jail_grunts_down)))
 	(cs_go_to jail_turret/p0)
@@ -3117,6 +3122,11 @@
 )
 
 (script command_script cs_lift_grunt_b
+	(object_cannot_take_damage (ai_get_object ai_current_actor))
+	(object_cannot_die (ai_get_object ai_current_actor) true)
+	(sleep (* 30 4))
+	(object_can_take_damage (ai_get_object ai_current_actor))
+	(object_cannot_die (ai_get_object ai_current_actor) false)
 	(cs_enable_pathfinding_failsafe true)
 ;	(sleep_until (volume_test_objects_all tv_jail_top (ai_actors jail_grunts_down)))
 	(cs_go_to jail_turret/p1)
@@ -3658,16 +3668,24 @@
 	(sleep_until (volume_test_objects tv_jail_top (players)))
 	(data_mine_set_mission_segment enc_jail_down_lift)
 	(sleep 60)
-	
 	(wake sc_lift_reins)
 	(ai_place jail_grunts_down)
-	(sleep 180)
+	(sleep 60)
     (ai_actors jail_jackals_down)
-	(sleep 180)
+	(sleep 60)
 	(ai_place jail_brutes_down)
-	(sleep 180)
+	(sleep 60)
 	(set g_jail_round_lift_spawned 1)
+	(sleep 150)
 	(wake sc_jail_clear)
+)
+
+(script command_script cs_invul_4
+	(object_cannot_take_damage (ai_get_object ai_current_actor))
+	(object_cannot_die (ai_get_object ai_current_actor) true)
+	(sleep (* 30 4))
+	(object_can_take_damage (ai_get_object ai_current_actor))
+	(object_cannot_die (ai_get_object ai_current_actor) false)
 )
 
 (script dormant ai_prophets_ini_active
@@ -4426,7 +4444,7 @@
 		(ai_place grand_a_brutes)
 		(ai_place grand_a_turret)
 		(if (difficulty_normal) (ai_place ledge_brutes_ini 1) (ai_place ledge_brutes_ini))
-		(if (difficulty_normal) (ai_place ledge_brutes_honor_ini 1) (ai_place ledge_brutes_honor_ini))
+		(ai_place ledge_brutes_honor_ini)
 
 	(sleep_until (<= (ai_living_count grand_a_prophets) 2) 30 210)
 		(wake music_07a_02)
