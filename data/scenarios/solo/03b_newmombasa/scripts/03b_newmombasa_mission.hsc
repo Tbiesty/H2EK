@@ -8,10 +8,13 @@
 (global boolean g_mission_over false)		; Mission over?
 
 ; Enough magic numbers
+(global short 5_seconds 150)
+(global short 15_seconds 450)
 (global short 30_seconds 900)
 (global short 45_seconds 900)
 (global short one_minute 1800)
 (global short two_minutes 3600)
+(global short three_minutes 4800)
 
 ; Breadcrumb navpoint progression
 (global short g_breadcrumb_nav_index 0)
@@ -1383,7 +1386,7 @@ Covenant
 	(if (not (difficulty_legendary)) (sleep_forever))
 	
 	; Only one out of 10 times
-	(if (not (= (random_range 0 10) 0)) (sleep_forever))
+	; (if (not (= (random_range 0 10) 0)) (sleep_forever))
 	
 	; Do it. Do it now.
 	(set g_target (player0))
@@ -1408,7 +1411,7 @@ Covenant
 	
 	; Place the defenders
 	(ai_place e23_cov_inf1_1)
-	(ai_place e23_cov_inf1_0 (pin (- 4 (ai_living_count e23_cov_inf0)) 1 3))
+	(ai_place e23_cov_inf1_0)
 	
 	; Dialogue hooks
 	(wake e23_ultra_dialogue)
@@ -1447,7 +1450,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_1 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 4))
+	(ai_place e23_cov_inf0_1 (pin (- 8 (ai_living_count e23_cov_inf0)) 0 4))
 	
 	; Pause and spawn
 	(sleep_until 
@@ -1458,7 +1461,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_2 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 3))
+	(ai_place e23_cov_inf0_2 (pin (- 8 (ai_living_count e23_cov_inf0)) 0 4))
 
 	; Pause and spawn
 	(sleep_until 
@@ -1469,7 +1472,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_3 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 2))
+	(ai_place e23_cov_inf0_3 (pin (- 8 (ai_living_count e23_cov_inf0)) 0 2))
 
 	; Pause and spawnw
 	(sleep_until 
@@ -1479,7 +1482,7 @@ Covenant
 		)
 		15
 	)
-	(ai_place e23_cov_inf0_4 (pin (- 6 (ai_living_count e23_cov_inf0)) 0 5))
+	(ai_place e23_cov_inf0_4 (pin (- 10 (ai_living_count e23_cov_inf0)) 0 5))
 	
 	; Sneak in a save
 	(game_save)
@@ -1590,7 +1593,7 @@ Covenant
 (script dormant e23_mars_inf1_main
 	(ai_migrate e22_mars_inf1 e23_mars_inf1)
 ;	(ai_migrate e22_mars_inf0/perez e23_mars_inf1)
-	(ai_place e23_mars_inf1 (- 3 (ai_living_count e23_mars_inf1)))
+	(ai_place e23_mars_inf1)
 )
 
 (script dormant e23_mars_inf0_main
@@ -1608,7 +1611,7 @@ Covenant
 	(game_save)
 	
 	; Remove the gun on legendary (guns are for wusses)
-	(if (difficulty_legendary) (object_destroy e23_gun))
+	;(if (difficulty_legendary) (object_destroy e23_gun))
 	
 	; Music
 	(wake music_03b_04_start)
@@ -1620,7 +1623,7 @@ Covenant
 	(kill_volume_enable kill_e23_2)
 
 	; Wake control scripts
-;	(wake e23_mars_inf0_main)
+	(wake e23_mars_inf0_main)
 	(wake e23_mars_inf1_main)
 ;	(wake e23_mars_pelican0_main)
 ;	(wake e23_mars_pelican1_main)
@@ -2715,10 +2718,10 @@ Covenant
 
 	; Wait for one of the other Wraiths to be destroyed
 	(sleep_until 
-		(or
-			(<= (ai_living_count e21_cov_wraiths0) 1)
-			(volume_test_objects tv_e21_cov_wraith0_2_unsafe (players))
-		)
+	;	(or
+		(<= (ai_living_count e21_cov_wraiths0) 1)
+		;	(volume_test_objects tv_e21_cov_wraith0_2_unsafe (players))
+	;	)
 		15
 	)
 	
@@ -2736,7 +2739,7 @@ Covenant
 		
 	; Spawn the appropriate number of additional Wraiths
 	(if (not (volume_test_objects tv_e21_cov_wraith0_2_unsafe (players))) 
-		(ai_place e21_cov_wraiths0_2 (pin (- 2 (ai_living_count e21_cov_wraiths0)) 0 1))
+		(ai_place e21_cov_wraiths0_2)
 	)
 
 	; Reserve them so that Marines don't climb in
@@ -2795,11 +2798,13 @@ Covenant
 	; Infinite respawner! Well, not really...
 	(sleep_until 
 		(begin
+			(sleep 5_seconds)
+
 			; Is our count less than 2, and the player not nearby?
 			(if
 				(and
 					(< (ai_living_count e21_mars_inf0) 2)
-					(< (ai_spawn_count e21_mars_inf0) 10)
+					(< (ai_spawn_count e21_mars_inf0) 20)
 					(not (volume_test_objects tv_e21_mars_inf0_unsafe (players)))
 				)
 				
@@ -2809,7 +2814,7 @@ Covenant
 			
 			; End when e22 begins, or we exceed some limit
 			(or
-				(>= (ai_spawn_count e21_mars_inf0) 10)
+				(>= (ai_spawn_count e21_mars_inf0) 20)
 				g_e22_started
 			)
 		)
@@ -2824,7 +2829,7 @@ Covenant
 			(<= (ai_living_count e21_cov_wraiths0) 0)
 		)
 		30
-		one_minute
+		three_minutes
 	)
 	
 	; Wake the next encounter
@@ -2848,8 +2853,9 @@ Covenant
 
 	; Wake control scripts
 	(wake e21_mars_warthog0_main)
-;	(wake e21_mars_inf0_main)
+	(wake e21_mars_inf0_main)
 ;	(wake e21_mars_inf1_main)
+	(wake e21_cov_creep0_main)
 	(wake e21_mars_pelican0_main)
 	(wake e21_mars_pelican1_main)
 	(wake e21_cov_inf0_main)
@@ -2862,7 +2868,7 @@ Covenant
 	(sleep_until g_e22_started)
 	(sleep_forever e21_mars_warthog0_main)
 	(sleep_forever e21_mars_inf0_main)
-	(sleep_forever e21_mars_inf1_main)
+;	(sleep_forever e21_mars_inf1_main)
 	(sleep_forever e21_cov_creep0_main)
 	(sleep_forever e21_cov_wraiths0_main)
 ;	(sleep_forever e21_cov_phantom0_main)
@@ -2873,15 +2879,6 @@ Covenant
 	(ai_disposable e21_cov true)
 	(ai_disposable e21_cov_phantom0 false)
 	(ai_disposable e21_cov_phantom1 false)
-)
-
-(script static void test_hospital_seige
-	(switch_bsp 1)
-	(sleep 1)
-	(object_teleport (player0) e21_test)
-	(object_destroy scarab)
-	(ai_place e21_mars_warthog0)
-	(if (not g_e21_started) (wake e21_main))
 )
 
 
@@ -2916,6 +2913,7 @@ Covenant
 
 (script dormant e20_cov_ghosts0_main
 	(ai_migrate e19_cov_ghosts0 e20_cov_ghosts0)
+	(print "e20_cov_ghosts0_main")
 	(ai_place e20_cov_ghosts0)
 )
 
@@ -2957,17 +2955,6 @@ Covenant
 	; Condemn
 	(ai_disposable e20_cov true)
 )
-
-(script static void test_road_skirmishes
-	(switch_bsp 1)
-	(sleep 1)
-	(object_teleport (player0) e20_test)
-	(object_destroy scarab)
-	(ai_place e20_mars_warthog0)
-	(wake e20_main)
-	(wake e21_main)
-)
-
 
 ;= ENCOUNTER 19 ==========================================================================
 ;*
@@ -3036,7 +3023,7 @@ Covenant
 			(if (<= (ai_living_count e19_cov_ghosts0) 0)
 				; We need to respawn
 				(begin
-					(sleep 300)
+					(sleep 60)
 					(sleep_until (not (volume_test_objects tv_e19_cov_ghosts0_1_unsafe (players))))
 					(ai_place e19_cov_ghosts0_1)
 				)
@@ -3138,7 +3125,7 @@ Covenant
 
 (global boolean g_e18_started false)			; Encounter has been activated?
 (global short g_e18_orbit_count 0)
-(global short g_e18_cov_inf2_spawn_max 5)
+(global short g_e18_cov_inf2_spawn_max 4)
 
 
 ;- Command Scripts -------------------------------------------------------------
@@ -3292,35 +3279,43 @@ Covenant
 
 (script dormant e18_cov_ghosts0_main
 	(sleep_until
-		(or
-			(<= (ai_living_count e18_cov_inf1_1) 0)
-			(volume_test_objects tv_e19_main_begin1 (players))
-		)
+		(volume_test_objects tv_e18_cov_inf2_1_unsafe0 (players))
 	)
 	(if (not (volume_test_objects tv_e19_main_begin1 (players))) (ai_place e18_cov_ghosts0))
 )
 
 (script static void e18_cov_inf2_spawn
 	; Is the player in the second half?
-	(if (volume_test_objects tv_e18_second_half (players))
+	 ;(if (volume_test_objects tv_e18_second_half (players))
 		; He is. If he's clear...
-		(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe1 (players)))
-			(ai_place e18_cov_inf2_1/sniper1)
-		)
+		; (if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe1 (players)))
+			; (ai_place e18_cov_inf2_1/sniper1)
+			;(ai_place e18_cov_inf2_1/sniper0)
+		;)
 		
-		; He is not. If he's clear...
-		(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe0 (players)))
-			(ai_place e18_cov_inf2_1/sniper0)
+	; He is not. If he's clear...
+	(if (not (volume_test_objects tv_e18_cov_inf2_1_unsafe0 (players)))
+		(cond
+			((<= (ai_living_count e18_cov_inf2_3) 0)
+				(ai_place e18_cov_inf2_3/sniper0))
+			((<= (ai_living_count e18_cov_inf2_2) 0)
+				(ai_place e18_cov_inf2_2/sniper0))
+			(true
+				(ai_place e18_cov_inf2_1/sniper0))
 		)
 	)
+	; )
 )
+
 
 (script dormant e18_cov_inf2_main
 	(ai_place e18_cov_inf2_0)
-	
-	; Set the spawn limits!
-	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 8))
-	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 12))
+	(ai_place e18_cov_inf2_2/sniper0)
+	(ai_place e18_cov_inf2_3/sniper0)
+
+	; Set the spawn limits!s
+	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 6))
+	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 8))
 	
 	; Spawn more snipers
 	(sleep_until
@@ -3341,7 +3336,7 @@ Covenant
 					(and
 						(difficulty_legendary)
 						(< (ai_living_count e18_cov_inf1) 4)
-						(< (ai_living_count e18_cov_inf2) 2)
+						(< (ai_living_count e18_cov_inf2) 3)
 					)
 				)
 				
@@ -3350,7 +3345,7 @@ Covenant
 					(e18_cov_inf2_spawn)
 
 					; Random pause, to throw off spawn campers
-					(sleep (random_range 60 300))
+					(sleep (random_range 60 150))
 				)
 			)
 		
@@ -3487,13 +3482,6 @@ Covenant
 	(ai_disposable e18_cov true)
 )
 
-(script static void test_park
-	(switch_bsp 1)
-	(object_teleport (player0) e18_test)
-	(ai_place e18_mars_inf0)
-	(if (not g_e18_started) (wake e18_main))
-)
-
 
 ;= ENCOUNTER 17 ==========================================================================
 ;*
@@ -3548,11 +3536,11 @@ Covenant
 	; Honk at the player
 	(sleep_until 
 		(or
-			(< (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 13)
+			(< (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 15)
 			(volume_test_objects tv_e17_near_first_wall (players))
 		)
 		15
-		one_minute
+		30_seconds
 	)
 	(sound_looping_start "sound\vehicles\warthog\warthog_horn\warthog_horn" (ai_vehicle_get ai_current_actor) 1.5)
 	(sleep 5)
@@ -3692,14 +3680,14 @@ Covenant
 	)
 )
 
-(script dormant e17_dialog
-	(sleep_until (volume_test_objects tv_e17_on_first_wall (players)) 15)
-	(sleep (ai_play_line_on_object none 0650)) ; "Your armor is airtight"
-	(sleep 20)
-	(sleep_until (volume_test_objects tv_e17_section0 (players)) 15)
-	(sleep_until (game_safe_to_save) 30 one_minute)
-	(ai_play_line_on_object none 0660) ; "You can crouch under the water"
-)
+; (script dormant e17_dialog
+; 	(sleep_until (volume_test_objects tv_e17_on_first_wall (players)) 15)
+; 	(sleep (ai_play_line_on_object none 0650)) ; "Your armor is airtight"
+; 	(sleep 20)
+; 	(sleep_until (volume_test_objects tv_e17_section0 (players)) 15)
+; 	(sleep_until (game_safe_to_save) 30 one_minute)
+; 	(ai_play_line_on_object none 0660) ; "You can crouch under the water"
+; )
 
 
 ;- Squad Controls --------------------------------------------------------------
@@ -3712,7 +3700,7 @@ Covenant
 	(sleep_until (volume_test_objects tv_e17_section2 (players)) 15)
 	(ai_place e17_cov_inf2_2)
 	(sleep_until (volume_test_objects tv_e17_section3 (players)) 15)
-	(ai_place e17_cov_inf2_3 (pin (- 3 (ai_living_count e17_cov_inf2)) 0 1))
+	(ai_place e17_cov_inf2_3)
 )
 
 (script dormant e17_cov_inf1_main
@@ -3744,7 +3732,7 @@ Covenant
 	
 	; Is the player in section 1? If necessary, spawn reins
 	(sleep_until (volume_test_objects tv_e17_section1 (players)) 15)
-	(if (<= (ai_living_count e17_cov_inf0) 4)
+	(if (<= (ai_living_count e17_cov_inf0) 5)
 		(ai_place e17_cov_inf0_1)
 	)
 
@@ -3756,13 +3744,13 @@ Covenant
 	(sleep 30)
 
 	; Reins
-	(if (<= (ai_living_count e17_cov_inf0) 4)
+	(if (<= (ai_living_count e17_cov_inf0) 5)
 		(ai_place e17_cov_inf0_1)
 	)
 
 	; Is the player in section 1? If necessary, spawn reins
 	(sleep_until (volume_test_objects tv_e17_section3 (players)) 15)
-	(if (<= (ai_living_count e17_cov_inf0) 4)
+	(if (<= (ai_living_count e17_cov_inf0) 5)
 		(ai_place e17_cov_inf0_1)
 	)
 )
@@ -3815,7 +3803,7 @@ Covenant
 	(sleep_forever e17_cov_inf1_main)
 	(sleep_forever e17_cov_inf2_main)
 	(sleep_forever e17_doors_main)
-	(sleep_forever e17_dialog)
+;	(sleep_forever e17_dialog)
 
 	; Condemn
 	(ai_disposable e17_cov true)
@@ -4005,7 +3993,7 @@ Covenant
 			(<= (ai_living_count e16_cov_banshees0) 1)
 		)
 	)
-	(ai_place e16_cov_ghosts1 (- 3 (ai_living_count e16_cov_ghosts0)))
+	(ai_place e16_cov_ghosts1)
 )
 
 (script dormant e16_cov_banshees0_main
@@ -4016,7 +4004,7 @@ Covenant
 	(sleep_until (volume_test_objects tv_e16_bridge_end (players)) 15)
 	
 	; Send in Wave 0
-	(ai_place e16_cov_banshees0_1 (- 3 (ai_living_count e16_cov_banshees0)))
+	(ai_place e16_cov_banshees0_1 2)
 	
 	; Dialogue
 	(sleep 150)
@@ -4033,7 +4021,7 @@ Covenant
 	(sleep_until 
 		(and
 			(> (ai_spawn_count e16_cov_ghosts1) 0)
-			(<= (+ (ai_living_count e16_cov_ghosts1) (ai_living_count e16_cov_banshees0)) 1)
+			(<= (+ (ai_living_count e16_cov_ghosts1) (ai_living_count e16_cov_banshees0)) 0)
 		)
 	)
 	
@@ -4056,12 +4044,16 @@ Covenant
 				(or
 					(and
 						(<= (ai_living_count e16_cov_wraiths0) 0)
-						(< (ai_living_count e16_cov_ghosts0) 4)
+						(< (ai_living_count e16_cov_ghosts0) 3)
 					)
-					(< (ai_living_count e16_cov_ghosts0) 3)
+                    (and
+					    (difficulty_legendary)
+						(< (ai_living_count e16_cov_ghosts0) 3)
+					)
+					(< (ai_living_count e16_cov_ghosts0) 2)
 				)
 				(begin
-					(ai_place e16_cov_ghosts0_1 1)					
+					(ai_place e16_cov_ghosts0_1)				
 				)
 			)
 			
@@ -4071,7 +4063,7 @@ Covenant
 				(>= (ai_spawn_count e16_cov_ghosts0) 10)
 			)
 		)
-		90
+		120
 	)
 	
 	; Put in a save
@@ -4106,13 +4098,13 @@ Covenant
 	(wake music_03b_02_start)
 	
 	; Get on with it!
-;	(ai_place e16_cov_inf0_0 (pin (- 5 (ai_living_count e16_cov)) 1 5))
+	(ai_place e16_cov_inf0_0)
 
 	; More meat for the grinder
-	(sleep_until (volume_test_objects tv_e16_cov_inf0_1_begin (players)) 15)
-	(ai_place e16_cov_inf0_1 (pin (- 9 (ai_living_count e16_cov_inf0)) 0 2))
+	; (sleep_until (volume_test_objects tv_e16_cov_inf0_1_begin (players)) 15)
+	; (ai_place e16_cov_inf0_1)
 	(sleep_until (volume_test_objects tv_e16_cov_inf0_2_begin (players)) 15)
-	(ai_place e16_cov_inf0_2 (pin (- 9 (ai_living_count e16_cov_inf0)) 0 1))
+	(ai_place e16_cov_inf0_2)
 )
 
 (script dormant e16_mars_inf0_main
@@ -4225,7 +4217,7 @@ Covenant
 	; If the Wraith is still alive...
 	(if (> (ai_living_count e16_cov_wraiths0_0/wraith1) 0)
 		(begin
-;			(cs_fly_to_and_face e15_cov_phantom0_1_entry/p3 e15_cov_phantom0_1_entry/p4)
+			(cs_fly_to_and_face e15_cov_phantom0_1_entry/p3 e15_cov_phantom0_1_entry/p4)
 			(cs_fly_by e15_cov_phantom0_1_entry/p4)
 		
 			(cs_face_player true)
@@ -4300,7 +4292,7 @@ Covenant
 	)
 	
 	; Continue out
-	(cs_fly_to_and_face e15_cov_phantom0_0_entry/p3 e15_cov_phantom0_0_entry/p8 0.5)
+	(cs_fly_to_and_face e15_cov_phantom0_0_entry/p7 e15_cov_phantom0_0_entry/p8 0.5)
 	(cs_fly_by e15_cov_phantom0_0_entry/p8)
 	(cs_fly_to_and_face e15_cov_phantom0_0_entry/p8 e15_cov_phantom0_0_entry/p9 1.0)
 	(cs_vehicle_boost true)
@@ -4378,7 +4370,7 @@ Covenant
 (script dormant e15_cov_banshees0_main
 	(ai_place e15_cov_banshees0)
 	(cs_run_command_script e15_cov_banshees0/banshee0 cs_e15_cov_banshee0_0_entry)
-	(cs_run_command_script e15_cov_banshees0/banshee1 cs_e15_cov_banshee0_1_entry)
+;	(cs_run_command_script e15_cov_banshees0/banshee1 cs_e15_cov_banshee0_1_entry)
 ;	(sleep 15)
 ;	(ai_magically_see_object e15_cov_banshees0 (player0))
 )
@@ -4445,7 +4437,7 @@ Covenant
 	(ai_place e15_cov_phantom0_0)
 	
 	; Load the Wraith
-;	(wake e15_cov_wraith0_main)
+	(wake e15_cov_wraith0_main)
 	
 	; Sleep until one Phantom is damaged or dead (or a timeout)
 	(sleep_until 
@@ -4453,10 +4445,10 @@ Covenant
 			g_e16_started
 			(<= (object_get_health (ai_vehicle_get e15_cov_phantom0_0/phantom0)) 0.05) 
 			(>= (object_model_targets_destroyed (ai_vehicle_get e15_cov_phantom0_0/phantom0) "target_front") 2) 			
-;			(<= (ai_living_count e16_cov_wraiths0_0/wraith0) 0)
+			(<= (ai_living_count e16_cov_wraiths0_0/wraith0) 0)
 		)
 		30 
-		one_minute
+		5_seconds
 	)
 	
 	; Send the first Phantom packing
@@ -4477,36 +4469,36 @@ Covenant
 			(<= (ai_living_count e16_cov_wraiths0_0/wraith1) 0)
 		)
 		30 
-		one_minute
+		5_seconds
 	)
 	
 	; Send the second one packing
 	(cs_queue_command_script e15_cov_phantom0_1/phantom0 cs_e15_cov_phantom0_1_exit)
 )
 
-(script dormant e15_cov_inf2_main
-	(ai_place e15_cov_inf2_0)
+; (script dormant e15_cov_inf2_main
+; 	(ai_place e15_cov_inf2_0)
 	
-	; Sleep until the player has advanced up
-	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
+; 	; Sleep until the player has advanced up
+; 	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
 	
-	; Place more, if there is room
-	(ai_place e15_cov_inf2_1 (- 10 (ai_living_count e15_cov))) 
-)
+; 	; Place more, if there is room
+; 	(ai_place e15_cov_inf2_1 (- 10 (ai_living_count e15_cov))) 
+; )
 
-(script dormant e15_cov_inf1_main
-	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
-	(ai_place e15_cov_inf1)
+; (script dormant e15_cov_inf1_main
+; 	(sleep_until (volume_test_objects tv_e15_cov_inf1_spring (players)) 15)
+; 	(ai_place e15_cov_inf1)
 	
-	; Launch the buggers
-	(sleep 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger0) 2 0 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger1) 2 0 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger2) 3 0 6)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger3) 2 0 5)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger4) 3 0 6)
-	(object_set_velocity (ai_get_object e15_cov_inf1/bugger5) 2 0 5)
-)
+; 	; Launch the buggews
+; 	; (sleep 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger0) 2 0 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger1) 2 0 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger2) 3 0 6)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger3) 2 0 5)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger4) 3 0 6)
+; 	; (object_set_velocity (ai_get_object e15_cov_inf1/bugger5) 2 0 5)
+; )
 
 (script dormant e15_cov_inf0_main
 	(ai_place e15_cov_inf0)
@@ -4514,7 +4506,7 @@ Covenant
 
 (script dormant e15_mars_inf0_main
 	(ai_migrate e14_mars_inf0 e15_mars_inf0)
-	(ai_place e15_mars_inf0 (pin (- 3 (ai_living_count e15_mars_inf0)) 1 2))
+	(ai_place e15_mars_inf0)
 )
 
 
@@ -4530,7 +4522,7 @@ Covenant
 
 	; Wake control scripts
 	(wake e15_mars_inf0_main)
-;	(wake e15_cov_inf0_main)
+	(wake e15_cov_inf0_main)
 ;	(wake e15_cov_inf1_main)
 ;	(wake e15_cov_inf2_main)
 	(wake e15_cov_phantom0_main)
@@ -4541,9 +4533,10 @@ Covenant
 	(sleep_until g_e17_started)
 	(sleep_forever e15_mars_inf0_main)
 	(sleep_forever e15_cov_inf0_main)
-	(sleep_forever e15_cov_inf1_main)
-	(sleep_forever e15_cov_inf2_main)
+;	(sleep_forever e15_cov_inf1_main)
+;	(sleep_forever e15_cov_inf2_main)
 	(sleep_forever e15_cov_phantom0_main)
+	(sleep_forever e15_cov_phantom1_main)
 	(sleep_forever e15_cov_banshees0_main)
 	
 	; Condemn
@@ -4704,7 +4697,7 @@ Covenant
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e14_cov_snipers0_main
-	(sleep 1)
+	(ai_place e14_cov_snipers0)
 )
 
 (script dormant e14_cov_wraiths0_main
@@ -4889,5 +4882,23 @@ Covenant
 	; Begin the mission
 	; Comment this out when you're testing individual encounters
 	(if (> (player_count) 0 ) (start))
+)
+
+(script static void test_park
+	(switch_bsp 1)
+	(object_teleport (player0) e18_test)
+	(ai_place e18_mars_inf0)
+	(if (not g_e18_started) (wake e18_main))
+)
+
+(script static void test_road_skirmishes
+    (test_park)
+	(switch_bsp 1)
+	(sleep 1)
+	(object_teleport (player0) e20_test)
+	(object_destroy scarab)
+	(ai_place e20_mars_warthog0)
+	(wake e20_main)
+	(wake e21_main)
 )
 

@@ -647,22 +647,22 @@ Open Issues
 
 (global effect g_e10_pod_impact_effect "effects\scenarios\solo\earthcity\e11_insertion_pod_impact")
 
-(script dormant e10_pod0_insertion
-	(ai_place e10_cov_inf0/elite0)
-	(object_create e10_pod0_inserter)
-	(objects_attach e10_pod0_inserter "pod_attach" (ai_vehicle_get e10_cov_inf0/elite0) "pod_attach")
-	(sleep 1)
-	(device_set_position e10_pod0_inserter 1.0)
-	(sleep_until (>= (device_get_position e10_pod0_inserter) 1.0) 1)
-	(effect_new_on_object_marker g_e10_pod_impact_effect (ai_vehicle_get e10_cov_inf0/elite0) "pod_attach")	
-	(objects_detach e10_pod0_inserter (ai_vehicle_get e10_cov_inf0/elite0))
-	(object_destroy e10_pod0_inserter)
+; (script dormant e10_pod0_insertion
+; 	(ai_place e10_cov_inf0/elite0)
+; 	(object_create e10_pod0_inserter)
+; 	(objects_attach e10_pod0_inserter "pod_attach" (ai_vehicle_get e10_cov_inf0/elite0) "pod_attach")
+; 	(sleep 1)
+; 	(device_set_position e10_pod0_inserter 1.0)
+; 	(sleep_until (>= (device_get_position e10_pod0_inserter) 1.0) 1)
+; 	(effect_new_on_object_marker g_e10_pod_impact_effect (ai_vehicle_get e10_cov_inf0/elite0) "pod_attach")	
+; 	(objects_detach e10_pod0_inserter (ai_vehicle_get e10_cov_inf0/elite0))
+; 	(object_destroy e10_pod0_inserter)
 	
-	(sleep (random_range 20 45))
-	(ai_vehicle_exit e10_cov_inf0/elite0)
-	(sleep 10)
-	(object_damage_damage_section (ai_vehicle_get e10_cov_inf0/elite0) "door" 500)
-)
+; 	(sleep (random_range 20 45))
+; 	(ai_vehicle_exit e10_cov_inf0/elite0)
+; 	(sleep 10)
+; 	(object_damage_damage_section (ai_vehicle_get e10_cov_inf0/elite0) "door" 500)
+; )
 
 (script dormant e10_pod1_insertion
 	(ai_place e10_cov_inf0/elite1)
@@ -814,7 +814,7 @@ Open Issues
 		(volume_test_objects tv_e10_second_half (players)) 
 		15
 	)
-	(ai_place e10_pro_inf3 (- 2 (ai_living_count e10_pro_inf3)))
+	(ai_place e10_pro_inf3)
 	
 	; Move their orders back
 	(ai_set_orders e10_pro_inf3 e10_pro_inf3_retreat0)
@@ -837,7 +837,7 @@ Open Issues
 		)
 		15
 	)
-	(ai_place e10_pro_inf2_0 (pin (- 7 (ai_living_count prophets)) 2 4))
+	(ai_place e10_pro_inf2_0)
 
 	; Spawn reinforcements as the player advances
 	(sleep_until (volume_test_objects tv_e10_pro_inf2_retreat0 (players)) 15)
@@ -847,11 +847,11 @@ Open Issues
 
 	; Continue
 	(sleep 60)
-	(ai_place e10_pro_inf2_1 (pin (- 7 (ai_living_count prophets)) 0 4))
+	(ai_place e10_pro_inf2_1)
 	(sleep_until (volume_test_objects tv_e10_near_exit (players)) 15)
-	(ai_place e10_pro_inf2_1 (pin (- 7 (ai_living_count prophets)) 0 4))
+	(ai_place e10_pro_inf2_1)
 	(sleep_until (volume_test_objects tv_e10_pro_inf2_retreat2 (players)) 15)
-	(ai_place e10_pro_inf2_1 (pin (- 7 (ai_living_count prophets)) 0 4))
+	(ai_place e10_pro_inf2_1)
 )
 
 (script dormant e10_pro_inf1_main
@@ -882,12 +882,12 @@ Open Issues
 	(sleep_until
 		(begin
 			; If necessary, spawn
-			(if (<= (ai_living_count e10_pro_inf1) 2)
+			(if (<= (ai_living_count e10_pro_inf1_2) 1)
 				(begin
 					; Spawn and pause
 					(game_save)
-					(sleep_until (volume_test_objects tv_e10_armory_entrance (players)) 15 450)
-					(ai_place e10_pro_inf1_2 (pin (- 4 (ai_living_count e10_pro_inf1)) 1 g_e10_pro_inf1_2_count))
+					(sleep_until (volume_test_objects tv_e10_armory_entrance (players)) 15 150)
+					(ai_place e10_pro_inf1_2)
 					(set g_e10_pro_inf1_2_count (- g_e10_pro_inf1_2_count 1))
 				)
 			)
@@ -913,6 +913,7 @@ Open Issues
 
 (script dormant e10_pro_inf0_main
 	(ai_place e10_pro_inf0_0)
+	(ai_place e10_pro_inf0_1)
 
 	; Slip in a save
 	(sleep_until 
@@ -926,19 +927,26 @@ Open Issues
 )
 
 (script dormant e10_cov_inf0_main
-	; Wait until he's on the bridge, and then until the Wraith is dead
-	(sleep_until (volume_test_objects tv_e10_bridge (players)) 15)
-	(sleep_until (<= (ai_living_count e10_pro_wraith0_0) 0))
+	; Wait until he's on the top level, and then until the Wraith is dead
+	(sleep_until
+	    (and
+			(or
+				(volume_test_objects tv_e10_bridge (players))
+				(volume_test_objects tv_e10_inf1_2_init (players))
+			)
+			(<= (ai_living_count e10_pro_wraith0_0) 0)
+		)
+	15)
 	
 	; Send in the pods
-	(wake e10_pod0_insertion)
-	(sleep 30)
+	;(wake e10_pod0_insertion)
+	;(sleep 30)
 	(wake e10_pod1_insertion)
-	;(sleep 8)
-	;(wake e10_pod2_insertion)
-	;(sleep 15)
-	;(wake e10_pod3_insertion)
-	
+	(sleep 30)
+	(wake e10_pod2_insertion)
+	(sleep 15)
+	(wake e10_pod3_insertion)
+
 	; Wake the scene
 	(wake e10_weapon_scene)
 )
@@ -963,7 +971,7 @@ Open Issues
 )
 
 (script dormant e10_main
-	(sleep_until (volume_test_objects tv_e10_main_begin (players)) 15)
+	(sleep_until (volume_test_objects tv_e10_main_begin (players)) 10)
 	(set g_e10_started true)
 	(print "e10_main")
 	(data_mine_set_mission_segment "e10_brute_camp")
@@ -1114,7 +1122,7 @@ Open Issues
 
 (script dormant e9_pro_inf2_main
 	(sleep_until (volume_test_objects tv_e9_first_drop (players)) 15)
-	(ai_place e9_pro_inf2 (pin (- 10 (ai_living_count prophets)) 2 4))
+	(ai_place e9_pro_inf2)
 )
 
 (script dormant e9_pro_inf1_main
@@ -1126,13 +1134,13 @@ Open Issues
 	
 	; Break them out if necessary
 	(sleep_until (volume_test_objects tv_e9_trap_trigger0 (players)) 5)
-	(sleep_until (< (ai_strength e9_pro_inf1) 0.9) 15 300)	
+	(sleep_until (< (ai_strength e9_pro_inf1) 0.9) 15 600)	
 	(cs_run_command_script e9_pro_inf1 cs_e9_pro_inf1_abort)
 )
 
 (script dormant e9_pro_inf0_main
-	(ai_place e9_pro_inf0_0 (pin (- 10 (ai_living_count prophets)) 0 2))
-	(ai_place e9_pro_inf0_1 (pin (- 10 (ai_living_count prophets)) 0 2))
+	(ai_place e9_pro_inf0_0)
+	(ai_place e9_pro_inf0_1)
 	
 	; Checkpoint
 	(sleep_until
@@ -1146,7 +1154,7 @@ Open Issues
 	
 	; Resume
 	(sleep_until (volume_test_objects tv_e9_trap_trigger0 (players)) 5)
-	(ai_place e9_pro_inf0_2 (pin (- 10 (ai_living_count prophets)) 0 2))
+	(ai_place e9_pro_inf0_2)
 )
 
 (script dormant e9_cov_ghosts0_main
@@ -1156,7 +1164,7 @@ Open Issues
 	(sleep_until 
 		(and
 			(<= (ai_living_count e8_pro_spectre0) 0)
-			(<= (ai_living_count e8_pro) 2)
+			(<= (ai_living_count e8_pro) 1)
 		)
 	)
 	(ai_migrate e8_cov_inf0 e9_cov_ghosts0)
@@ -1297,7 +1305,7 @@ Open Issues
 	)
 	(ai_place e8_pro_spectre0)
 	(sleep 1)
-	(ai_vehicle_reserve_seat (ai_vehicle_get e8_pro_spectre0/starting_locations_0) "spectre_p_l" true)
+	;(ai_vehicle_reserve_seat (ai_vehicle_get e8_pro_spectre0/starting_locations_0) "spectre_p_l" true)
 	
 	; Music 
 	(wake music_08a_03_start_alt)
@@ -1323,7 +1331,7 @@ Open Issues
 	)
 	
 	; Send in an appropriate number of reinforcements
-	(ai_place e8_pro_inf1_1 (- 4 (ai_living_count e8_pro_inf1)))
+	(ai_place e8_pro_inf1_1)
 )
 
 (script dormant e8_pro_inf0_main
@@ -1331,15 +1339,15 @@ Open Issues
 )
 
 (script dormant e8_cov_inf0_main
-	(ai_place e8_cov_inf0 (pin (- 6 (ai_living_count covenant)) 4 6)) ; REVEIW
+	(ai_place e8_cov_inf0) ; REVEIW
 
 	; Reserved them
-	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e8_cov_inf0/ghost0) true)
+	;(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e8_cov_inf0/ghost0) true)
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e8_cov_inf0/ghost1) true)
 
 	; Unreserve them
 	(sleep_until (volume_test_objects tv_e9_main_begin (players)) 15)
-	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e8_cov_inf0/ghost0) false)
+	;(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e8_cov_inf0/ghost0) false)
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e8_cov_inf0/ghost1) false)
 )
 
@@ -1559,14 +1567,14 @@ Open Issues
 	(sleep_until
 		(begin
 			; Respawn as necessary
-			(if (<= (ai_living_count e7_pro_inf) 2)
+			(if (<= (ai_living_count e7_pro_inf) 1)
 				(e7_pro_inf1_spawn)
 			)
 		
 			; Loop until...
 			(or
 				(volume_test_objects tv_e8_main_begin (players))
-				(>= (ai_spawn_count e7_pro_inf1) 16)
+				(>= (ai_spawn_count e7_pro_inf1) 12)
 			)
 		)
 		15
@@ -1574,12 +1582,12 @@ Open Issues
 )
 
 (script dormant e7_pro_inf0_main
-	(ai_place e7_pro_inf0_0 (pin (- 10 (ai_living_count prophets)) 1 3))
+	(ai_place e7_pro_inf0_0)
 	(ai_place e7_pro_inf0_1)
 )
 
 (script dormant e7_cov_ghosts1_main
-	(ai_place e7_cov_ghosts1 (pin (- 4 (ai_living_count e7_cov_ghosts0)) 2 4))
+	(ai_place e7_cov_ghosts1)
 
 	; Reserved them
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e7_cov_ghosts1/ghost0) true)
@@ -1592,10 +1600,18 @@ Open Issues
 )
 
 (script dormant e7_cov_ghosts0_main
-	(ai_migrate e6_cov e7_cov_ghosts0)
+	; Free them!
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost0) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost1) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost2) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost3) false)
 	
-	; Start the Grunts
-	(wake e7_cov_ghosts1_main)
+	; Grab the Elites (and give them time to enter their vehicles)
+	(ai_migrate e6_cov_inf0 e6_cov_ghosts0)
+	(ai_migrate e6_cov_gold_elite e6_cov_ghosts0)
+	(ai_enter_squad_vehicles e6_cov_ghosts0)
+	(sleep 300)
+	(ai_migrate e6_cov_ghosts0 e7_cov_ghosts0)
 )
 
 
@@ -1623,6 +1639,7 @@ Open Issues
 
 	; Wake control scripts
 	(wake e7_cov_ghosts0_main)
+	(wake e7_cov_ghosts1_main)
 	(wake e7_pro_inf0_main)
 	(wake e7_pro_inf1_main)
 	(wake e7_pro_inf2_main)
@@ -1884,7 +1901,7 @@ Open Issues
 		(volume_test_objects tv_e6_pro_inf1_begin (players))
 		15
 	)
-	(ai_place e6_pro_inf1 (pin (- 6 (ai_living_count e6_pro_inf0)) 2 6))
+	(ai_place e6_pro_inf1)
 )
 
 (script dormant e6_pro_inf0_main
@@ -1896,9 +1913,9 @@ Open Issues
 (script dormant e6_cov_ghosts0_main
 	(ai_place e6_cov_ghosts0)
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost0) true)
-;	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost1) true)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost1) true)
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost2) true)
-;	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost3) true)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost3) true)
 	
 	; Wait until the they're all dead!
 	(sleep_until g_e6_pro_inf1_arrived)
@@ -1913,14 +1930,14 @@ Open Issues
 			(player_in_vehicle)
 		)
 		30
-		two_minutes
+		one_minute
 	)
 	
 	; Free them!
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost0) false)
-;	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost1) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost1) false)
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost2) false)
-;	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost3) false)
+	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location e6_cov_ghosts0/ghost3) false)
 	
 	; Grab the Elites
 	(ai_migrate e6_cov_inf0 e6_cov_ghosts0)
@@ -2059,7 +2076,7 @@ Open Issues
 	
 	; Wait until the Brutes are being engaged
 	(sleep_until (>= (ai_combat_status e5_pro_inf0) ai_combat_status_dangerous))
-	(sleep 60)
+	(sleep 30)
 	(cs_go_to e5_cov_gold_elite_creep/p1)
 	
 	; Keep waiting, the main script will break him out
@@ -2112,18 +2129,18 @@ Open Issues
 	)
 	
 	; Place reinforcements from the exit
-	(ai_place e5_pro_inf1 (pin (- 10 (ai_living_count prophets)) 1 4))
+	(ai_place e5_pro_inf1)
 )
 
 (script dormant e5_pro_inf0_main
-	(ai_place e5_pro_inf0 (pin (- 10 (ai_living_count prophets)) 2 6))
+	(ai_place e5_pro_inf0)
 	
 	; Lock down the turets
 	(ai_vehicle_reserve (ai_vehicle_get e5_pro_inf0/turret0) true)
 )
 
 (script dormant e5_cov_grunts0_main
-	(ai_place e5_cov_grunts0 (pin (- 10 (+ (ai_living_count covenant) (ai_living_count prophets))) 1 5))
+	(ai_place e5_cov_grunts0)
 )
 
 (script dormant e5_cov_gold_elite_main
@@ -2261,13 +2278,13 @@ Open Issues
 
 (script dormant e4_pro_inf2_main
 	(sleep_until (volume_test_objects tv_e4_first_step (players)) 15)
-	(ai_place e4_pro_inf2_0 (pin (- 10 (ai_living_count prophets)) 1 4))
+	(ai_place e4_pro_inf2_0)
 	
 	; Run the scene
 	(sleep 150)
 	(sleep_until 
 		(or
-			(ai_scene e4_alarm_scene cs_e4_alarm_scene e4_pro_inf0)
+			(ai_scene e4_alarm_scene cs_e4_alarm_scene e4_pro_inf2_0)
 			(<= (ai_living_count e4_pro_inf2_0) 0)
 		)
 		15
@@ -2278,11 +2295,12 @@ Open Issues
 	(sleep_until (volume_test_objects tv_e4_second_step (players)) 15)
 	(game_save)
 	(sleep 15)
-	(ai_place e4_pro_inf1 (pin (- 10 (ai_living_count prophets)) 1 4))
+	(ai_place e4_pro_inf1)
 )
 
 (script dormant e4_pro_inf0_main
-	(ai_place e4_pro_inf0_0 (pin (- 10 (ai_living_count prophets)) 1 5))
+	(ai_place e4_pro_inf0_0)
+	(ai_place e4_pro_inf0_1)
 )
 
 (script dormant e4_cov_gold_elite_main
@@ -2304,14 +2322,14 @@ Open Issues
 	(sleep_until 
 		(or
 			(volume_test_objects tv_e4_ground_floor_exit (players))
-			(<= (ai_fighting_count e4_pro) 2)
+			(<= (ai_fighting_count e4_pro) 1)
 		)		
 		15
 	)
 	
 	; Place reins if necessary
 	(device_operates_automatically_set e4_door0 true)
-	(ai_place e4_cov_inf0 (pin (- 3 (ai_living_count covenant)) 1 3))
+	(ai_place e4_cov_inf0)
 	(ai_set_orders e4_cov_inf0 e4_cov_inf0_advance2)
 )
 
@@ -2448,13 +2466,13 @@ Open Issues
 (script dormant e3_pro_inf0_main
 	(sleep 5)
 	(ai_place e3_pro_inf0_0)
-	(ai_place e3_pro_inf0_1 (pin (- 8 (ai_living_count prophets)) 1 4))
+	(ai_place e3_pro_inf0_1)
 	
 	; Run the scene
 	(sleep_until 
 		(or
-			(ai_scene e3_alarm_scene cs_e3_alarm_scene e3_pro_inf0)
-			(<= (ai_living_count e3_pro_inf0) 0)
+			(ai_scene e3_alarm_scene cs_e3_alarm_scene e3_pro_inf0_0)
+			(<= (ai_living_count e3_pro_inf0_0) 0)
 		)
 		15
 	)
@@ -2829,7 +2847,7 @@ Open Issues
 			(volume_test_objects tv_e2_pro_inf3_begin (players))
 		)
 	)
-	(ai_place e2_pro_inf3 (pin (- 9 (ai_living_count prophets)) 2 6))
+	(ai_place e2_pro_inf3)
 
 	; Wait for and attempt a game save after these guys
 	(sleep_until 
@@ -2868,7 +2886,7 @@ Open Issues
 	(sleep 15)
 
 	; Place reins
-	(ai_place e2_pro_inf1 (pin (- 6 (ai_living_count e2_pro_inf0)) 0 4))
+	(ai_place e2_pro_inf1)
 )
 
 (script dormant e2_pro_inf0_main
@@ -3196,7 +3214,7 @@ Prophets
 	
 	; Wait till the player gets close
 	(sleep_until 
-		(<= (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 3)
+		(<= (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 2)
 	)
 	
 	; Regard the player
@@ -3204,14 +3222,23 @@ Prophets
 	
 	; Speak
 	(sleep (ai_play_line_at_player ai_current_actor 0200))
-	(sleep 45)
 	(set g_e1_cov_inf0_should_die true)
-	(unit_stop_custom_animation (ai_get_unit ai_current_actor))
+	(sleep 45)
+
+	; Wait till the player leaves
+	(sleep_until (volume_test_objects tv_e1_second_wall (players)) 15)
+
+	; Sray him. Sray him dead.
+	(unit_kill (ai_get_unit ai_current_actor))
+	(sleep 13)
+	(biped_ragdoll (ai_get_unit ai_current_actor))
 	(sleep_forever)
 )
 
 (script command_script cs_e1_stealth_major_scene
+	(print "cs_e1_stealth_major_scene")
 	(ai_set_active_camo ai_current_actor false)
+	(sleep 45)
 	(cs_go_to e1_watch_pods/p1)
 	(if (< (objects_distance_to_object (players) (ai_get_object ai_current_actor)) 5)
 		(cs_look_player true)
@@ -3254,14 +3281,15 @@ Prophets
 )
 
 (script command_script cs_e1_watch_pods
-	(sleep 15)
+	(sleep 30)
 	(cs_go_to_nearest e1_watch_pods/p0)
 	(cs_look_object true (ai_vehicle_get e1_cov_inf2/gold_elite))
 	(cs_face_object true (ai_vehicle_get e1_cov_inf2/gold_elite))
-	
+
 	; Wait until the hatch pops
 	(sleep_until g_e1_zealot_revealed 10)
 	(print "stealth: a zealot? so much for stealth...")
+	(sleep 30)
 	(sleep (ai_play_line_at_player ai_current_actor 0320)) 
 )
 
@@ -3571,11 +3599,11 @@ Prophets
 (script dormant e1_cov_inf1_main
 	(sleep_until 
 		(or
+			(volume_test_objects tv_e1_exit (players))
 			(and
 				(> (ai_spawn_count e1_pro_inf1) 0)
 				(<= (ai_living_count e1_pro_inf0) 0)
 			)
-			(volume_test_objects tv_e1_exit (players))
 		)
 		15 
 	)
@@ -3585,6 +3613,7 @@ Prophets
 	(set g_cov_stealth_major (ai_get_unit e1_cov_inf1/stealth_major))
 	
 	; Greeting scene
+	(sleep_until (<= (ai_living_count e1_pro) 0))
 	(sleep_until
 		(or
 			(ai_scene e1_stealth_major_scene cs_e1_stealth_major_scene e1_cov_inf1)
@@ -3592,15 +3621,9 @@ Prophets
 		)
 		10
 	)
-	
+
 	; Wait for the insertion pods to spawn
-	(sleep_until
-		(and
-			(<= (ai_living_count e1_pro) 0)
-			(> (ai_spawn_count e1_cov_inf2) 0)
-		)
-		5
-	)
+	(sleep_until (> (ai_spawn_count e1_cov_inf2) 0) 10)
 	
 	; Watch the pods come in
 	(cs_run_command_script e1_cov_inf1 cs_e1_watch_pods)
@@ -3612,9 +3635,9 @@ Prophets
 	(set g_e1_wounded_elite (ai_get_unit e1_cov_inf0))
 
 	; Sray him. Sray him dead.
-	(unit_kill g_e1_wounded_elite)
-	(sleep 13)
-	(biped_ragdoll g_e1_wounded_elite)
+	;(unit_kill g_e1_wounded_elite)
+	;(sleep 13)
+	;(biped_ragdoll g_e1_wounded_elite)
 
 	; Wait until the player picks up his sword
 	(sleep_until
@@ -3627,12 +3650,12 @@ Prophets
 	)
 	
 	; Croak out your lines
-	(sleep 20)
-	(print "corpse: the brutes...")
-	(sleep (ai_play_line_on_object g_e1_wounded_elite 0200))
+	;(sleep 20)
+	;(print "corpse: the brutes...")
+	;(sleep (ai_play_line_on_object g_e1_wounded_elite 0200))
 
 	; Save point after he buys it
-	(sleep 30)
+	(sleep 90)
 	(game_save)
 )
 
@@ -3719,7 +3742,10 @@ Prophets
 	(wake e6_main)
 	
 	; Wait for the mission to end
-	(sleep_until (volume_test_objects tv_mission_end (players)) 15)
+	(sleep_until
+	    (and
+		    g_e10_started
+		    (volume_test_objects tv_mission_end (players))) 15)
 	(wake music_08a_05_start)
 		
 	; For playtests

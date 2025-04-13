@@ -60,7 +60,7 @@
 	(cinematic_show_letterbox FALSE)
 )
 
-;"Dead or Alive…Actually, Just Dead."
+;"Dead or Aliveï¿½Actually, Just Dead."
 (script dormant 04b_title2
 	(hud_cinematic_fade 0 0.5)
 	(cinematic_show_letterbox TRUE)
@@ -950,20 +950,20 @@
 		(ai_place disposal_infection_02 1)
 	)
 
-	(sleep_until (< (ai_swarm_count disposal_infection) 10) 30 300)
-	(if (< (ai_swarm_count disposal_infection) 20)
-		(ai_place disposal_infection_02 1)
-	)
+	; (sleep_until (< (ai_swarm_count disposal_infection) 10) 30 300)
+	; (if (< (ai_swarm_count disposal_infection) 20)
+	; 	(ai_place disposal_infection_02 1)
+	; )
 
-	(sleep_until (< (ai_swarm_count disposal_infection) 5) 30 300)
-	(if (< (ai_swarm_count disposal_infection) 20)
-		(ai_place disposal_infection_01 1)
-	)
+	; (sleep_until (< (ai_swarm_count disposal_infection) 5) 30 300)
+	; (if (< (ai_swarm_count disposal_infection) 20)
+	; 	(ai_place disposal_infection_01 1)
+	; )
 
-	(sleep_until (< (ai_swarm_count disposal_infection) 5) 30 300)
-	(if (< (ai_swarm_count disposal_infection) 20)
-		(ai_place disposal_infection_01 1)
-	)
+	; (sleep_until (< (ai_swarm_count disposal_infection) 5) 30 300)
+	; (if (< (ai_swarm_count disposal_infection) 20)
+	; 	(ai_place disposal_infection_01 1)
+	; )
 )
 
 (script dormant holo_cannot_die
@@ -1508,7 +1508,7 @@
 )
 
 ;Spawn count
-(global short silo_flood_total 0)
+(global short silo_flood_total 1)
 (global boolean silo_try_save FALSE)
 
 (script dormant silo_saving
@@ -1532,10 +1532,10 @@
 ;Keeps spawning flood in silo until you leave it
 (script dormant silo_flood_spawner
 	(if (difficulty_legendary)
-		(set silo_flood_total 2)
+		(set silo_flood_total 3)
 	)
 	(if (difficulty_heroic)
-		(set silo_flood_total 1)
+		(set silo_flood_total 2)
 	)
 	(sleep_until 
 		(begin
@@ -1555,11 +1555,11 @@
 			)
 			(if (difficulty_legendary)
 				(begin
+					(ai_place silo_climbers_01 1)
+					(ai_place silo_climbers_02 1)
 					(sleep (random_range 30 60))
-					(begin_random
-						(ai_place silo_climbers_01 1)
-						(ai_place silo_climbers_02 1)
-					)
+					(ai_place silo_climbers_01 1)
+					(ai_place silo_climbers_02 1)
 				)
 			)
 			(garbage_collect_now)	
@@ -1783,8 +1783,8 @@
 
 	(ai_renew all_allies)
 	(ai_set_orders arm02_allies allies_silo)
-	(ai_place silo_sentinels_initial 2)
-	(ai_place silo_flood_initial 4)
+	(ai_place silo_sentinels_initial 4)
+	(ai_place silo_flood_initial 6)
 	(wake silo_killer)
 	
 	(wake music_04b_02_start)
@@ -2059,31 +2059,31 @@
 	(sleep_until 
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/1)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/2)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/3)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/4)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/5)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_01/6)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(ai_place lab_combatforms_01 1)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(ai_place lab_combatforms_01 1)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(ai_place lab_combatforms_01 1)
 				)
 			)
@@ -2099,10 +2099,10 @@
 	(sleep_until
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(ai_place lab_carriers_02 1)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(ai_place lab_combatforms_02 1)
 				)
 			)
@@ -2209,20 +2209,21 @@
 (script dormant lab_wave_new_01
 	(sleep_until
 		(begin
-			(if (< (ai_nonswarm_count lab_flood) 4)
+			(if (< (ai_nonswarm_count lab_flood) 3)
 				(begin
 					(ai_place lab_carriers_02 1)
 					(set lab_flood_count (+ lab_flood_count 1))
 				)
 			)
-			(> lab_flood_count 5)
+			(> lab_flood_count 4)
 		)
 	30 8000)
 )
+
 (script dormant lab_wave_new_02
 	(sleep_until
 		(begin
-			(if (< (ai_nonswarm_count lab_flood) 4)
+			(if (< (ai_nonswarm_count lab_flood) 5)
 				(begin
 					(ai_place lab_combatforms_02 1)
 					(set lab_flood_count (+ lab_flood_count 1))
@@ -2241,13 +2242,13 @@
 	
 	(set silo_killer_power FALSE)
 
-	(ai_place lab_heretics_01 1)
-	(ai_place lab_turret_grunts_01 2)
+	(ai_place lab_heretics_01 2)
+	(ai_place lab_turret_grunts_01 3)
 	(ai_place lab_exit_turrets 2)
 	(ai_place lab_carriers_01/init1)
 	(ai_place lab_carriers_01/init2)
 	(ai_place lab_carriers_01/init3)
-;	(ai_place lab_carriers_01/init4)
+	;(ai_place lab_carriers_01/init4)
 	(wake lab_barricades)
 	(if (difficulty_legendary)
 		(wake famine_flavor)
@@ -2302,7 +2303,7 @@
 			(= (volume_test_objects_all vol_lab_floor (players)) TRUE)
 			(> (player_count) 0)
 		)
-	30 8000)
+	30 4000)
 	(data_mine_set_mission_segment "04b_8_flood_lab_mid_01")
 	(game_save_no_timeout)
 	(ai_place lab_heretics_above 3)
@@ -2325,61 +2326,61 @@
 	(sleep_until
 		(begin
 			(begin_random
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(begin
 						(ai_place lab_combatforms_02/r1)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(begin
 						(ai_place lab_combatforms_02/r2)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(begin
 						(ai_place lab_combatforms_02/r3)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(begin
 						(ai_place lab_combatforms_02/r4)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 5)
 					(begin
 						(ai_place lab_combatforms_02/r5)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r1)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r2)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r3)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r4)
 						(sleep (random_range 10 40))
 					)
 				)
-				(if (< (ai_nonswarm_count lab_flood) 4)
+				(if (< (ai_nonswarm_count lab_flood) 3)
 					(begin
 						(ai_place lab_carriers_02/r5)
 						(sleep (random_range 10 40))
@@ -2412,10 +2413,10 @@
 
 	(sleep_until 
 		(AND
-			(< (ai_nonswarm_count lab_flood) 1) 
+			(< (ai_nonswarm_count lab_flood) 2) 
 			(< (ai_living_count lab_heretics_above) 1)
 		)
-	30 2000)
+	30 600)
 	(game_save_no_timeout)
 	
 	(music_04b_03_start_alt)
@@ -2424,8 +2425,8 @@
 	(wake lab_wave_new_02)	
 	(sleep 1800)
 	
-	(sleep_until (< (ai_nonswarm_count lab_flood) 1) 30 3600)
-	(sleep_until (= (ai_trigger_test "done_fighting" lab_flood) TRUE) 30 1800)	
+	(sleep_until (< (ai_nonswarm_count lab_flood) 2) 30 900)
+	(sleep_until (= (ai_trigger_test "done_fighting" lab_flood) TRUE) 30 900)	
 	(data_mine_set_mission_segment "04b_9_flood_lab_mid_02")
 	(game_save_no_timeout)
 
@@ -2613,10 +2614,10 @@
 
 ;9/12
 
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_R_02 2)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_R_03 (- 4 (+ (ai_living_count bridge_h_grunts_init) (ai_living_count bridge_runners))))
 	)
 
@@ -2627,7 +2628,7 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_R_04 (- 2 (ai_living_count bridge_heretics_R_02)))
 	)
 
@@ -2637,9 +2638,9 @@
 			(= (volume_test_objects vol_wrap_right_03 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
-		(ai_place bridge_sentinels_R_05 3)
-	)
+	;(if (< (ai_nonswarm_count bridge_enemies) 9)
+	(ai_place bridge_sentinels_R_05 3)
+	;)
 
 	(sleep_until 
 		(AND
@@ -2648,10 +2649,10 @@
 		)
 	)
 	(set bridge_final_gone TRUE)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_final (- 2 (+ (ai_living_count bridge_heretics_R_04) (ai_living_count bridge_heretics_L_04))))
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_final 2)
 	)
 )
@@ -2662,10 +2663,10 @@
 			(= (volume_test_objects vol_wrap_left_01 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_L_02 2)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_L_03 (- 4 (+ (ai_living_count bridge_h_grunts_init) (ai_living_count bridge_runners))))
 	)
 
@@ -2676,7 +2677,7 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_L_04 (- 2 (ai_living_count bridge_heretics_L_02)))
 	)
 	
@@ -2686,9 +2687,9 @@
 			(= (volume_test_objects vol_wrap_left_03 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
-		(ai_place bridge_sentinels_L_05 3)
-	)
+	;(if (< (ai_nonswarm_count bridge_enemies) 9)
+	(ai_place bridge_sentinels_L_05 3)
+	;)
 
 	(sleep_until 
 		(AND 
@@ -2697,10 +2698,10 @@
 		)
 	)
 	(set bridge_final_gone TRUE)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_final (- 2 (+ (ai_living_count bridge_heretics_R_04) (ai_living_count bridge_heretics_L_04))))
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 8)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_final 2)
 	)
 )
@@ -3482,7 +3483,7 @@
 	(sleep_until (= (device_get_position cableroom) 1))
 	(ai_dialogue_enable FALSE)
 	(sleep 60)
-	(print "SPEC-OPS COMMANDER: 'One final cable Arbiter…'")
+	(print "SPEC-OPS COMMANDER: 'One final cable Arbiterï¿½'")
 	(sleep (ai_play_line_on_object NONE 1400))
 	;(sleep (sound_impulse_language_time sound\dialog\levels\04_gasgiant\mission\l04_1400_soc))
 	(sleep 30)
@@ -6199,7 +6200,7 @@
 	(device_operates_automatically_set control_room_ext FALSE)
 	(device_operates_automatically_set lab_exit_ext FALSE)
 	(device_operates_automatically_set arm_02_entry_ext FALSE)
-	(ai_place dogfighters_init 2)
+	(ai_place dogfighters_init 1)
 	(activate_team_nav_point_flag default_red player he_went_here 0)
 	(set g_breadcrumb_nav_index 13)
 
@@ -6213,58 +6214,58 @@
 	(game_save_immediate)
 	(wake dogfight2_commander)
 
-	(sleep_until
-		(begin
-			(begin_random
-				(if 
-					(AND
-						(< (ai_living_count dogfighters) 2)
-						(= (objects_can_see_flag (players) dogfight_1 45) FALSE) 
-					)
-						(ai_place dogfighters_finale/1)
-				)
-				(if 
-					(AND
-						(< (ai_living_count dogfighters) 2)
-						(= (objects_can_see_flag (players) dogfight_2 45) FALSE) 
-					)
-						(ai_place dogfighters_finale/2)
-				)
-				(if 
-					(AND
-						(< (ai_living_count dogfighters) 2)
-						(= (objects_can_see_flag (players) dogfight_3 45) FALSE) 
-					)
-						(ai_place dogfighters_finale/3)
-				)
-				(if 
-					(AND
-						(< (ai_living_count dogfighters) 2)
-						(= (objects_can_see_flag (players) dogfight_4 45) FALSE) 
-					)
-						(ai_place dogfighters_finale/4)
-				)
-				(if 
-					(AND
-						(< (ai_living_count dogfighters) 2)
-						(= (objects_can_see_flag (players) dogfight_5 45) FALSE) 
-					)
-						(ai_place dogfighters_finale/5)
-				)
-				(if 
-					(AND
-						(< (ai_living_count dogfighters) 2)
-						(= (objects_can_see_flag (players) dogfight_6 45) FALSE) 
-					)
-						(ai_place dogfighters_finale/6)
-				)
-			)
-			(OR
-				(= (volume_test_objects vol_arm_01_return (players)) TRUE)
-				(> (ai_spawn_count dogfighters_finale) 3)
-			)
-		)
-	)
+	; (sleep_until
+	; 	(begin
+	; 		(begin_random
+	; 			(if 
+	; 				(AND
+	; 					(< (ai_living_count dogfighters) 2)
+	; 					(= (objects_can_see_flag (players) dogfight_1 45) FALSE) 
+	; 				)
+	; 					(ai_place dogfighters_finale/1)
+	; 			)
+	; 			(if 
+	; 				(AND
+	; 					(< (ai_living_count dogfighters) 2)
+	; 					(= (objects_can_see_flag (players) dogfight_2 45) FALSE) 
+	; 				)
+	; 					(ai_place dogfighters_finale/2)
+	; 			)
+	; 			(if 
+	; 				(AND
+	; 					(< (ai_living_count dogfighters) 2)
+	; 					(= (objects_can_see_flag (players) dogfight_3 45) FALSE) 
+	; 				)
+	; 					(ai_place dogfighters_finale/3)
+	; 			)
+	; 			(if 
+	; 				(AND
+	; 					(< (ai_living_count dogfighters) 2)
+	; 					(= (objects_can_see_flag (players) dogfight_4 45) FALSE) 
+	; 				)
+	; 					(ai_place dogfighters_finale/4)
+	; 			)
+	; 			(if 
+	; 				(AND
+	; 					(< (ai_living_count dogfighters) 2)
+	; 					(= (objects_can_see_flag (players) dogfight_5 45) FALSE) 
+	; 				)
+	; 					(ai_place dogfighters_finale/5)
+	; 			)
+	; 			(if 
+	; 				(AND
+	; 					(< (ai_living_count dogfighters) 2)
+	; 					(= (objects_can_see_flag (players) dogfight_6 45) FALSE) 
+	; 				)
+	; 					(ai_place dogfighters_finale/6)
+	; 			)
+	; 		)
+	; 		(OR
+	; 			(= (volume_test_objects vol_arm_01_return (players)) TRUE)
+	; 			(> (ai_spawn_count dogfighters_finale) 3)
+	; 		)
+	; 	)
+	; )
 )
 
 ;-------------------------------------------------------------------------------
@@ -8935,7 +8936,7 @@
 	(sleep_until (= monitor_done_talking TRUE))
 	(cs_suppress_dialogue_global TRUE)
 	(sleep 60)
-	(print "HERETIC LEADER: 'Look around you, Arbiter…'")
+	(print "HERETIC LEADER: 'Look around you, Arbiterï¿½'")
 	(cs_play_line 0830)
 	(sleep 15)
 	(print "HERETIC LEADER: 'This facility, and dozens like it, devoted to the study of the Parasite!'")

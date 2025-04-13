@@ -404,17 +404,17 @@
 	(if (> (ai_living_count cov_def_enf) 0)
 		(begin
 			(if dialogue (print "SPEC-OPS: Go, Enforcers!"))
-			(sleep (ai_play_line covenant 0590))
+			(sleep (ai_play_line_on_object none 0590))
 			(sleep dialogue_pause)
 		)
 	)
 	
 	(if dialogue (print "SPEC-OPS: To the vehicles! We'll need their heavy-guns!"))
-	(sleep (ai_play_line covenant 0600))
+	(sleep (ai_play_line_on_object none 0600))
 	(sleep dialogue_pause)
 
 	(if dialogue (print "SPEC-OPS: Onward! To the Sacred Icon!"))
-	(sleep (ai_play_line covenant 0610))
+	(sleep (ai_play_line_on_object none 0610))
 	(sleep dialogue_pause)
 )
 ;*  this was removed because it was blocking the AI from getting into their vehicles 
@@ -424,15 +424,15 @@
 *;
 (script command_script cs_sc_qz_veh_int
 	(if dialogue (print "SPEC-OPS: What?! The Parasite controls our vehicles?!"))
-	(sleep (ai_play_line covenant 0620))
+	(sleep (ai_play_line_on_object none 0620))
 	(sleep dialogue_pause)
 
-	(if dialogue (print "SPEC-OPS: Impossible! It's never done that before!"))
-	(sleep (ai_play_line covenant 0640))
-	(sleep dialogue_pause)
+	; (if dialogue (print "SPEC-OPS: Impossible! It's never done that before!"))
+	; (sleep (ai_play_line_on_object none 0630))
+	; (sleep dialogue_pause)
 
 	(if dialogue (print "SPEC-OPS: No matter. It will die all the same!"))
-	(sleep (ai_play_line covenant 0650))
+	(sleep (ai_play_line_on_object none 0640))
 	(sleep dialogue_pause)
 )
 
@@ -456,46 +456,59 @@
 ; plays halfway through the vehicle interior space (unlike what the title would suggest) 
 (script dormant sc_factory_approach
 	(if dialogue (print "COMMANDER: Commander! We've found a human vehicle!"))
-	(sleep (ai_play_line covenant 0250))
+	(sleep (ai_play_line_on_object none 0250))
 	(sleep dialogue_pause)
 
 	(if dialogue (print "SPEC-OPS: Keep moving. I'm on my way."))
 	(sleep (ai_play_line_on_object none 0260))
 	(sleep dialogue_pause)
+
+	; (if dialogue (print "COMMANDER: Human fools. I almost feel sorry for them."))
+	; (sleep (ai_play_line_on_object none 0290))
+	; (sleep dialogue_pause)
 )
 
 ; plays in the gateway to the final vehicle space (right after the crashed factory exit) 
 (script dormant sc_factory_exit
 	(sleep 60)
-	(if dialogue (print "SPEC-OPS: Humans and parasites!"))
-	(if dialogue (print "This ring has been befouled, but we will wipe it clean!"))
-	(sleep (ai_play_line covenant 0270))
-	(sleep dialogue_pause)
+	; (if dialogue (print "SPEC-OPS: Humans and parasites!"))
+	; (if dialogue (print "This ring has been befouled, but we will wipe it clean!"))
+	; (sleep (ai_play_line_on_object none 0270))
+	; (sleep dialogue_pause)
 
-	(if dialogue (print "SPEC-OPS: Honoring those who built it!"))
-	(sleep (ai_play_line covenant 0280))
-	(sleep dialogue_pause)
+	; (if dialogue (print "SPEC-OPS: Honoring those who built it!"))
+	; (sleep (ai_play_line_on_object none 0280))
+	; (sleep dialogue_pause)
 )
 
 ; plays at the exit from the crashed sentinel factory 
-(script dormant sc_human_fools
-	(if dialogue (print "COMMANDER: Human fools. I almost feel sorry for them."))
-	(sleep (ai_play_line_on_object none 0290))
-	(sleep dialogue_pause)
-)
+;(script dormant sc_human_fools
+	; (if dialogue (print "COMMANDER: Human fools. I almost feel sorry for them."))
+	; (sleep (ai_play_line_on_object none 0290))
+	; (sleep dialogue_pause)
+;)
 
 ; plays when the exterior b covenant reinforcements get dropped off 
 (script dormant sc_ext_b
+	(if dialogue (print "SPEC-OPS: Humans and parasites!"))
+	(if dialogue (print "This ring has been befouled, but we will wipe it clean!"))
+	(sleep (ai_play_line_on_object none 0270))
+	(sleep dialogue_pause)
+
+	(if dialogue (print "SPEC-OPS: Honoring those who built it!"))
+	(sleep (ai_play_line_on_object none 0280))
+	(sleep dialogue_pause)
+
 	(if dialogue (print "SPEC-OPS: Forward to the Icon!"))
-	(sleep (ai_play_line covenant 0700))
+	(sleep (ai_play_line_on_object none 0700))
 	(sleep dialogue_pause)
 
 	(if dialogue (print "SPEC-OPS: The Parasite's ranks swell as we draw nearer to the Library!"))
-	(sleep (ai_play_line covenant 0710))
+	(sleep (ai_play_line_on_object none 0710))
 	(sleep dialogue_pause)
 
 	(if dialogue (print "SPEC-OPS: Steel your nerves. We are not turning back!"))
-	(sleep (ai_play_line covenant 0720))
+	(sleep (ai_play_line_on_object none 0720))
 	(sleep dialogue_pause)
 )
 
@@ -596,14 +609,13 @@
 )
 
 (script command_script cs_fact_ent_exit_veh
-	(cs_enable_pathfinding_failsafe true)
-	(cs_go_to_nearest crashed_fact_ent)
-	(cs_enable_targeting true) ; 9/22 
-	(cs_shoot true) ; 9/22 
-	(ai_set_orders covenant cov_follow_factory1)
-	
+	; (cs_enable_pathfinding_failsafe true)
+	; (cs_go_to_nearest crashed_fact_ent)
+	; (cs_enable_targeting true) ; 9/22 
+	; (cs_shoot true) ; 9/22 
 	(sleep 30)
 	(ai_vehicle_exit covenant)
+	(ai_set_orders covenant cov_follow_factory1)
 )
 
 (global boolean g_veh_int_migrate_a 0)
@@ -621,6 +633,7 @@
 (global boolean g_ext_a_migrate_e 0)
 (global boolean g_ext_a_migrate_f 0)
 (global boolean g_ext_a_fact_ent_migrate 0)
+(global boolean g_ext_a_fact_ent_follow 0)
 
 
 (script dormant ext_a_vehicle_orders
@@ -1001,32 +1014,32 @@
 	)
 	(sleep g_order_delay)
 
-	(sleep_until
-		(begin	
-			(cond
-				((passenger_seat_test)	(begin
-										(if debug (print "player is passenger"))
-										(ai_set_orders covenant_infantry cov_follow_ext_a_fact_ent)
-										(ai_set_orders covenant_vehicles cov_drive_ext_a_f)
-									)
-				)
-				(true (ai_set_orders covenant cov_follow_ext_a_fact_ent))
-			)
-			(or ; exit conditions 
-				(and
-					(volume_test_objects tv_ext_a_f (players))
-					(ai_trigger_test "done_fighting" covenant)
-				)
-				(and
-					(volume_test_objects tv_ext_a_f (players))
-					(<= (ai_living_count ext_a_sen_f) 0)
-					(<= (ai_living_count ext_a_flood_f) 0)
-				)
-				g_ext_a_fact_ent_migrate
-			)
-		)
-	)
-	(sleep g_order_delay)
+	; (sleep_until
+	; 	(begin	
+	; 		(cond
+	; 			((passenger_seat_test)	(begin
+	; 									(if debug (print "player is passenger"))
+	; 									(ai_set_orders covenant_infantry cov_follow_ext_a_fact_ent)
+	; 									(ai_set_orders covenant_vehicles cov_drive_ext_a_f)
+	; 								)
+	; 			)
+	; 			(true (ai_set_orders covenant cov_follow_ext_a_fact_ent))
+	; 		)
+	; 		(or ; exit conditions 
+	; 			(and
+	; 				(volume_test_objects tv_ext_a_f (players))
+	; 				(ai_trigger_test "done_fighting" covenant)
+	; 			)
+	; 			(and
+	; 				(volume_test_objects tv_ext_a_f (players))
+	; 				(<= (ai_living_count ext_a_sen_f) 0)
+	; 				(<= (ai_living_count ext_a_flood_f) 0)
+	; 			)
+	; 			g_ext_a_fact_ent_migrate
+	; 		)
+	; 	)
+	; )
+	; (sleep g_order_delay)
 
 	(sleep_until
 		(begin	
@@ -1040,24 +1053,22 @@
 				(true (ai_set_orders covenant cov_follow_ext_a_fact_ent))
 			)
 			(or ; exit conditions 
-				(and
-					(ai_trigger_test "done_fighting" covenant)
-					g_fact_ent_sen_spawn
-				)
+				; (and
+				; 	(ai_trigger_test "done_fighting" covenant)
+				; 	g_fact_ent_sen_spawn
+				; )
 				(and
 					(<= (ai_living_count fact_ent_sentinels) 0)
 					(<= (ai_living_count fact_ent_flood) 0)
 					g_fact_ent_sen_spawn
 				)
-				(volume_test_objects tv_fact_ent_follow (players))
-	
+				g_ext_a_fact_ent_follow
 			)
 		)
 	)
 	(sleep g_order_delay)
-
+    (print "exit vehicles and follow player into factory")
 	(cs_run_command_script covenant cs_fact_ent_exit_veh) ; new order set in the command script 
-	
 )
 
 (global boolean g_ext_b_migrate_1 0)
@@ -1067,14 +1078,13 @@
 (global boolean g_ext_b_migrate_5 0)
 
 (script command_script cs_ext_b_exit
-	(cs_enable_pathfinding_failsafe true)
-	(cs_go_to_nearest ext_b_exit)
-	(cs_enable_targeting true) ; 9/22 
-	(cs_shoot true) ; 9/22 
-	(ai_set_orders covenant cov_ext_b_exit)
-	
+	; (cs_enable_pathfinding_failsafe true)
+	; (cs_go_to_nearest ext_b_exit)
+	; (cs_enable_targeting true) ; 9/22 
+	; (cs_shoot true) ; 9/22 
 	(sleep 30)
 	(ai_vehicle_exit covenant)
+	(ai_set_orders covenant cov_ext_b_exit)
 )
 
 (script dormant ext_b_vehicle_orders
@@ -1174,15 +1184,18 @@
 	
 	(cs_run_command_script covenant cs_ext_b_exit) ; new order set in the command script 
 	
-	(sleep_until (= (structure_bsp_index) 3))
-	(ai_migrate covenant key_cov_dump)
-	(sleep 5)
+	; (sleep_until (= (structure_bsp_index) 3))
+	; (ai_erase covenant)
+	; (ai_place e20_cov_inf0 1)
+	; (object_cannot_die (ai_get_object e20_cov_inf0/soc) true)
+	; (sleep 5)
 	
-	(ai_teleport_to_starting_location_if_outside_bsp key_cov_dump)
-	(sleep 5)
-	(ai_set_orders covenant cov_follow_key_ent)
-)
+	; (ai_teleport_to_starting_location_if_outside_bsp key_cov_dump)
+	; (ai_migrate key_cov_dump e20_cov_inf0)
+	; (ai_set_orders e20_cov_inf0 cov_follow_key_ent)
 
+	; (sleep 5)
+)
 
 ;====== COVENANT DEFENSE =================================================================
 (script command_script cs_cov_def_phantom
@@ -1256,7 +1269,7 @@
 (global short g_veh_int_ghost_number 0)
 
 (script dormant ai_veh_int_ghost_spawn
-	(sleep_until (<= (ai_living_count veh_int_flood_ghosts_ini) 0))
+	(sleep_until (<= (ai_living_count veh_int_flood_ghosts_ini) 1))
 	(if debug (print "waking vehicle interior ghost spawner"))
 	
 	(cond
@@ -1267,8 +1280,8 @@
 
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count veh_int_flood_ghosts_bk) 0))
-			(sleep 90)
+			(sleep_until (<= (ai_living_count veh_int_flood_ghosts_bk) 1))
+			(sleep 30)
 			(if debug (print "placing ghosts"))
 			(ai_place veh_int_flood_ghosts_bk g_veh_int_ghost_number)
 		(or ; exit conditions 
@@ -1313,11 +1326,11 @@
 (script command_script cs_ext_a_pelican
 ;	(cs_enable_pathfinding_failsafe true)
 	(cs_shoot false)
-		(vehicle_load_magic
-			(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/pelican)
-			"pelican_lc"
-			(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/scorpion)
-		)
+	; (vehicle_load_magic
+	; 	(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/pelican)
+	; 	"pelican_lc"
+	; 	(ai_vehicle_get_from_starting_location qz_ext_a_dam_human/scorpion)
+	; )
 	
 	(cs_fly_by qz_ext_a_pelican/p0 3)
 ;	(cs_fly_by qz_ext_a_pelican/p1 3)
@@ -1445,7 +1458,7 @@
 	(sleep_until
 		(begin
 			(sleep_until (<= (ai_living_count ext_a_sen_dam_b) 0))
-			(sleep 90)
+			(sleep 15)
 			(ai_place qz_ext_a_dam_enf_door)
 			(or
 				(>= (ai_spawn_count qz_ext_a_dam_enf_door) 3)
@@ -1462,14 +1475,17 @@
 )
 
 (global boolean g_qz_ext_a_flood_ghosts 0)
+(global short g_qz_ext_a_flood_ghosts_count 0)
+(global short g_qz_ext_a_flood_ghosts_index 4)
 
 (script dormant ai_qz_ext_a_ghosts
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count qz_ext_a_flood_ghosts) 0))
-			(if g_qz_ext_a_flood_ghosts (sleep_forever))
+			(sleep_until (<= (ai_living_count qz_ext_a_flood_ghosts) 1))
 			(sleep (random_range 60 120))
-			(ai_place qz_ext_a_flood_ghosts)
+			(if (= g_qz_ext_a_flood_ghosts 0) (ai_place qz_ext_a_flood_ghosts))
+			(set g_qz_ext_a_flood_ghosts_count (+ g_qz_ext_a_flood_ghosts_count 1))
+			(if (= g_qz_ext_a_flood_ghosts_count g_qz_ext_a_flood_ghosts_index) (set g_qz_ext_a_flood_ghosts 1))
 		g_qz_ext_a_flood_ghosts)
 	)
 )
@@ -1477,7 +1493,7 @@
 (script dormant ai_fact_ent_sen_spawn
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count fact_ent_sen) 1))
+			(sleep_until (<= (ai_living_count fact_ent_sen) 3))
 			(sleep (random_range 15 30))
 			(ai_place fact_ent_sen)
 			(set g_fact_ent_sen_count (+ g_fact_ent_sen_count 1))
@@ -1489,8 +1505,8 @@
 (script dormant ai_fact_ent_enf_spawn
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count fact_ent_enf) 0))
-			(sleep (random_range 30 60))
+			(sleep_until (<= (ai_living_count fact_ent_enf) 1))
+			(sleep (random_range 15 30))
 			(ai_place fact_ent_enf)
 			(set g_fact_ent_enf_count (+ g_fact_ent_enf_count 1))
 			(if (= g_fact_ent_enf_count g_fact_ent_enf_index) (set g_fact_ent_sen_spawn 1))
@@ -1520,16 +1536,16 @@
 			(sleep_until
 				(OR
 					(= (volume_test_objects vol_factory_1_mid_03 (players)) TRUE)
-					(< (ai_nonswarm_count factory1_flood) 3)
+					(< (ai_nonswarm_count factory1_flood) 4)
 				)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
-				(ai_place factory_1_flood_end 1)			
+				(ai_place factory_1_flood_end 2)			
 				(sleep 60)
 			)
 			(or
 				(= (volume_test_objects vol_factory_1_mid_03 (players)) TRUE)
-				(>= (ai_spawn_count factory_1_flood_end) 10)
+				(>= (ai_spawn_count factory_1_flood_end) 8)
 			)
 		)
 	)
@@ -1547,11 +1563,11 @@
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_01 (players)) FALSE)
 				(ai_place factory_1_sentinels_01_low 1)
-				(sleep 120)
+				(sleep 60)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_01 (players)) FALSE)
 				(ai_place factory_1_sentinels_01_high 1)
-				(sleep 120)
+				(sleep 60)
 			)
 			(or
 				(= (volume_test_objects vol_factory_1_mid_01 (players)) TRUE)
@@ -1575,11 +1591,11 @@
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_02 (players)) FALSE)
 				(ai_place factory_1_sentinels_02_low 1)
-				(sleep 120)
+				(sleep 60)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_02 (players)) FALSE)
 				(ai_place factory_1_sentinels_02_high 1)
-				(sleep 120)
+				(sleep 60)
 			)
 			(or
 				(= (volume_test_objects vol_factory_1_mid_02 (players)) TRUE)
@@ -1605,11 +1621,11 @@
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
 				(ai_place factory_1_sentinels_03_low 1)
-				(sleep 120)
+				(sleep 60)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
 				(ai_place factory_1_sentinels_03_high 1)
-				(sleep 120)
+				(sleep 60)
 			)
 			(or
 				(= (volume_test_objects vol_factory_1_mid_03 (players)) TRUE)
@@ -1634,24 +1650,24 @@
 			(sleep_until
 				(OR
 					(= (volume_test_objects vol_factory_1_mid_03 (players)) TRUE)
-					(< (ai_nonswarm_count factory1_flood) 3)
+					(< (ai_nonswarm_count factory1_flood) 4)
 				)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
-				(ai_place factory_1_flood_end 1)
-				(sleep 120)
+				(ai_place factory_1_flood_end 2)
+				(sleep 60)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
-				(ai_place factory_1_flood_tubes_far 1)
-				(sleep 120)
+				(ai_place factory_1_flood_tubes_far 2)
+				(sleep 60)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
-				(ai_place factory_1_flood_tubes_near 1)
-				(sleep 120)
+				(ai_place factory_1_flood_tubes_near 2)
+				(sleep 60)
 			)
 			(if (= (volume_test_objects vol_factory_1_mid_03 (players)) FALSE)
-				(ai_place factory_1_flood_alcove 1)
-				(sleep 120)
+				(ai_place factory_1_flood_alcove 2)
+				(sleep 60)
 			)
 			(or
 				(= (volume_test_objects vol_factory_1_mid_03 (players)) TRUE)
@@ -1670,16 +1686,16 @@
 			(sleep_until
 				(OR
 					(= (volume_test_objects vol_factory_1_exit (players)) TRUE)
-					(< (ai_nonswarm_count factory1_flood) 2)
+					(< (ai_nonswarm_count factory1_flood) 4)
 				)
 			)
 			(if (= (volume_test_objects vol_factory_1_exit (players)) FALSE)
-				(ai_place factory_1_flood_end 1)
-				(sleep 120)
+				(ai_place factory_1_flood_end 2)
+				(sleep 60)
 			)
 			(or
 				(= (volume_test_objects vol_factory_1_exit (players)) TRUE)
-				(>= (ai_spawn_count factory_1_flood_end) 8)
+				(>= (ai_spawn_count factory_1_flood_end) 12)
 			)
 		)
 	)
@@ -1705,7 +1721,7 @@
 	(sleep_until 
 		(OR
 			(= (volume_test_objects vol_factory_1_mid_01 (players)) TRUE)
-			(< (ai_nonswarm_count factory1_enemies) 8)
+			(< (ai_nonswarm_count factory1_enemies) 12)
 		)
 	)
 	(game_save_no_timeout)
@@ -1736,13 +1752,17 @@
 
 ; ==== GORGE SCRIPTS =====================================================================
 (global boolean g_gorge_sen_spawn 0)
+(global short g_gorge_sen_count 0)
+(global short g_gorge_sen_index 5)
 
 (script dormant ai_sentinel_spawn
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count gorge_sen) 0))
-			(sleep 150)
+			(sleep_until (<= (ai_living_count gorge_sen) 1))
+			(sleep 60)
 			(ai_place gorge_sen)
+			(set g_gorge_sen_count (+ g_gorge_sen_count 1))
+			(if (= g_gorge_sen_count g_gorge_sen_index) (set g_gorge_sen_spawn 1))
 		g_gorge_sen_spawn)
 	)
 )
@@ -1769,12 +1789,8 @@
 
 	(sleep_until (volume_test_objects tv_factory2_mid (players)))
 	(game_save_no_timeout)
-	(if	(<= (ai_living_count factory2_flood) 4)
-		(begin
-			(ai_place factory2_flood_mid)
-			(ai_place factory2_flood_bk)
-		)
-	)
+	(ai_place factory2_flood_mid)
+	(ai_place factory2_flood_bk)
 	
 	(sleep_until (volume_test_objects tv_factory2_bk (players)))
 	(game_save)
@@ -1852,9 +1868,34 @@
 	(ai_erase ai_current_squad)
 )
 
+(global boolean g_ext_b_bk_ghost_spawn 0)
+(global short g_ext_b_bk_ghost_limit 0)
+(global short g_ext_b_bk_ghost_number 0)
+
+(script dormant ai_ext_b_bk_ghost_spawn
+	(cond
+		((difficulty_normal) (begin (set g_ext_b_bk_ghost_limit 6) (set g_ext_b_bk_ghost_number 1)))
+		((difficulty_heroic) (begin (set g_ext_b_bk_ghost_limit 8) (set g_ext_b_bk_ghost_number 2)))
+		((difficulty_legendary) (begin (set g_ext_b_bk_ghost_limit 8) (set g_ext_b_bk_ghost_number 2)))
+	)
+
+	(sleep_until
+		(begin
+			(sleep_until (<= (ai_living_count qz_ext_b_ent_ghost_bk) 1))
+			(sleep 30)
+			(if debug (print "placing ghosts"))
+			(ai_place qz_ext_b_ent_ghost_bk g_ext_b_bk_ghost_number)
+		(or ; exit conditions 
+			(>= (ai_spawn_count qz_ext_b_ent_ghost_bk) g_ext_b_bk_ghost_limit)
+			g_ext_b_bk_ghost_spawn)
+		)
+	)
+)
+
 (global boolean g_ext_b_ent_phantom 0)
 
-(script command_script cs_ext_b_ent_phantom ; called from the starting location 
+(script command_script cs_ext_b_ent_phantom
+; called from the starting location
 	(cs_enable_pathfinding_failsafe 1)
 	(cs_vehicle_boost true)
 	(cs_fly_by qz_ext_b_ent_phantom/p0 5)
@@ -1866,8 +1907,8 @@
 ;	(sleep 30)
 	(cs_vehicle_speed .65)
 	(cs_fly_to qz_ext_b_ent_phantom/drop)
-	
-	(sleep_until g_ext_b_ent_phantom)
+	(sleep_until g_ext_b_bk_ghost_spawn)
+;	(sleep_until g_ext_b_ent_phantom)
 	(cs_face false qz_ext_b_ent_phantom/p5)
 	(cs_vehicle_speed 1)
 	(cs_fly_by qz_ext_b_ent_phantom/p5 3)
@@ -1876,54 +1917,31 @@
 	(ai_erase ai_current_squad)
 )
 
-(script dormant ai_ext_b_exit_tube_a
-	(sleep_until (volume_test_objects tv_ext_b_exit_tube_a (players)))
-	(ai_place qz_ext_b_ent_flood_tube_a (pin (- 8 (ai_nonswarm_count ext_b_flood)) 0 6))
+(script dormant ai_ext_b_exit_tube
+	(sleep_until (OR (volume_test_objects tv_ext_b_exit_tube_a (players)) (volume_test_objects tv_ext_b_exit_tube_b (players))))
+	(ai_place qz_ext_b_ent_flood_tube_a)
+	(ai_place qz_ext_b_ent_flood_tube_b)
 )
-(script dormant ai_ext_b_exit_tube_b
-	(sleep_until (volume_test_objects tv_ext_b_exit_tube_b (players)))
-	(ai_place qz_ext_b_ent_flood_tube_b (pin (- 8 (ai_nonswarm_count ext_b_flood)) 0 6))
-)
+; (script dormant ai_ext_b_exit_tube_b
+; 	(sleep_until (volume_test_objects tv_ext_b_exit_tube_b (players)))
+; 	(ai_place qz_ext_b_ent_flood_tube_b)
+; )
 
 (global boolean g_ext_b_enforcer 0)
 
 (script dormant ai_ext_b_enf_spawn
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count ext_b_sentinels_b) 0))
+			(sleep_until (<= (ai_living_count ext_b_sentinels_b) 1))
 			
 			(cond
-				((volume_test_objects tv_ext_b_mid (players)) (ai_place qz_ext_b_enf_b))
+				((<= (ai_living_count qz_ext_b_enf_b) 0) (ai_place qz_ext_b_enf_b))
 				(true (ai_place qz_ext_b_enf_a))
 			)
 			(or ; exit conditions 
 				(>= (ai_spawn_count ext_b_sentinels_b) 4)
 				g_ext_b_enforcer
 			)
-		)
-	)
-)
-
-(global boolean g_ext_b_bk_ghost_spawn 0)
-(global short g_ext_b_bk_ghost_limit 0)
-(global short g_ext_b_bk_ghost_number 0)
-
-(script dormant ai_ext_b_bk_ghost_spawn
-	(cond
-		((difficulty_normal) (begin (set g_ext_b_bk_ghost_limit 6) (set g_ext_b_bk_ghost_number 1)))
-		((difficulty_heroic) (begin (set g_ext_b_bk_ghost_limit 8) (set g_ext_b_bk_ghost_number 2)))
-		((difficulty_legendary) (begin (set g_ext_b_bk_ghost_limit 10) (set g_ext_b_bk_ghost_number 3)))
-	)
-
-	(sleep_until
-		(begin
-			(sleep_until (<= (ai_living_count qz_ext_b_ent_ghost_bk) 0))
-			(sleep 90)
-			(if debug (print "placing ghosts"))
-			(ai_place qz_ext_b_ent_ghost_bk g_ext_b_bk_ghost_number)
-		(or ; exit conditions 
-			(>= (ai_spawn_count qz_ext_b_ent_ghost_bk) g_ext_b_bk_ghost_limit)
-			g_ext_b_bk_ghost_spawn)
 		)
 	)
 )
@@ -2143,7 +2161,7 @@ Also, scripts which drive Tartarus's dropship, and the human key.
 		3
 	)
 	(set g_key_cruise_halfway true)
-	
+
 	; Sleep until the key is into the vertical rise
 	(sleep_until 
 		(>= (device_get_position key) 1.0)
@@ -2510,6 +2528,7 @@ Also, scripts which drive Tartarus's dropship, and the human key.
 
 (script dormant key_ride_tartarus_main
 	(ai_place key_ride_tartarus)
+	(ai_disregard (ai_actors key_ride_tartarus) TRUE)
 
 	; e21 stuff
 	(cs_run_command_script key_ride_tartarus/tartarus cs_e21_tartarus)
@@ -2830,6 +2849,8 @@ Open Issues
 ;- Event Scripts ---------------------------------------------------------------
 
 (script dormant e25_dialogue
+	(sleep_until g_key_library_entered 10)
+
 	; Elite scene
 	(sleep_until
 		(ai_scene e25_scene0 cs_e25_scene0 e21_cov_inf0)
@@ -2867,37 +2888,38 @@ Open Issues
 
 ;- Squad Controls --------------------------------------------------------------
 
-(script dormant e25_fld_inf1_main
-	; Wait until the key is near the second arch
-	(sleep_until g_key_lock1_second_arch 10)
-	
-	; First volley!
-	(ai_place e25_fld_inf1_0)
+(script dormant e25_fld_inf0_main
+	; Small sentinel and flood fight
+	(ai_place e25_fld_inf0_0)
+	(ai_place e25_fld_inf0_1)
+ 	(sleep_until g_key_lock1_first_arch 10)
+	(ai_place e25_sen_inf0_0)
+	(ai_place e25_sen_inf0_1)
 	
 	; Second volley
-	(sleep 60)
-	(ai_place e25_fld_inf1_1)
+	; (sleep 60)
+	; (ai_place e25_fld_inf1_1)
 	
 	; Combat forms!
-	(sleep 60)
-	(ai_place e25_fld_inf1_2)
+	;(sleep 60)
+	;(ai_place e25_fld_inf1_2)
 )
 
-(script dormant e25_fld_inf0_main
-	; Wait until the key is near the first arch
-	(sleep_until g_key_lock1_first_arch 10)
+; (script dormant e25_fld_inf0_main
+; 	; Wait until the key is near the first arch
+; 	(sleep_until g_key_lock1_first_arch 10)
 	
-	; First volley!
-	(ai_place e25_fld_inf0_0)
+; 	; First volley!
+; 	(ai_place e25_fld_inf0_0)
 	
-	; Second volley
-	(sleep 60)
-	(ai_place e25_fld_inf0_1)
+; 	; Second volley
+; 	(sleep 60)
+; 	(ai_place e25_fld_inf0_1)
 	
-	; Combat forms!
-	(sleep 60)
-	(ai_place e25_fld_inf0_2)
-)
+; 	; Combat forms!
+; 	;(sleep 60)
+; 	;(ai_place e25_fld_inf0_2)
+; )
 
 
 ;- Init and Cleanup ------------------------------------------------------------
@@ -2907,20 +2929,24 @@ Open Issues
 	(sleep_until g_key_lock1_entered 10)
 	(set g_e25_started true)
 	(print "e25_main")
-	(game_save)
+	(game_save_no_timeout)
 	
 	; Wake subsequent scripts
 	(wake e26_main)
 
 	; Wake control scripts
-;	(wake e25_fld_inf0_main)
-;	(wake e25_fld_inf1_main)
+	(wake e25_fld_inf0_main)
+	;(wake e25_fld_inf1_main)
 	(wake e25_dialogue)
 	
 	; Shut down
 	(sleep_until g_e26_started)
 	(sleep_forever e25_fld_inf0_main)
-	(sleep_forever e25_fld_inf1_main)
+	(ai_disposable e25_fld_inf0_0 true)
+	(ai_disposable e25_fld_inf0_1 true)
+	(ai_disposable e25_sen_inf0_0 true)
+	(ai_disposable e25_sen_inf0_1 true)
+	;(sleep_forever e25_fld_inf1_main)
 )
 
 
@@ -2959,16 +2985,42 @@ Open Issues
 
 ;- Command Scripts -------------------------------------------------------------
 
-(script command_script cs_e24_fld_inf1_load
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
-	(cs_face_object true key)
+; (script command_script cs_e24_fld_inf2_load
+; 	(cs_enable_moving false)
+; 	(cs_enable_targeting false)
+; 	(print "cs_e24_fld_inf2_load: Wait for it...")
+
+; 	; Wait for it...
+; 	(sleep 700)
+	
+; 	; Board it
+; 	(object_cannot_take_damage (ai_get_object ai_current_actor))
+
+; 	; Jump in
+; 	(cs_enable_moving true)
+; 	(cs_enable_targeting true)
+; 	(cs_move_in_direction 0 3 0)
+; 	(print "cs_e24_fld_inf2_load: cs_jump_to_point")
+
+; 	; Migrate them over
+; 	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	
+; 	; Wait for them to land
+; 	(sleep 150)
+; 	(object_can_take_damage (ai_get_object ai_current_actor))
+; )
+
+(script command_script cs_e24_fld_inf1_1_load
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
 
 	; Wait for it...
 	(sleep 210)
 	
 	; Board it
 	(object_cannot_take_damage (ai_get_object ai_current_actor))
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
 	(cs_face_object false key)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
@@ -3065,20 +3117,193 @@ Open Issues
 
 ;- Command Scripts -------------------------------------------------------------
 
+; (script command_script cs_e23_fld_inf0_0_load
+; 	(cs_enable_pathfinding_failsafe true)
+; 	(cs_ignore_obstacles true)
+; 	(cs_go_to e23_fld_inf0_load/p0_0)
+; 	(cs_go_to e23_fld_inf0_load/p0_1)
+; 	(cs_jump 15.0 3.0)
+; )
+
+; (script command_script cs_e23_fld_inf0_1_load
+; 	(cs_enable_pathfinding_failsafe true)
+; 	(cs_ignore_obstacles true)
+; 	(cs_go_to e23_fld_inf0_load/p1_0)
+; 	(cs_go_to e23_fld_inf0_load/p1_1)
+; 	(cs_jump 15.0 3.0)
+; )
+
+(script command_script cs_e23_fld_inf0_0_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+
+	(sleep_until g_key_cruise_first_loadpoint 1)
+	(sleep 330)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p1)
+
+	; Wait for it...
+	(sleep 150)
+	(cs_shoot_point false key_bsp6/p1)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
+(script command_script cs_e23_fld_inf0_1_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(sleep_until g_key_cruise_first_loadpoint 1)
+	(sleep 330)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p0)
+
+	; Wait for it...
+	(sleep 150)
+	(cs_shoot_point false key_bsp6/p0)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
 (script command_script cs_e23_fld_inf0_0_load
-	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+
+	; Wait until the key is close enough
+	(sleep_until g_key_cruise_halfway 1)
+	(sleep 15)
+	
+	; Board it
+	(cs_face_object false key)
+	(unit_impervious ai_current_actor true)
 	(cs_ignore_obstacles true)
-	(cs_go_to e23_fld_inf0_load/p0_0)
-	(cs_go_to e23_fld_inf0_load/p0_1)
-	(cs_jump 15.0 3.0)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
+	(unit_impervious ai_current_actor false)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
 )
 
 (script command_script cs_e23_fld_inf0_1_load
-	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+
+	; Wait until the key is close enough
+	(sleep_until g_key_cruise_halfway 1)
+	(sleep 15)
+	
+	; Board it
+	(cs_face_object false key)
+	(unit_impervious ai_current_actor true)
 	(cs_ignore_obstacles true)
-	(cs_go_to e23_fld_inf0_load/p1_0)
-	(cs_go_to e23_fld_inf0_load/p1_1)
-	(cs_jump 15.0 3.0)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
+	(unit_impervious ai_current_actor false)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
 )
 
 (script command_script cs_e23_scene0
@@ -3124,15 +3349,15 @@ Open Issues
 	; Place the Flood
 	(ai_place e23_fld_inf0)
 	
-	; Wait until the key is close enough
-	(sleep_until g_key_cruise_halfway 10)
-	(sleep 90)
+	; ; Wait until the key is close enough
+	; (sleep_until g_key_cruise_halfway 10)
+	; (sleep 30)
 	
-	; Change orders, send them in
-	(ai_set_orders e23_fld_inf0_0 e23_fld_inf0_engage)
-	(ai_set_orders e23_fld_inf0_1 e23_fld_inf0_engage)
-	(cs_run_command_script e23_fld_inf0_0 cs_e23_fld_inf0_0_load)
-	(cs_run_command_script e23_fld_inf0_1 cs_e23_fld_inf0_1_load)
+	; ; Change orders, send them in
+	; (ai_set_orders e23_fld_inf0_0 e23_fld_inf0_engage)
+	; (ai_set_orders e23_fld_inf0_1 e23_fld_inf0_engage)
+	; (cs_run_command_script e23_fld_inf0_0 cs_e23_fld_inf0_0_load)
+	; (cs_run_command_script e23_fld_inf0_1 cs_e23_fld_inf0_1_load)
 )
 
 
@@ -3149,7 +3374,7 @@ Open Issues
 	(wake e24_main)
 
 	; Wake control scripts
-;	(wake e23_fld_inf0_main)
+	(wake e23_fld_inf0_main)
 	(wake e23_dialogue)
 	
 	; Shut down
@@ -3211,34 +3436,177 @@ Open Issues
 )
 
 (script command_script cs_e22_fld_inf0_0_load
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
 	(cs_face_object true key)
 	(sleep_until g_key_lock0_second_loadpoint 1)
 
 	; Wait for it...
-	(sleep 95)
+	(sleep 175)
 	
 	; Board it
 	(cs_face_object false key)
 	(unit_impervious ai_current_actor true)
 	(cs_ignore_obstacles true)
 	(cs_enable_pathfinding_failsafe true)
-	(if (= (random_range 0 2) 0)
-		(begin
-			(cs_go_to e22_fld_inf0_load/p0_0)
-			(cs_go_to e22_fld_inf0_load/p0_1)
-		)
-		(begin
-			(cs_go_to e22_fld_inf0_load/p1_0)
-			(cs_go_to e22_fld_inf0_load/p1_1)
-		)
-	)
-	(cs_move_in_direction 0 1 0)
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
 	(unit_impervious ai_current_actor false)
 
 	; Migrate them over
 	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e22_fld_inf0_1_load
+	(cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until g_key_lock0_second_loadpoint 1)
+
+	; Wait for it...
+	(sleep 175)
+	
+	; Board it
+	(cs_face_object false key)
+	(unit_impervious ai_current_actor true)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_move_in_direction 0 3 0)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(sleep 15)
+	(unit_impervious ai_current_actor false)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e22_fld_inf0_0_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until (= (structure_bsp_index) 4))
+	(sleep 30)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p1)
+
+	; Wait for it...
+	(sleep 250)
+	(cs_shoot_point false key_bsp6/p1)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
+(script command_script cs_e22_fld_inf0_1_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until (= (structure_bsp_index) 4))
+	(sleep 30)
+
+	; Shoot at the key
+	(cs_shoot_point true key_bsp6/p0)
+
+	; Wait for it...
+	(sleep 250)
+	(cs_shoot_point false key_bsp6/p0)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
 )
 
 (script command_script cs_e22_scene0
@@ -3353,25 +3721,49 @@ Flood
 ;- Command Scripts -------------------------------------------------------------
 
 (script command_script cs_e21_fld_inf1_low_entry
-	(cs_enable_pathfinding_failsafe true)
 	(cs_ignore_obstacles true)
-	(cs_move_in_direction 6 0 0)
 
-	; Head to the rally point
-	(if (= (structure_bsp_index) 3)
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(sleep 240)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
 		(begin
-			(cs_go_to e21_fld_bsp5/p2)
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp5/p1_0)
-			(cs_go_to e21_fld_bsp5/p1_1)
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
 		(begin
-			(cs_go_to e21_fld_bsp6/p2)
-			(cs_abort_on_combat_status ai_combat_status_clear_los)
-			(cs_go_to e21_fld_bsp6/p1_0)
-			(cs_go_to e21_fld_bsp6/p1_1)
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
-	)	
+	)
 )
 
 (script command_script cs_e21_fld_inf1_high_entry
@@ -3379,25 +3771,278 @@ Flood
 	(cs_enable_pathfinding_failsafe true)
 
 	; Jump in
-;	(cs_jump_to_point 2.5 1)
-	
-	; Then go to the rally point
-	(if (= (structure_bsp_index) 3)
+	(cs_jump_to_point 2.5 1)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
 		(begin
-			(cs_go_to e21_fld_bsp5/p1_0)
-			(cs_go_to e21_fld_bsp5/p1_1)
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
 		(begin
-			(cs_go_to e21_fld_bsp6/p1_0)
-			(cs_go_to e21_fld_bsp6/p1_1)
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
 		)
-	)	
+	)
 )
 
 (script command_script cs_e21_fld_inf0_low_entry
-	(cs_enable_pathfinding_failsafe true)
 	(cs_ignore_obstacles true)
-	(cs_move_in_direction 6 0 0)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(sleep 240)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e21_fld_inf0_high_entry
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+	(cs_enable_pathfinding_failsafe true)
+
+	; Jump in
+	(cs_jump_to_point 2.5 1)
+
+	; Migrate them over
+	(ai_migrate ai_current_actor e21_fld_inf0_0)
+	(sleep 60)
+	(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e21_fld_inf0_0_left
+
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 30)
+	(sleep 148)
+	;(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
+
+	; Board it
+	(sleep 90)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(cs_move_in_direction 0 3 0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+(script command_script cs_e21_fld_inf0_0_right
+
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 30)
+	(sleep 148)
+	;(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
+
+	; Board it
+	(sleep 90)
+	(cs_ignore_obstacles true)
+	(cs_enable_pathfinding_failsafe true)
+	(cs_enable_moving true)
+	(cs_enable_targeting true)
+	(cs_move_in_direction 0 3 0)
+	(sleep 60)
+	(ai_magically_see_object e21_fld_inf1_0 (player0))
+	(ai_magically_see_object e21_fld_inf1_0 (player1))
+	(cs_abort_on_combat_status ai_combat_status_clear_los)
+
+	; Then search the entire platform and end at the rally point (top-front)
+	(if (= (random_range 0 2) 0)
+		(begin
+			; Clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_bottom) (cs_go_to e21_fld_bsp6/center_front_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_top) (cs_go_to e21_fld_bsp6/right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_middle_middle) (cs_go_to e21_fld_bsp6/right_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_bottom) (cs_go_to e21_fld_bsp6/center_left_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_middle_top) (cs_go_to e21_fld_bsp6/center_left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+		(begin
+			; Counter-clockwise
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/right_front_top) (cs_go_to e21_fld_bsp6/right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_front_top) (cs_go_to e21_fld_bsp6/center_right_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_front_top) (cs_go_to e21_fld_bsp6/center_left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_front_top) (cs_go_to e21_fld_bsp6/left_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_top) (cs_go_to e21_fld_bsp6/left_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/left_middle_middle) (cs_go_to e21_fld_bsp6/left_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_middle_middle) (cs_go_to e21_fld_bsp6/center_middle_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_bottom) (cs_go_to e21_fld_bsp6/center_right_back_bottom))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_middle_top) (cs_go_to e21_fld_bsp6/center_right_middle_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_back_top) (cs_go_to e21_fld_bsp6/center_back_top))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_left_back_middle) (cs_go_to e21_fld_bsp6/center_left_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_right_back_middle) (cs_go_to e21_fld_bsp6/center_right_back_middle))
+			(if (= (structure_bsp_index) 3) (cs_go_to e21_fld_bsp5/center_front_top) (cs_go_to e21_fld_bsp6/center_front_top))
+		)
+	)
+)
+
+
+
+;*
 
 	; Head to the rally point
 	(if (= (structure_bsp_index) 3)
@@ -3406,58 +4051,61 @@ Flood
 			(cs_abort_on_combat_status ai_combat_status_clear_los)
 			(cs_go_to e21_fld_bsp5/p0_0)
 			(cs_go_to e21_fld_bsp5/p0_1)
+			(cs_go_to e21_fld_bsp5/p3)
+			(cs_go_to e21_fld_bsp5/p4)
 		)
 		(begin
 			(cs_go_to e21_fld_bsp6/p2)
 			(cs_abort_on_combat_status ai_combat_status_clear_los)
 			(cs_go_to e21_fld_bsp6/p0_0)
 			(cs_go_to e21_fld_bsp6/p0_1)
+			(cs_go_to e21_fld_bsp6/p3)
+			(cs_go_to e21_fld_bsp6/p4)
 		)
-	)	
-)
+	)
 
-(script command_script cs_e21_fld_inf0_high_entry
-	(cs_abort_on_combat_status ai_combat_status_clear_los)
-	(cs_enable_pathfinding_failsafe true)
+*;
 
-	; Jump in
-;	(cs_jump_to_point 2.5 1)
-	
-	; Head to the rally point
-	(if (= (structure_bsp_index) 3)
-		(begin
-			(cs_go_to e21_fld_bsp5/p0_0)
-			(cs_go_to e21_fld_bsp5/p0_1)
-		)
-		(begin
-			(cs_go_to e21_fld_bsp6/p0_0)
-			(cs_go_to e21_fld_bsp6/p0_1)
-		)
-	)	
-)
 
-(script command_script cs_e21_fld_inf0_0_load
-	(cs_enable_moving true)
-	(cs_enable_targeting true)
+
+(script command_script cs_e21_fld_inf0_turret0
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
 	(sleep_until g_key_lock0_first_loadpoint 1)
-	
+	(sleep 20)
+
 	; Shoot at the key
-	(sleep 30)
+	(cs_shoot_point true key_bsp5/p1)
+
+	; Wait for it...
+	(sleep 148)
+	(cs_shoot_point false key_bsp5/p1)
+	(cs_enable_targeting true)
+
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
+)
+
+(script command_script cs_e21_fld_inf0_turret1
+    (cs_enable_moving false)
+	(cs_enable_targeting false)
+	(cs_face_object true key)
+	(sleep_until g_key_lock0_first_loadpoint 1)
+	(sleep 20)
+
+	; Shoot at the key
 	(cs_shoot_point true key_bsp5/p0)
 
 	; Wait for it...
 	(sleep 148)
 	(cs_shoot_point false key_bsp5/p0)
-	
-	; Set their orders
-	(ai_set_orders ai_current_squad e21_fld_inf0_engage0)
+	(cs_enable_targeting true)
 
-	; Board it
-	(cs_ignore_obstacles true)
-	(cs_enable_pathfinding_failsafe true)
-	(cs_go_to e21_fld_load/left0)
-	(cs_go_to e21_fld_load/left1)
-	(cs_move_in_direction 0 1 0)
+	; Bye
+	(sleep 300)
+	(ai_kill_silent ai_current_actor)
 )
 
 (script command_script cs_e21_scene0
@@ -3481,8 +4129,10 @@ Flood
 	; Shoot a random combat form
 	(cs_shoot_point true e21_fld_load/p0)
 	(sleep 90)
+	(cs_shoot_point false e21_fld_load/p0)
+	(sleep 30)
+	(unit_add_equipment (ai_get_unit ai_current_actor) key_ride TRUE TRUE)
 )
-
 
 ;- Order Scripts ---------------------------------------------------------------
 
@@ -3490,65 +4140,61 @@ Flood
 	(= (structure_bsp_index) 4)
 )
 
+(script static boolean e21_in_bsp6
+	(= (structure_bsp_index) 6)
+)
 
 ;- Event Controls --------------------------------------------------------------
 ;- Squad Controls --------------------------------------------------------------
 
-(script dormant e21_fld_carriers1_main
-	; Migrate everyone over
-	(ai_migrate e21_fld_carriers0 e21_fld_carriers1)
+; (script dormant e21_fld_carriers1_main
+; 	; Migrate everyone over
+; 	(ai_migrate e21_fld_carriers0 e21_fld_carriers1)
 	
-	; Respawner
-	(sleep_until
-		(begin
-			; Replenish the carrier forms
-			(if (< (ai_swarm_count e21_fld_carriers1) 2)
-				; Respawn one
-				(ai_place e21_fld_carriers1 1)
-			)
+; 	; Respawner
+; 	(sleep_until
+; 		(begin
+; 			; Replenish the carrier forms
+; 			(if (< (ai_swarm_count e21_fld_carriers1) 1)
+; 				; Respawn one
+; 				(ai_place e21_fld_carriers1 1)
+; 			)
 		
-			; Loop until the shaft
-			g_key_lock1_second_arch
-		)
-		90
-	)
-)
+; 			; Loop until the shaft
+; 			g_key_lock1_second_arch
+; 		)
+; 		300
+; 	)
+; )
 
 (script static void e21_fld_inf1_spawn
 	; Is the player in the way of the lower spawner?
 	(if (volume_test_objects tv_key_near_lower_spawner (players))
-		; He is, so spawn from up top
+		; He is, so spawn two from up top
 		(begin
+			(ai_place e21_fld_inf1_2 1)
+			(ai_place e21_fld_inf1_1 1)
+			(sleep 60)
+		)
+		
+		; He is not, so spawn one from down low and one from on top
+		(begin
+			(if (= (random_range 0 2) 0)
+				(ai_place e21_fld_inf1_1/carrier0)
+			)
 			; Is the other one on the upper left side?
 			(if (volume_test_objects tv_key_upper_left_side (players))
 				; He is, spawn from the opposite side
 				(begin
 					(ai_place e21_fld_inf1_2 1)
-					(ai_migrate e21_fld_inf1_2 e21_fld_inf1_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf1_0 (player0))
-					(ai_magically_see_object e21_fld_inf1_0 (player1))
 				)
 				
 				; He is not, spawn from that side
 				(begin
-					(ai_place e21_fld_inf0_2 1)
-					(cs_run_command_script e21_fld_inf0_2 cs_e21_fld_inf1_high_entry)
-					(ai_migrate e21_fld_inf0_2 e21_fld_inf1_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf1_0 (player0))
-					(ai_magically_see_object e21_fld_inf1_0 (player1))
+					(ai_place e21_fld_inf1_1 1)
 				)
 			)
-		)
-		
-		; He is not, so spawn from down low
-		(begin
-			(ai_place e21_fld_inf1_1 1)
-			(ai_migrate e21_fld_inf1_1 e21_fld_inf1_0)
-			(sleep 5)
-			(ai_magically_see_object e21_fld_inf1_0 (player0))
-			(ai_magically_see_object e21_fld_inf1_0 (player1))
+			(sleep 60)
 		)
 	)
 )
@@ -3561,7 +4207,7 @@ Flood
 	(sleep_until
 		(begin
 			; Replenish the combat forms
-			(if (< (ai_nonswarm_count e21_fld_inf1_0) 8)
+			(if (< (ai_nonswarm_count e21_fld_inf1_0) 12)
 				; Respawn them
 				(sleep_until
 					(begin
@@ -3569,79 +4215,79 @@ Flood
 						
 						; Until there are enough or the ride is over
 						(or
-							(>= (ai_nonswarm_count e21_fld_inf1_0) 8)
+							(>= (ai_nonswarm_count e21_fld_inf1_0) 12)
 							g_key_lock1_second_arch
 						)
 					)
-					60
+					120
 				)
+			)
+
+			(if (>= (ai_nonswarm_count e21_fld_inf1_0) 12)
+                (print "e21_fld_inf1_main: Too many")
 			)
 			
 			; Loop until the shaft
 			g_key_lock1_second_arch
 		)
-		900
+		180
 	)
 )
 
-(script dormant e21_fld_carriers0_main
-	; Wait for that initial group to load on board
-	(sleep_until (= (structure_bsp_index) 4))
+; (script dormant e21_fld_carriers0_main
+; 	; Wait for that initial group to load on board
+; 	(sleep_until (= (structure_bsp_index) 4))
 
-	; Respawner
-	(sleep_until
-		(begin			
-			; Replenish the carrier forms
-			(if (< (ai_nonswarm_count e21_fld_carriers0) 2)
-				; Respawn one
-				(ai_place e21_fld_carriers0 1)
-			)
-		
-			; Loop until the shaft
-			g_key_shaft_rising
-		)
-		90
-	)
+; 	; Respawner
+; 	(sleep_until
+; 		(begin			
+; 			; Replenish the carrier forms
+; 			(if (< (ai_nonswarm_count e21_fld_carriers0) 2)
+; 				; Respawn one
+; 				(ai_place e21_fld_carriers0 1)
+; 			)
+; 			(if (>= (ai_nonswarm_count e21_fld_inf1_0) 16)
+;                 (print "e21_fld_carriers0_main: Too many")
+; 			)
+
+; 			; Loop until the shaft
+; 			g_key_shaft_rising
+; 		)
+; 		300
+; 	)
 	
-	; Switch sides
-	(wake e21_fld_carriers1_main)
-)
+; 	; Switch sides
+; 	(wake e21_fld_carriers1_main)
+; )
 
 (script static void e21_fld_inf0_spawn
 	; Is the player in the way of the lower spawner?
 	(if (volume_test_objects tv_key_near_lower_spawner (players))
-		; He is, so spawn from up top
+		; He is, so spawn two from up top
 		(begin
+			(ai_place e21_fld_inf0_1 1)
+			(ai_place e21_fld_inf0_2 1)
+			(sleep 60)
+		)
+		
+		; He is not, so spawn one from down low and one from on top
+		(begin
+			(if (= (random_range 0 2) 0)
+				(ai_place e21_fld_inf0_1/carrier0)
+			)			
 			; Is the other one on the upper left side?
 			(if (volume_test_objects tv_key_upper_left_side (players))
 				; He is, spawn from the opposite side
 				(begin
-					(ai_place e21_fld_inf1_2 1)
-					(cs_run_command_script e21_fld_inf1_2 cs_e21_fld_inf0_high_entry)
-					(ai_migrate e21_fld_inf1_2 e21_fld_inf0_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf0_0 (player0))
-					(ai_magically_see_object e21_fld_inf0_0 (player1))
+					(ai_place e21_fld_inf0_1 1)
 				)
 				
 				; He is not, spawn from that side
 				(begin
 					(ai_place e21_fld_inf0_2 1)
-					(ai_migrate e21_fld_inf0_2 e21_fld_inf0_0)
-					(sleep 5)
-					(ai_magically_see_object e21_fld_inf0_0 (player0))
-					(ai_magically_see_object e21_fld_inf0_0 (player1))
 				)
 			)
-		)
-		
-		; He is not, so spawn from down low
-		(begin
-			(ai_place e21_fld_inf0_1 1)
-			(ai_migrate e21_fld_inf0_1 e21_fld_inf0_0)
-			(sleep 5)
-			(ai_magically_see_object e21_fld_inf0_0 (player0))
-			(ai_magically_see_object e21_fld_inf0_0 (player1))
+			(sleep 60)
 		)
 	)
 )
@@ -3659,17 +4305,18 @@ Flood
 			
 			; Until there are enough or the ride is over
 			(or
-				(>= (ai_nonswarm_count e21_fld_inf0_0) 8)
+				(>= (ai_nonswarm_count e21_fld_inf0_0) 12)
 				g_key_shaft_rising
 			)
 		)
+		120
 	)
 
 	; Respawner
 	(sleep_until
 		(begin
 			; Replenish the combat forms
-			(if (< (ai_nonswarm_count e21_fld_inf0_0) 8)
+			(if (< (ai_nonswarm_count e21_fld_inf0_0) 12)
 				; Respawn them
 				(sleep_until
 					(begin
@@ -3677,18 +4324,20 @@ Flood
 						
 						; Until there are enough or the ride is over
 						(or
-							(>= (ai_nonswarm_count e21_fld_inf0_0) 8)
+							(>= (ai_nonswarm_count e21_fld_inf0_0) 12)
 							g_key_shaft_rising
 						)
 					)
-					60
+					120
 				)
 			)
-					
+			(if (>= (ai_nonswarm_count e21_fld_inf0_0) 12)
+                (print "e21_fld_inf0_main: Too many")
+			)					
 			; Loop until the shaft
 			g_key_shaft_rising
 		)
-		900
+		180
 	)
 	
 	; Switch sides
@@ -3717,7 +4366,7 @@ Flood
 	
 	; Wait for that initial group to load on board
 	(sleep_until g_key_lock0_first_loadpoint 5)
-	(game_save)
+	(game_save_no_timeout)
 
 	; Set the orders
 	(ai_set_orders e21_cov_inf0_0 e21_cov_inf0_0_guard_left)
@@ -3746,7 +4395,7 @@ Flood
 	; Wake control scripts
 	(wake e21_cov_inf0_main)
 	(wake e21_fld_inf0_main)
-;	(wake e21_fld_carriers0_main)
+	;(wake e21_fld_carriers0_main)
 	
 	(wake sc_outer_wall) ; pbertone: dialogue 
 )
@@ -3755,8 +4404,10 @@ Flood
 	(switch_bsp_by_name sen_hq_bsp_5)
 	(sleep 1)
 	(object_teleport (player0) key_ent0)
+	;(unit_add_equipment (player0) key_ride TRUE TRUE)
 	(object_set_velocity (player0) 5 0 0)
 	(object_teleport (player1) key_ent1)
+	;(unit_add_equipment (player1) key_ride TRUE TRUE)
 	(object_set_velocity (player1) 5 0 0)
 	(wake key_main)
 	(wake key_ride_human_key_main)
@@ -3800,8 +4451,7 @@ Flood
 	e20_fld_infs0 - Infection forms milling through the environment, fleeing
 
 Open Issues
-
-
+*;
 
 ;- Globals ---------------------------------------------------------------------
 
@@ -3813,10 +4463,13 @@ Open Issues
 ;- Squad Controls --------------------------------------------------------------
 
 (script dormant e20_cov_inf0_main
-	; FILL THIS WITH MIGRATION COMMANDS
-	(sleep 1)
+	;(sleep_until (= (structure_bsp_index) 3))
+	(ai_erase covenant)
+	(ai_place e20_cov_inf0 1)
+	(object_cannot_die (ai_get_object e20_cov_inf0/soc) true)
+	(sleep 5)
+		;(ai_migrate key_cov_dump e20_cov_inf0)
 )
-
 
 ;- Init and Cleanup ------------------------------------------------------------
 
@@ -3829,17 +4482,17 @@ Open Issues
 
 	; Wake control scripts
 	(wake e20_cov_inf0_main)
-	
+	(ai_place e20_fld_combats0_0)
+	(ai_place e20_fld_combats0_1)
+
 	; Shut down
-	(sleep_until (volume_test_objects tv_cutscene_key_boarding (players)) 10)
-	(sleep_forever e20_cov_inf0_main)
-	
-	; Start the cutscene
+	;(sleep_until (volume_test_objects tv_key_ride_cinematic (players)) 10)
+	;(sleep_forever e20_cov_inf0_main)
 	
 	; Clean up
-	(sleep 15)
-	(ai_erase e20_cov)
-	(ai_erase e20_fld)
+	; (sleep 15)
+	; (ai_erase e20_cov)
+	; (ai_erase e20_fld)
 )
 
 (script static void test_key_dock
@@ -3849,7 +4502,7 @@ Open Issues
 	(ai_place e20_cov_inf0)
 	(if (not g_e20_started) (wake e20_main))
 )
-*;
+;
 ;= KEYRIDE MAIN ==========================================================================
 
 (script dormant begin_key_ride_main
@@ -3915,28 +4568,28 @@ Open Issues
 	(game_save)
 	(ai_renew covenant)
 
-		(ai_disposable cov_def_sentinels true)
-		(ai_disposable cov_def_enf true)
-	
-		(set g_veh_int_migrate_a 1)
-		(set g_music_06b_01 1)
-	
-		(wake music_06b_01)
-		(wake sc_qz_veh_int)
-	
-		(ai_place veh_int_enf_a) ; 1 
-		(ai_place veh_int_enf_b) ; 1 
-		(ai_place veh_int_enf_d) ; 1 
-		(ai_place veh_int_sen_elim_ini)  ; 2 
-		(ai_place veh_int_scorpion) ; 0 
-		(ai_place veh_int_flood_ghosts_ini) ; 2 
-		(ai_place veh_int_wraith/wraith)
-;		(ai_place veh_int_turrets)
-		(ai_place veh_int_hog_ab) ; 0 
-		(ai_place veh_int_ghost_ab) ;0 
-		(sleep 15)
-	
-		(device_operates_automatically_set veh_int_door_a 1)
+	(ai_disposable cov_def_sentinels true)
+	(ai_disposable cov_def_enf true)
+
+	(set g_veh_int_migrate_a 1)
+	(set g_music_06b_01 1)
+
+	(wake music_06b_01)
+	(wake sc_qz_veh_int)
+
+	(ai_place veh_int_enf_a) ; 2 
+	(ai_place veh_int_enf_b) ; 1 
+	(ai_place veh_int_enf_d) ; 2 
+	(ai_place veh_int_sen_elim_ini)  ; 2 
+	(ai_place veh_int_scorpion) ; 0 
+	(ai_place veh_int_flood_ghosts_ini) ; 2 
+	(ai_place veh_int_wraith/wraith)
+	;(ai_place veh_int_turrets)
+	(ai_place veh_int_hog_ab) ; 0 
+	(ai_place veh_int_ghost_ab) ;0 
+	(sleep 15)
+
+	(device_operates_automatically_set veh_int_door_a 1)
 
 	(sleep_until (volume_test_objects tv_veh_int_b (players)))
 		(game_save)
@@ -3957,7 +4610,7 @@ Open Issues
 		
 		(set g_veh_int_migrate_c 1)
 	
-		(wake sc_factory_approach)	
+		; (wake sc_factory_approach)	
 	
 		(ai_renew covenant)
 		(ai_place veh_int_wraith/driver) ; 1 
@@ -3989,12 +4642,13 @@ Open Issues
 ;		(wake dam_door_a)
 ;		(wake dam_door_b)
 	
-		(ai_place qz_ext_a_dam_enf/a)
+		(ai_place qz_ext_a_dam_enf)
 		(ai_place qz_ext_a_dam_human)
 		(ai_place qz_ext_a_dam_sen)
 		(ai_place qz_ext_a_dam_sen_elim)
 		(ai_place qz_ext_a_dam_flood_ini)
-		
+		(ai_place qz_ext_a_dam_flood_cliff_a)
+
 		(wake chapter_competition)
 		(game_save)
 		(ai_renew covenant)
@@ -4003,7 +4657,6 @@ Open Issues
 	
 		(set g_ext_a_dam_migrate_b 1)
 	
-		(ai_place qz_ext_a_dam_flood_cliff_a)
 		(ai_place qz_ext_a_dam_flood_cliff_b)
 	
 	(sleep_until (volume_test_objects tv_ext_a_a (players)))
@@ -4070,14 +4723,14 @@ Open Issues
 	
 	(sleep_until (volume_test_objects tv_ext_a_f (players)))
 		(data_mine_set_mission_segment enc_ext_a_fact_ent)
-		(game_save_no_timeout)
+		(game_save)
 		
 		(set g_ext_a_migrate_f 1)
 		(set g_music_06b_02 1)
 	
 		(ai_renew covenant)
 		
-;		(ai_place fact_ent_flood_turrets)
+		(ai_place fact_ent_flood_turrets)
 		(ai_place fact_ent_flood_scorpion)
 ;		(ai_place fact_ent_flood_wraith_a)
 		(ai_place fact_ent_flood_wraith_b)
@@ -4086,6 +4739,10 @@ Open Issues
 	
 	(sleep_until (volume_test_objects tv_ext_a_fact_ent (players)))
 		(set g_ext_a_fact_ent_migrate 1)
+		(wake sc_factory_approach)	
+
+	(sleep_until (volume_test_objects tv_fact_ent_follow (players)))
+		(set g_ext_a_fact_ent_follow 1)
 )
 
 (script dormant enc_crashed_factory
@@ -4140,13 +4797,13 @@ Open Issues
 		(ai_disposable factory2_enemies true)
 	
 		(wake music_06b_04)
-		(wake sc_factory_exit)
+		;(wake sc_factory_exit)
 		(wake objective_push_clear)
 		(wake objective_link_set)
 		(wake ext_b_vehicle_orders)
 		
 		(ai_place qz_ext_b_fact_scorpion)
-			(ai_vehicle_reserve (ai_vehicle_get_from_starting_location qz_ext_b_fact_scorpion/scorpion) true)
+;		(ai_vehicle_reserve (ai_vehicle_get_from_starting_location qz_ext_b_fact_scorpion/scorpion) true)
 ;		(ai_place qz_ext_b_fact_humans)
 		(ai_place qz_ext_b_fact_wraith)
 		(ai_place qz_ext_b_fact_ghosts)
@@ -4155,8 +4812,8 @@ Open Issues
 		(ai_place qz_ext_b_enf_a)
 		
 	(sleep_until (volume_test_objects tv_ext_b_fact_mid (players)))
-		(game_save)
-		(if (random_range 0 2) (ai_place qz_ext_b_fact_warthog) (ai_place qz_ext_b_fact_ghost_bk))
+	(game_save)
+	(ai_place qz_ext_b_fact_ghost_bk)
 
 	(sleep_until	(or
 					(and 
@@ -4179,7 +4836,7 @@ Open Issues
 		(ai_place qz_ext_b_cov_phantom)
 		(ai_place qz_ext_b_wraith_a)
 		(ai_place qz_ext_b_wraith_b)
-		(ai_place qz_ext_b_ghosts_a (pin (- 7 (ai_living_count ext_b_flood)) 0 2))
+		(ai_place qz_ext_b_ghosts_a)
 		(ai_place qz_ext_b_warthog)
 		(set v_ext_b_phantom (ai_vehicle_get_from_starting_location qz_ext_b_cov_phantom/phantom))
 	
@@ -4216,7 +4873,7 @@ Open Issues
 		(ai_place qz_ext_b_ent_enf)
 		(ai_place qz_ext_b_ent_scorpion)
 		(ai_place qz_ext_b_ent_wraith_a)
-;		(ai_place qz_ext_b_ent_cov_phantom)
+		;(ai_place qz_ext_b_ent_cov_phantom)
 	
 	(sleep_until (volume_test_objects tv_ext_b_exit (players)) 5)
 		(data_mine_set_mission_segment enc_qz_ext_b_exit)
@@ -4226,15 +4883,15 @@ Open Issues
 		(set g_ext_b_bk_ghost_spawn 1)
 		(set g_ext_b_migrate_4 1)
 	
-		(wake ai_ext_b_exit_tube_a)
-		(wake ai_ext_b_exit_tube_b)
+		(wake ai_ext_b_exit_tube)
+		;(wake ai_ext_b_exit_tube_b)
 	
 		(ai_place qz_ext_b_ent_turrets)
 	
-	(sleep_until	(or
+		(sleep_until	(or
 					(and
 						(<= (ai_living_count ext_b_flood_d) 0)
-						(<= (ai_living_count ext_b_sentinels_d) 0)
+						(<= (ai_living_count ext_b_sentinels_c) 0)
 					)
 					(volume_test_objects tv_ext_b_exit_door (players))
 				)
@@ -4244,23 +4901,29 @@ Open Issues
 	
 		(set g_ext_b_migrate_5 1)
 	
-		(ai_place qz_ext_b_ent_flood_bk (pin (- 8 (ai_nonswarm_count ext_b_flood)) 0 6))
+		(ai_place qz_ext_b_ent_flood_bk)
 )
 
 (script dormant enc_key_ride
 		(print "initialize key ride scripts")
-	;	(game_save)
-		(ai_renew covenant)
+		(game_save)
+		; (ai_renew covenant)
 		
 		(wake music_06b_05)
 		(wake music_06b_06)
 		(wake music_06b_07)
-	
+
+        ; One last encounter before the key ride
+		(wake e20_main)
+
 	(sleep_until (volume_test_objects tv_key_ride_cinematic (players)))
 		(cinematic_fade_to_white)
 		(ai_erase_all)
 		(object_teleport (player0) key_ride_a)
 		(object_teleport (player1) key_ride_b)
+		;(unit_add_equipment (player0) key_ride TRUE TRUE)
+		;(unit_add_equipment (player1) key_ride TRUE TRUE)
+
 		(sleep 5)
 	
 		(if (= g_play_cinematics 1)
@@ -4326,7 +4989,8 @@ Open Issues
 	(object_teleport (player0) player0_start)
 	(object_teleport (player1) player1_start)
 
-	(wake enc_cov_charge)
+    ; ADD THIS
+	(wake enc_cov_charge)	
 	(if (difficulty_legendary) (wake ice_cream_superman))
 
 	(camera_control off)
@@ -4334,6 +4998,10 @@ Open Issues
 	(cache_block_for_one_frame)
 	(sleep 1)
 	(cinematic_fade_from_white_bars)
+
+    ; REMOVE THIS
+    ;(test_key_ride)
+
 	(wake chapter_mirror)
 	(wake objective_push_set)
 	(wake breadcrumbs_nav_points_06b)
@@ -4350,7 +5018,7 @@ Open Issues
 	(sleep_until (volume_test_objects tv_qz_ext_b (players)))
 	(wake enc_qz_ext_b)
 
-	(sleep_until (volume_test_objects tv_key_ride (players)))
+	(sleep_until (= (structure_bsp_index) 3))
 	(wake enc_key_ride)
 	
 	; TODO: Paul should change this to test g_e26_ended, like this:

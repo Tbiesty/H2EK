@@ -1,4 +1,15 @@
 # Ignore large files that are not modified
 *.bitmap
+*.tif
+*.tif~
+!health_meter.tif
+!health_meter.bitmap
+!arbiter_health_meter.tif
+!arbiter_health_meter.bitmap
 *.model_animation_graph
 *.sound
+# Ignore auto backup files
+**/*auto-backup*.scenario
+# Ignore temp files
+**/sapien_temp_scenario*.scenario
+

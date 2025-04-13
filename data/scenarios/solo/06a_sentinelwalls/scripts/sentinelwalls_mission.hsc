@@ -5,7 +5,7 @@
 
 (global short g_sleep_lower_bound 60)
 (global short g_sleep_upper_bound 80)
-(global short g_emitter_delay 180)
+(global short g_emitter_delay 120)
 
 (global boolean g_cons_open_ins 0)
 
@@ -32,13 +32,13 @@
 		((difficulty_heroic)	(begin
 								(set g_sleep_lower_bound 45)
 								(set g_sleep_upper_bound 65)
-								(set g_emitter_delay 120)
+								(set g_emitter_delay 60)
 							)
 		)
 		((difficulty_legendary)	(begin
 								(set g_sleep_lower_bound 25)
 								(set g_sleep_upper_bound 45)
-								(set g_emitter_delay 60)
+								(set g_emitter_delay 30)
 							)
 		)
 	)
@@ -575,7 +575,7 @@
 ;	(sleep 30)
 	(game_save_cancel)
 
-	(if dialogue (print "TARTARUS: You're getting close to one of the shield-generators…"))
+	(if dialogue (print "TARTARUS: You're getting close to one of the shield-generatorsï¿½"))
 	(sleep (ai_play_line_on_object none 0430))
 	(sleep dialogue_pause)
 
@@ -627,7 +627,7 @@
 	(sleep (ai_play_line_on_object none 0500))
 	(sleep dialogue_pause)
 
-	(if dialogue (print "TARTARUS: Stay in the shadows. Wait 'til it loses interest…"))
+	(if dialogue (print "TARTARUS: Stay in the shadows. Wait 'til it loses interestï¿½"))
 	(sleep (ai_play_line_on_object none 0510))
 	(sleep dialogue_pause)
 
@@ -1438,7 +1438,7 @@
 	(cond
 		((difficulty_normal) (begin (set g_insertion_limit 0) (set g_insertion_index 1)))
 		((difficulty_heroic) (begin (set g_insertion_limit 0) (set g_insertion_index 2)))
-		((difficulty_legendary) (begin (set g_insertion_limit 1) (set g_insertion_index 3)))
+		((difficulty_legendary) (begin (set g_insertion_limit 1) (set g_insertion_index 2)))
 	)
 ; spawner loop 
 	(sleep_until
@@ -2039,13 +2039,13 @@
 								(set g_plug_launch_limit 0)
 								(set g_plug_launch_index 2)
 								(if debug (print "emitters off"))
-								(sleep_forever)
+								;(sleep_forever)
 							)
 		)
 		((difficulty_heroic)	(begin
 								(set g_plug_launch_limit 0)
 								(set g_plug_launch_index 3)
-								(sleep_until g_plug_launch_em_heroic)
+								;(sleep_until g_plug_launch_em_heroic)
 								(if debug (print "emitters on"))
 							)
 		)
@@ -2118,14 +2118,13 @@
 						)
 						(ai_plug_launch_em_g))
 						((and
-							(not (unit_is_emitting plug_launch_em_g))
-							(> (object_get_health plug_launch_em_g) 0)
-							(> (objects_distance_to_object (players) plug_launch_em_g) 10)
+							(not (unit_is_emitting plug_launch_em_h))
+							(> (object_get_health plug_launch_em_h) 0)
+							(> (objects_distance_to_object (players) plug_launch_em_h) 10)
 							(<= (random_range 0 10) 3)
 						)
-						(ai_plug_launch_em_g))
-						
-						(true (begin (ai_place plug_launch_sen) (set g_plug_launch_count (+ g_plug_launch_count 1))))
+						(ai_plug_launch_em_h))
+						(true (begin (set g_plug_launch_count (+ g_plug_launch_count 1))))
 					)
 					(if (= g_plug_launch_count g_plug_launch_index) (set g_plug_launch_wave 1))
 					(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
@@ -2286,7 +2285,6 @@
 
 ;	(device_set_position_immediate plug_holder_lock_lt 1)
 ;	(device_set_position_immediate plug_holder_lock_rt 1)
-
 	(game_save)
 	
 	(wake plug_rods08)
@@ -2297,7 +2295,7 @@
 ;	(wake plug_rods03)
 ;	(wake plug_rods02)
 ;	(wake plug_rods01)
-	
+	(sleep 90)
 	(wake sc_plug_launch)
 ;*
 	(sleep_until (<= (absorber_totalcount) 7))
@@ -2323,11 +2321,11 @@
 	
 	(sleep_until (<= (absorber_totalcount) 3))
 	(if debug (print "absorber activated!"))
-	
+
 	(sleep_until (<= (absorber_totalcount) 2))
 	(if debug (print "absorber activated!"))
-	(set g_plug_launch_em_heroic 1)
-	
+	;(set g_plug_launch_em_heroic 1)
+
 	(sleep_until (<= (absorber_totalcount) 1))
 	(if debug (print "absorber activated!"))
 	(set g_final_lock 1)
@@ -2335,6 +2333,7 @@
 	(sleep_until (<= (absorber_totalcount) 0))
 	(if debug (print "absorber activated!"))
 	
+	(sleep 30)
 	(set g_flip_switch 1)
 	(device_set_position plug_switch_housing 1)
 	(ai_set_orders covenant plug_cov)
@@ -2396,8 +2395,8 @@
 	(sleep (* 30 5))
 	(if debug (print "placing initial flood..."))
 	(ai_place plug_holder_flood_a 1)
-	(ai_place plug_holder_flood_d)
-	(ai_place plug_holder_flood_c)
+	(ai_place plug_holder_flood_d 1)
+	(ai_place plug_holder_flood_c 1)
 	(ai_place plug_holder_flood_d 1)
 
 	(set g_plug_ride_enforcer 1)
@@ -2678,7 +2677,7 @@
 (script dormant ai_plug_holder_em
 	(cond ; g_plug_launch_index is increased when 4 absorbers are destroyed 
 		((difficulty_normal) (begin (set g_plug_holder_limit 0) (set g_plug_holder_index 2) (set g_plug_holder_wave_limit 1)))
-		((difficulty_heroic) (begin (set g_plug_holder_limit 0) (set g_plug_holder_index 3) (set g_plug_holder_wave_limit 2)))
+		((difficulty_heroic) (begin (set g_plug_holder_limit 1) (set g_plug_holder_index 3) (set g_plug_holder_wave_limit 2)))
 		((difficulty_legendary) (begin (set g_plug_holder_limit 1) (set g_plug_holder_index 4) (set g_plug_holder_wave_limit 3)))
 	)
 
@@ -2925,27 +2924,21 @@
 
 (script dormant ai_plugholder_flood_bk
 	(cond
-		((difficulty_normal) (set g_plugholder_bk_flood_limit 4))
-		((difficulty_heroic) (set g_plugholder_bk_flood_limit 5))
-		((difficulty_legendary) (set g_plugholder_bk_flood_limit 6))
+		((difficulty_normal) (set g_plugholder_bk_flood_limit 2))
+		((difficulty_heroic) (set g_plugholder_bk_flood_limit 3))
+		((difficulty_legendary) (set g_plugholder_bk_flood_limit 4))
 	)
-	(sleep_until
-		(begin
-			(sleep_until (<= (ai_living_count plug_holder_flood_bk) 2))
-			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
-			(ai_place plugholder_bk_flood_a)
-			(ai_place plugholder_bk_infec_a)
-			(set g_plugholder_bk_flood_count (+ g_plugholder_bk_flood_count 1))
-			(if (= g_plugholder_bk_flood_count g_plugholder_bk_flood_limit) (set g_plugholder_bk_a 1))
-		g_plugholder_bk_a)
-	)
-	
-	(set g_plugholder_bk_flood_count 0)
+	(ai_place plugholder_bk_flood_a)
+	(ai_place plugholder_bk_infec_a)
+	(ai_place plugholder_bk_flood_b)
+	(ai_place plugholder_bk_infec_b)
 
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count plug_holder_flood_bk) 2))
+			(sleep_until (<= (ai_living_count plug_holder_flood_bk) 3))
 			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
+			(ai_place plugholder_bk_flood_a)
+			(ai_place plugholder_bk_infec_a)
 			(ai_place plugholder_bk_flood_b)
 			(ai_place plugholder_bk_infec_b)
 			(set g_plugholder_bk_flood_count (+ g_plugholder_bk_flood_count 1))
@@ -3134,6 +3127,8 @@
 			(cond
 				((= g_ledge_a_player_loc 2) (ai_ledge_a_flood_b))
 				((= g_ledge_a_player_loc 3) (ai_ledge_a_flood_c))
+				((= g_ledge_a_player_loc 4) (ai_ledge_a_flood_e))
+				((= g_ledge_a_player_loc 5) (ai_ledge_a_flood_e))
 				((= g_ledge_a_player_loc 6) (ai_ledge_a_flood_e))
 				((= g_ledge_a_player_loc 7) (ai_ledge_a_flood_f))
 			)
@@ -3146,9 +3141,11 @@
 
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count ledge_a_flood) 2))
+			(sleep_until (<= (ai_living_count ledge_a_flood) 3))
 			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
 			(cond
+				((= g_ledge_a_player_loc 4) (ai_ledge_a_flood_e))
+				((= g_ledge_a_player_loc 5) (ai_ledge_a_flood_e))
 				((= g_ledge_a_player_loc 6) (ai_ledge_a_flood_e))
 				((= g_ledge_a_player_loc 7) (ai_ledge_a_flood_f))
 			)
@@ -3403,12 +3400,12 @@
 	(cond
 		((difficulty_normal) (set cond_b_flood_limit 1))
 		((difficulty_heroic) (set cond_b_flood_limit 2))
-		((difficulty_legendary) (set cond_b_flood_limit 4))
+		((difficulty_legendary) (set cond_b_flood_limit 3))
 	)
 
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count cond_b_flood) 1))
+			(sleep_until (<= (ai_living_count cond_b_flood) 2))
 			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
 			(if (= cond_b_locator 1)
 				(begin
@@ -3428,7 +3425,7 @@
 	(sleep_until
 	
 		(begin
-			(sleep_until (<= (ai_living_count cond_b_flood) 1))
+			(sleep_until (<= (ai_living_count cond_b_flood) 2))
 			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
 			(if (= cond_b_locator 3)
 				(begin
@@ -3447,9 +3444,9 @@
 
 	(sleep_until
 		(begin
-			(sleep_until (<= (ai_living_count cond_b_flood) 1))
+			(sleep_until (<= (ai_living_count cond_b_flood) 2))
 			(sleep (random_range g_sleep_lower_bound g_sleep_upper_bound))
-			(if (= cond_b_locator 3)
+			(if (= cond_b_locator 5)
 				(begin
 					(ai_place cond_b_flood_c)
 					(set cond_b_flood_count (+ cond_b_flood_count 1))
@@ -3526,8 +3523,8 @@
 	(ai_kill_silent ledge_c_flood_dead)
 	(sleep 1)
 	
-	(sleep_until (<= (ai_living_count ledge_c_flood) 0))
-	(if (and ledge_c_spawn (volume_test_objects_all tv_ledge_c_fr (players))) (ai_place ledge_c_flood_bk))
+	; (sleep_until (<= (ai_living_count ledge_c_flood) 1))
+	; (if (and ledge_c_spawn (volume_test_objects_all tv_ledge_c_fr (players))) (ai_place ledge_c_flood_bk))
 )
 
 (global short ledge_c_infec_count 0)
@@ -3535,9 +3532,9 @@
 
 (script dormant ai_ledge_c_infection_spawn
 	(cond
-		((difficulty_normal) (set ledge_c_infec_limit 3))
-		((difficulty_heroic) (set ledge_c_infec_limit 6))
-		((difficulty_legendary) (set ledge_c_infec_limit 9))
+		((difficulty_normal) (set ledge_c_infec_limit 1))
+		((difficulty_heroic) (set ledge_c_infec_limit 2))
+		((difficulty_legendary) (set ledge_c_infec_limit 3))
 	)
 	
 	(sleep_until (volume_test_objects_all tv_ledge_c_fr (players)))
@@ -3585,7 +3582,7 @@
 	(cs_look false ledge_c_phantom/p1)
 	(cs_turn_sharpness true .7)
 
-	(sleep_until g_ledge_c_phantom_1 5 150)
+	(sleep_until g_ledge_c_phantom_1 15 15000)
 ;	(cs_look true ledge_c_phantom/p2)
 	(cs_look true ledge_c_phantom/p3)
 	(sleep 60)
@@ -3754,7 +3751,7 @@
 	(ai_vehicle_exit qz_ini_ins_pods/d)
 	(sleep 30)
 	(cs_run_command_script qz_ini_ins_pods/d cs_go_to_bridge)
-	(unit_set_maximum_vitality (ai_get_unit qz_ini_ins_pods/d) 1 0)
+	;(unit_set_maximum_vitality (ai_get_unit qz_ini_ins_pods/d) 1 0)
 ;	(unit_set_current_vitality (ai_get_unit qz_ini_ins_pods/d) 1 0)
 )
 
@@ -3777,7 +3774,7 @@
 	(ai_vehicle_exit qz_ini_ins_pods/e)
 	(sleep 30)
 	(cs_run_command_script qz_ini_ins_pods/e cs_go_to_bridge)
-	(unit_set_maximum_vitality (ai_get_unit qz_ini_ins_pods/e) 1 0)
+	;(unit_set_maximum_vitality (ai_get_unit qz_ini_ins_pods/e) 1 0)
 ;	(unit_set_current_vitality (ai_get_unit qz_ini_ins_pods/e) 1 0)
 )
 
@@ -3794,7 +3791,7 @@
 ;	(sleep_until (volume_test_objects tv_qz_bridge (players)) 10)
 ;	(begin_random
 		(begin (wake ai_cov_ins_pod_c) (sleep (random_range 0 15)))
-;		(begin (wake ai_cov_ins_pod_d) (sleep (random_range 0 15)))
+		;(begin (wake ai_cov_ins_pod_d) (sleep (random_range 0 15)))
 		(begin (wake ai_cov_ins_pod_e) (sleep (random_range 0 15)))
 	)
 	
@@ -3868,7 +3865,7 @@
 	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) g_cov_def_flood_advance) 30 (* 30 15))
 	(ai_set_orders qz_cov_def_flood qz_cov_def_hill)
 	
-	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 1))
+	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 2) 30 (* 30 120))
 )
 
 (script static void qz_cov_def_bcd
@@ -3890,7 +3887,7 @@
 	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) g_cov_def_flood_advance) 30 (* 30 15))
 	(ai_set_orders qz_cov_def_flood qz_cov_def_hill)
 	
-	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 1))
+	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 2) 30 (* 30 120))
 )
 
 (script static void qz_cov_def_def
@@ -3912,7 +3909,7 @@
 	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) g_cov_def_flood_advance) 30 (* 30 15))
 	(ai_set_orders qz_cov_def_flood qz_cov_def_hill)
 	
-	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 1))
+	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 2) 30 (* 30 120))
 )
 
 (script static void qz_cov_def_efg
@@ -3934,7 +3931,7 @@
 	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) g_cov_def_flood_advance) 30 (* 30 15))
 	(ai_set_orders qz_cov_def_flood qz_cov_def_hill)
 	
-	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 1))
+	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 2) 30 (* 30 120))
 )
 
 (script static void qz_cov_def_ag
@@ -3953,12 +3950,12 @@
 	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) g_cov_def_flood_advance) 30 (* 30 15))
 	(ai_set_orders qz_cov_def_flood qz_cov_def_hill)
 	
-	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 1))
+	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 2) 30 (* 30 120))
 )
 
 (script static void qz_cov_def_d
 	(if debug (print "wave d"))
-	(ai_place qz_cov_def_flood_d)
+	(ai_place qz_cov_def_flood_d 5)
 	(sleep 5)
 
 	(ai_play_line_on_object qz_cov_def_sound_d 0180)
@@ -3969,13 +3966,13 @@
 	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) g_cov_def_flood_advance) 30 (* 30 15))
 	(ai_set_orders qz_cov_def_flood qz_cov_def_hill)
 	
-	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 1))
+	(sleep_until (<= (ai_nonswarm_count qz_cov_def_flood) 2) 30 (* 30 120))
 )
 
 (script dormant ai_qz_cov_def_flood_spawn
 	(cond
-		((difficulty_normal) (set g_qz_cov_def_limit 2))
-		((difficulty_heroic) (set g_qz_cov_def_limit 4))
+		((difficulty_normal) (set g_qz_cov_def_limit 4))
+		((difficulty_heroic) (set g_qz_cov_def_limit 5))
 		((difficulty_legendary) (set g_qz_cov_def_limit 6))
 	)
 
@@ -3985,7 +3982,7 @@
 				(set g_qz_cov_def_count (+ g_qz_cov_def_count 1))
 				(qz_cov_def_abc)
 				(if (= g_qz_cov_def_count g_qz_cov_def_limit) (set g_qz_cov_def_spawn 0))
-				(sleep (* 30 10))
+				(sleep (* 30 5))
 			)
 		)
 
@@ -3994,7 +3991,7 @@
 				(set g_qz_cov_def_count (+ g_qz_cov_def_count 1))
 				(qz_cov_def_bcd)
 				(if (= g_qz_cov_def_count g_qz_cov_def_limit) (set g_qz_cov_def_spawn 0))
-				(sleep (* 30 10))
+				(sleep (* 30 5))
 			)
 		)
 
@@ -4003,7 +4000,7 @@
 				(set g_qz_cov_def_count (+ g_qz_cov_def_count 1))
 				(qz_cov_def_def)
 				(if (= g_qz_cov_def_count g_qz_cov_def_limit) (set g_qz_cov_def_spawn 0))
-				(sleep (* 30 10))
+				(sleep (* 30 5))
 			)
 		)
 
@@ -4012,7 +4009,7 @@
 				(set g_qz_cov_def_count (+ g_qz_cov_def_count 1))
 				(qz_cov_def_efg)
 				(if (= g_qz_cov_def_count g_qz_cov_def_limit) (set g_qz_cov_def_spawn 0))
-				(sleep (* 30 10))
+				(sleep (* 30 5))
 			)
 		)
 				
@@ -4021,7 +4018,7 @@
 				(set g_qz_cov_def_count (+ g_qz_cov_def_count 1))
 				(qz_cov_def_ag)
 				(if (= g_qz_cov_def_count g_qz_cov_def_limit) (set g_qz_cov_def_spawn 0))
-				(sleep (* 30 10))
+				(sleep (* 30 5))
 			)
 		)
 
@@ -4030,7 +4027,7 @@
 				(set g_qz_cov_def_count (+ g_qz_cov_def_count 1))
 				(qz_cov_def_d)
 				(if (= g_qz_cov_def_count g_qz_cov_def_limit) (set g_qz_cov_def_spawn 0))
-				(sleep (* 30 10))
+				(sleep (* 30 5))
 			)
 		)
 	)
@@ -4107,17 +4104,17 @@
 	(wake music_06a_01)
 	(sleep 1)
 	
-	(if (not (difficulty_legendary))
-			(sleep_until	(or
-							(< (ai_strength ins_cons) 1)
-							(volume_test_objects tv_insertion_tube (players))
-						)
-			5)
-			(begin (sleep 150) (wake ai_insertion_emitters))
-	)
+	; (if (not (difficulty_legendary))
+			; (sleep_until	(or
+			; 				(< (ai_strength ins_cons) 1)
+			; 				(volume_test_objects tv_insertion_tube (players))
+			; 			)
+			; 5)
+	(begin (sleep 60) (wake ai_insertion_emitters))
+	; )
 	(if (< (ai_strength ins_cons) 1)
 		(begin
-			(wake ai_insertion_emitters)
+			; (wake ai_insertion_emitters)
 ;			(ai_disregard (ai_actors constructors) true)
 			(if (= (device_get_position piston_ins) 0) (begin
 												(ai_set_orders ins_con_mid ins_run_away)
@@ -4251,6 +4248,8 @@
 	(ai_renew covenant)
 	(ai_set_orders covenant plug_launch_cov_ini)
 	(ai_place plug_launch_enforcer)
+	(ai_place plug_launch_sen/elim0)
+	(ai_place plug_launch_sen/elim1)
 
 	(sleep_until (>= (ai_combat_status plug_launch_enforcer) ai_combat_status_active) 30 210)
 		(wake sc_enforcer)
@@ -4344,7 +4343,7 @@
 	(sleep_until (volume_test_objects tv_hall_c_a (players)) 5)
 	(game_save_no_timeout)
 		(wake ai_hall_c_ini)
-	;	(ai_place hall_c_flood_near)
+		(ai_place hall_c_flood_near)
 		(sleep 5)
 		(ai_magically_see hall_c_marines hall_c_flood_far)
 		(ai_magically_see hall_c_flood_far hall_c_marines)
@@ -4362,7 +4361,7 @@
 		(game_save_no_timeout)
 	
 ;		(wake ai_hall_c_flood_spawn)
-		(ai_place hall_c_flood_c (pin (- 8 (ai_nonswarm_count hall_c_flood)) 0 6))
+		(ai_place hall_c_flood_c (pin (- 12 (ai_nonswarm_count hall_c_flood)) 0 8))
 		(ai_place hall_c_carrier_c)
 		(ai_place hall_c_sen_tube)
 		(sleep 1)
@@ -4372,15 +4371,16 @@
 		(game_save_no_timeout)
 		(data_mine_set_mission_segment enc_hall_c_sec_c)
 
-		(ai_place hall_c_flood_d (pin (- 8 (ai_nonswarm_count hall_c_flood)) 0 6))
+		(ai_place hall_c_flood_d (pin (- 12 (ai_nonswarm_count hall_c_flood)) 0 8))
 		(ai_place hall_c_carrier_d)
 		(sleep 1)
 		(ai_set_orders hall_c_flood hall_c_floor_d)
 
 	(sleep_until (volume_test_objects tv_hall_c_e (players)) 10)
 		(game_save_no_timeout)
-		(ai_place hall_c_flood_e (pin (- 8 (ai_nonswarm_count hall_c_flood)) 0 6))
+		(ai_place hall_c_flood_e (pin (- 12 (ai_nonswarm_count hall_c_flood)) 0 8))
 		(ai_place hall_c_carrier_e)
+		(ai_place hall_c_flood_f)
 		(sleep 1)
 		(ai_set_orders hall_c_flood hall_c_floor_e)
 )
@@ -4479,9 +4479,9 @@
 		(wake sc_marines_a)
 		(set cond_b_flood_b_spawn 1)
 		(ai_place cond_b_humans)
-		(ai_place cond_b_flood_c_ini_a (pin (- 6 (ai_living_count cond_b_flood)) 0 4))
+		(ai_place cond_b_flood_c_ini_a)
 		(sleep 1)
-		(ai_place cond_b_flood_c_ini_b (pin (- 6 (ai_living_count cond_b_flood)) 0 4))
+		(ai_place cond_b_flood_c_ini_b)
 		(ai_place cond_b_infection_c 2)
 		(sleep 5)
 ;		(ai_migrate cond_b_flood cond_b_flood_c)
@@ -4502,7 +4502,7 @@
 	(ai_disposable cond_b_infection_c true)
 
 	(set cond_b_flood_c_spawn 1)
-;	(ai_place ledge_b_sen)
+	(ai_place ledge_b_sen)
 	(ai_place ledge_b_flood)
 	(ai_place ledge_c_phantom)
 	(wake slide_a_player0)
@@ -4532,7 +4532,7 @@
 	(game_save_no_timeout)
 	(set ledge_c_spawn 0)
 	(set g_ledge_c_phantom_1 1)
-	(ai_place ledge_c_flood_bk (pin (- 6 (ai_living_count ledge_c_flood)) 0 6))
+	(ai_place ledge_c_flood_bk)
 	(wake slide_b_player0)
 	(wake slide_b_player1)
 )
@@ -4560,7 +4560,7 @@
 	(ai_place qz_initial_flood_carrier_ini)
 	(ai_place qz_initial_flood_bridge)
 	(ai_place qz_initial_flood_carrier_camp)
-	(if (difficulty_normal) (ai_place qz_ini_turrets/a) (ai_place qz_ini_turrets))
+	(ai_place qz_ini_turrets)
 
 	(sleep_until (volume_test_objects tv_qz_camp (players)) 10)
 	(if debug (print "camp"))
@@ -4589,21 +4589,23 @@
 	(ai_disposable qz_cov_def_flood true)
 
 	(ai_vehicle_reserve (ai_vehicle_get qz_ini_turrets) true)
+	(ai_vehicle_exit qz_ini_turrets)
 	(ai_vehicle_exit qz_ini_ins_pods)
 	
+	(ai_migrate qz_ini_turrets qz_cov_def_cov)
 	(ai_migrate qz_ini_ins_pods qz_cov_def_cov)
 	(ai_set_orders qz_ini_flood qz_cov_def_hill)
 	
 	(ai_place qz_cov_def_flood_ini)
 	(ai_place qz_cov_def_flood_g)
-	(ai_place qz_cov_def_cov (pin (- 3 (ai_living_count qz_cov_def_cov)) 0 2))
+	(ai_place qz_cov_def_cov 2)
 	(ai_place qz_cov_def_soc)
 	(ai_place qz_camp_turrets)
 
 	(object_cannot_die (ai_get_object qz_cov_def_soc/soc) true)
 	(ai_set_orders covenant qz_cov_def_cov_ac)
 
-	(sleep_until (<= (ai_living_count qz_cov_def_flood) 0))
+	(sleep_until (<= (ai_living_count qz_cov_def_flood) 1))
 	(ai_set_orders covenant qz_cov_def_hill)
 	(sleep 1)
 	(wake sc_qz_cov_camp)

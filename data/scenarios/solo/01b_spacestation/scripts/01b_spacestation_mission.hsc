@@ -292,7 +292,7 @@
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2610_cor);"Clock's ticking, Chief! Get down here!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2630_cor);"Chief! Over here! Next to the bomb!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2640_cor);"Ask yourself this question: is what I'm doing right now helping Cortana keep this station from blowing into tiny, tiny bits?"
-	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2650_cor);"Just a friendly reminder…bomb!"
+	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2650_cor);"Just a friendly reminderï¿½bomb!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2660_cor);"If this thing goes off...I'm never talking to you again."
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2340_lhd);"All non-combat personnel to pressure-zones!"
 	(sound_impulse_stop sound\dialog\levels\01_spacestation\mission\L01_2350_lhd);"All hands to pressure-zones!"
@@ -470,8 +470,8 @@
 										)
 										((= counter_flavor_bomb_safe 7)
 ;											(if (> (ai_living_count gun_cortana) 0)
-;												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor (list_get (ai_get_object gun_cortana) 1) 1 "radio_3d");"Just a friendly reminder…bomb!"
-												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor NONE 1 "radio_default");"Just a friendly reminder…bomb!"
+;												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor (list_get (ai_get_object gun_cortana) 1) 1 "radio_3d");"Just a friendly reminderï¿½bomb!"
+												(sound_impulse_start_effect sound\dialog\levels\01_spacestation\mission\L01_2650_cor NONE 1 "radio_default");"Just a friendly reminderï¿½bomb!"
 ;											)
 										)
 										((= counter_flavor_bomb_safe 8)
@@ -909,7 +909,7 @@
 	10)
 ;	(sleep_until (not (objects_can_see_flag (players) 1st_2nd_flag 40)) 1)
 	(save_1st_wv4)
-	(sleep 60)
+	(sleep 10)
 	(ai_place 1st_cov_wv4)
 	(sleep_until (< (ai_living_count 1st_cov) 2) 10 300)
 
@@ -1227,7 +1227,7 @@
 	(save_bay1_mid)
 	(cs_run_command_script bay1_hum cs_clear)
 	(set mark_flavor_disable FALSE)
-;	(sleep 150)
+	(sleep 30)
 
 	(set mark_flavor_bay1 FALSE)
 	(set mark_flavor_bay2 TRUE)
@@ -1535,13 +1535,13 @@
 	(sleep_until (volume_test_objects tv_atr1_floor (players)) 1)
 	(wake save_atr1_start)
 	(sleep 15)
-	(ai_place atr1_cov_fbalcony)
-	(ai_place atr1_cov_bbalcony)
-	(ai_place atr1_cov_sec_front)
+    (ai_place atr1_cov_fbalcony)
+    (ai_place atr1_cov_bbalcony)
+    (ai_place atr1_cov_sec_front)
 	(set mark_flavor_brace TRUE)
 
 	(sleep_until (volume_test_objects tv_atr1_mid (players)) 1)
-	(ai_place atr1_cov_stairs_front)
+    (ai_place atr1_cov_stairs_front)
 
 	(sleep_until
 		(or
@@ -1549,10 +1549,10 @@
 			(volume_test_objects tv_atr1_stairs (players))
 		)
 	1)
-	(if (< (ai_living_count atr1_cov) 6) (ai_place atr1_cov_stairs_back) (ai_place atr1_cov_stairs_back_elt))
+    (ai_place atr1_cov_stairs_back)
 
 	(sleep_until (volume_test_objects tv_atr1_sec (players)) 1)
-	(if (< (ai_living_count atr1_cov) 6) (ai_place atr1_cov_sec_back) (ai_place atr1_cov_sec_back_elt))
+    (ai_place atr1_cov_sec_back)
 
 	(sleep_until
 		(or
@@ -1704,10 +1704,10 @@
 	(sound_impulse_start sound\dialog\levels\01_spacestation\mission\L01_0380_mir (ai_get_object trm1_hum_miranda) 1)
 	(sleep (sound_impulse_language_time sound\dialog\levels\01_spacestation\mission\L01_0380_mir))
 
-	(sleep_until (volume_test_objects tv_trm1_block (players)) 1 180)
+	(sleep_until (volume_test_objects tv_trm1_block (players)) 1 30)
 	(sleep_until (objects_can_see_object (players) (ai_get_object trm1_hum_johnson) 40) 1 90)
 	(if
-		(< (objects_distance_to_object (players) (ai_get_object trm1_hum_johnson)) 4)
+		(< (objects_distance_to_object (players) (ai_get_object trm1_hum_johnson)) 6)
 		(begin
 			(print "Get going. I'll cover the Commander!")
 			(sound_impulse_start sound\dialog\levels\01_spacestation\mission\L01_0370_jon (ai_get_object trm1_hum_johnson) 1)
@@ -1746,7 +1746,7 @@
 	(cs_run_command_script trm1_hum_johnson cs_trm1_bunker)
 	(cs_run_command_script trm1_hum_miranda cs_trm1_bunker)
 ;	(ai_place trm1_hum_block)
-	(ai_place trm1_cov_alock)
+    (ai_place trm1_cov_alock)
 	
 	(sleep_until (volume_test_objects tv_trm1_start (players)) 1)
 	
@@ -1759,7 +1759,7 @@
 			(= (ai_living_count trm1_cov_alock) 0)
 		)
 	1)
-	(ai_set_orders trm1_hum_block trm1_hum_block)
+	(ai_set_orders trm1_hum_block trm1_hum_alock_advance)
 
 	(sleep_until (= (ai_living_count trm1_cov_alock) 0) 1)
 	(wake trm1_bugproblem)
@@ -1767,22 +1767,22 @@
 	(set mark_flavor_disable FALSE)
 
 	(sleep_until (volume_test_objects tv_trm1_block (players)) 1)
-	(ai_place trm1_cov_block)
+ 	(ai_set_orders trm1_hum_alock trm1_hum_iac)
+    (ai_place trm1_cov_block)
 	(ai_magically_see_object trm1_cov_block (player0))
 	(ai_magically_see_object trm1_cov_block (player1))
 
 	(sleep_until (volume_test_objects tv_dck_mid (players)) 1)
- 	(ai_set_orders trm1_hum_alock trm1_hum_iac)
 	(ai_disposable trm1_cov_alock 1)
 	(ai_disposable trm1_cov_block 1)
-	(ai_disposable trm1_hum_alock 1)
-	(ai_disposable trm1_hum_block 1)
 
 	(sleep_until (= (structure_bsp_index) 3) 10)
+	(ai_disposable trm1_hum_alock 1)
+;	(ai_disposable trm1_hum_block 1)
 	(ai_erase trm1_cov_alock)
 	(ai_erase trm1_cov_block)
 	(ai_erase trm1_hum_alock)
-	(ai_erase trm1_hum_block)
+;	(ai_erase trm1_hum_block)
 )
 
 ;==================================
@@ -1859,17 +1859,22 @@
 	(set mark_flavor_vacuum TRUE)	
 
 	(ai_place dck_cov_enter_elt)
-	(ai_place dck_cov_arm1_elt)
-
 	(sleep_until (volume_test_objects tv_dck_arm1_back (players)) 1)
-	(wake dck_hog)
 
+	(ai_place dck_cov_arm1_elt)
+	(sleep_until (volume_test_objects tv_dck_floor (players)) 1)
+
+	(ai_magically_see_object dck_cov_arm1_elt (player0))
+	(ai_magically_see_object dck_cov_arm1_elt (player1))
 	(sleep_until
 		(or
+			(= (ai_living_count dck_cov) 0)
 			(volume_test_objects tv_dck_mid (players))
-			(<= (ai_strength dck_cov) .3)
 		)
 	1)
+
+;	(wake dck_hog)
+;	(ai_place dck_cov_mid_elt)
 
 	(ai_place dck_cov_arm2)
 	(ai_magically_see_object dck_cov_arm2 (player0))
@@ -1945,7 +1950,7 @@
 	(ai_place elv_hum_mar)
 
 	(sleep_until (volume_test_objects tv_elv_start (players)) 1)
-	(ai_place elv_cov_top)
+    (ai_place elv_cov_top)
 	(sleep 30)
 	(sound_looping_start scenarios\solo\01b_spacestation\01b_music\01b_07 NONE 1); swelltrill
 
@@ -1954,7 +1959,7 @@
 	(object_type_predict "objects\characters\grunt\grunt")
 	(object_type_predict "objects\characters\elite\elite")
 	(sleep 15)
-	(ai_place elv_cov_elevator)
+    (ai_place elv_cov_elevator)
 	(sleep 5)
 	(device_set_position lvr_door_enter_1 1)
 	(device_set_power elv_elevator_control_1 1)
@@ -2058,7 +2063,7 @@
 	(sleep_until (game_safe_to_save) 1 150)
 	(save_lvr_start)
 	(sleep 30)
-	(ai_place lvr_cov_wv1)
+    (ai_place lvr_cov_wv1)
 ;	(ai_place lvr_cov_air)
 
 	(wake lvr_carrier_flyby)
@@ -2077,7 +2082,7 @@
 	(device_set_power lvr_airlock_blower 0)
 
 	(sleep_until (volume_test_objects tv_lvr_back (players)) 1)
-	(if (not (difficulty_normal)) (ai_place lvr_cov_wv2))
+    (if (not (difficulty_normal)) (ai_place lvr_cov_wv2))
 
 	(sleep_until (< (objects_distance_to_object (players) gun_elevator_door_top) 4) 1)
 	(device_operates_automatically_set gun_elevator_door_top 1)
@@ -2137,6 +2142,7 @@
 	(sleep 30)
 	(ai_erase ai_current_actor)
 )
+
 ;*
 (script dormant gun_cortana
 	(sleep_until
@@ -2185,15 +2191,16 @@
 																		(sleep_until (> (objects_distance_to_object (player0) gun_cortana_stand_4) 5) 1)
 																		FALSE
 																	))
+
 		)
 	1)
 	(sleep_until mark_bomb2_objective 1)
 	(ai_erase gun_cortana_1)
-	(ai_erase gun_cortana_2)
-	(ai_erase gun_cortana_3)
-	(ai_erase gun_cortana_4)
+;	(ai_erase gun_cortana_2)
+;	(ai_erase gun_cortana_3)
+;	(ai_erase gun_cortana_4)
 )
-			
+
 
 (script static void test
 	(object_create carrier_01)
@@ -2468,7 +2475,7 @@
 	(load_bsp0b)
 	(wake ice_cream_check)
 	(wake arm_mission)
-	(wake atr1_mission)
+	(wake atr1_mission)		
 	(wake trm1_mission)
 	(wake dck_mission)
 

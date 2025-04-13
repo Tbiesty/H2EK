@@ -71,7 +71,7 @@
 	(cs_enable_moving 0)
 	(cs_enable_pathfinding_failsafe 1)
 	(cs_go_to boss/ledge_perch)
-	(cs_crouch 1)
+	;(cs_crouch 1)
 	(cs_face_object 1 (ai_get_object boss_tartarus))
 	(cs_aim_object 1 (ai_get_object boss_tartarus))
 	(print "johnson idle")
@@ -81,7 +81,7 @@
 (script command_script cs_boss_johnson_idle2
 	(cs_force_combat_status 4)
 	(cs_enable_moving 0)
-	(cs_crouch 1)
+	;(cs_crouch 1)
 	(cs_face_object 1 (ai_get_object boss_tartarus))
 	(cs_aim_object 1 (ai_get_object boss_tartarus))
 	(print "johnson idle2")
@@ -91,7 +91,7 @@
 (script command_script cs_boss_johnson_shoot
 	(cs_force_combat_status 4)
 	(cs_enable_moving 0)
-	(cs_crouch 1)
+	;(cs_crouch 1)
 	(cs_face_object 1 (ai_get_object boss_tartarus))
 	(cs_aim_object 1 (ai_get_object boss_tartarus))
 	;(cs_shoot 1 (ai_get_object boss_tartarus))
@@ -196,7 +196,7 @@
 	(sound_impulse_start sound\dialog\levels\08_controlroom\mission\L08_1120_mir (ai_get_object boss_miranda) 1)
 	(sleep (sound_impulse_language_time sound\dialog\levels\08_controlroom\mission\L08_1120_mir))
 
-	(print "Well…it will take some time to go over the proper procedures…")
+	(print "Wellï¿½it will take some time to go over the proper proceduresï¿½")
 	(sound_impulse_start sound\dialog\levels\08_controlroom\mission\L08_1130_gsp (ai_get_object boss_monitor) 1)
 	(sleep (sound_impulse_language_time sound\dialog\levels\08_controlroom\mission\L08_1130_gsp))
 
@@ -254,7 +254,7 @@
 
 	(sleep (* 5 30))
 
-	(print "Power-generation phase complete! The installation is ready to fire! Starting final countdown…")
+	(print "Power-generation phase complete! The installation is ready to fire! Starting final countdownï¿½")
 	(sound_impulse_start sound\dialog\levels\08_controlroom\mission\L08_1180_gsp (ai_get_object boss_monitor) 1)
 	(sleep (sound_impulse_language_time sound\dialog\levels\08_controlroom\mission\L08_1180_gsp))
 
@@ -281,25 +281,25 @@
 
 (script static short boss_tartarus_rateofrecharge
 	(cond
-		((difficulty_legendary)	(random_range (* 1 tick_seconds) (* 2 tick_seconds)))
-		((difficulty_heroic)	(random_range (* 1 tick_seconds) (* 3 tick_seconds)))
-		(TRUE				(random_range (* 2 tick_seconds) (* 3 tick_seconds)))
+		((difficulty_legendary)	(* 2 tick_seconds))
+		((difficulty_heroic)	(* 2 tick_seconds))
+		(TRUE				    (* 3 tick_seconds))
 	)
 )
 
 (script static short boss_johnson_rateoffire
 	(cond
-		((difficulty_legendary)	(random_range (* 7 tick_seconds) (* 15 tick_seconds)))
-		((difficulty_heroic)	(random_range (* 5 tick_seconds) (* 12 tick_seconds)))
-		(TRUE				(random_range (* 4 tick_seconds) (* 10 tick_seconds)))
+		((difficulty_legendary)	(random_range (* 8 tick_seconds) (* 10 tick_seconds)))
+		((difficulty_heroic)	(random_range (* 6 tick_seconds) (* 8 tick_seconds)))
+		(TRUE				    (random_range (* 4 tick_seconds) (* 6 tick_seconds)))
 	)
 )
 
 (script static short boss_rateofreenforcement
 	(cond
-		((difficulty_legendary)	(random_range (* 30 tick_seconds) (* 60 tick_seconds)))
-		((difficulty_heroic)	(random_range (* 30 tick_seconds) (* 60 tick_seconds)))
-		(TRUE				(random_range (* 30 tick_seconds) (* 60 tick_seconds)))
+		((difficulty_legendary)	(random_range (* 15 tick_seconds) (* 20 tick_seconds)))
+		((difficulty_heroic)	(random_range (* 15 tick_seconds) (* 20 tick_seconds)))
+		(TRUE				    (random_range (* 15 tick_seconds) (* 20 tick_seconds)))
 	)
 )
 
@@ -316,13 +316,13 @@
 )
 
 (script static void boss_tartarus_berserk_on
-	(ai_berserk boss_tartarus 1)
+	;(ai_berserk boss_tartarus 1)
 	(set boss_tartarus_berserk TRUE)
 	(print "BERSERK")
 )
 
 (script static void boss_tartarus_berserk_off
-	(ai_berserk boss_tartarus 0)
+	;(ai_berserk boss_tartarus 0)
 	(set boss_tartarus_berserk FALSE)
 )
 
