@@ -3436,36 +3436,41 @@
 	(sleep 150)
 	(set g_e1_talk 6)	; tyson: deprecated, does nothing
 	(set g_dialogue_counter 2)	; tyson: deprecated, does nothing
-	; (if
-	; 	(or
-	; 		(difficulty_normal)
-	; 		(difficulty_heroic)
-	; 	)
-	; 	(begin
-	; 		(sleep 150)
-	; 		;(if
-	; 		(ai_place e1_fld_inf5)
-	; 		;)
-	; 	)
-	; 	(begin
-	;(if
 	(if
 		(or
-			(volume_test_objects_all tv_e1_trigger2 (players))
-			(volume_test_objects_all tv_e1_trigger4 (players))
+			(difficulty_normal)
+			(difficulty_heroic)
 		)
-		(ai_place e1_fld_inf5)
-	)
-	(sleep 150)
-	(if
-		(or
-			(volume_test_objects_all tv_e1_trigger2 (players))
-			(volume_test_objects_all tv_e1_trigger4 (players))
+		(begin
+			(sleep 450)
+			(if
+				(or
+					(volume_test_objects_all tv_e1_trigger2 (players))
+					(volume_test_objects_all tv_e1_trigger4 (players))
+				)
+				(ai_place e1_fld_inf5 (pin (- 8 (ai_living_count e1_flood_master)) 0 5))
+			)
 		)
-		(ai_place e1_fld_inf5)
+		(begin
+			(sleep 150)
+			(if
+				(or
+					(volume_test_objects_all tv_e1_trigger2 (players))
+					(volume_test_objects_all tv_e1_trigger4 (players))
+				)
+				(ai_place e1_fld_inf5 (pin (- 8 (ai_living_count e1_flood_master)) 0 5))
+			)
+			(sleep 450)
+			(if
+				(or
+					(volume_test_objects_all tv_e1_trigger2 (players))
+					(volume_test_objects_all tv_e1_trigger4 (players))
+				)
+				(ai_place e1_fld_inf5 (pin (- 8 (ai_living_count e1_flood_master)) 0 5))
+			)
+		)			
 	)
-	; 	)			
-	; )
+
 )
 
 
@@ -3495,33 +3500,33 @@
 	;(ai_playfight e1_pro_inf1 false)
 	;(ai_playfight e1_fld_inf1 false)
 	(ai_place e1_pro_inf2 2)
-	(ai_place e1_fld_inf2)
+	(ai_place e1_fld_inf2 2)
 	(if
 		(difficulty_legendary)
 		(begin_random
 			(begin
 				(if
-					(<= (ai_living_count e1_flood_master) 15)
+					(<= (ai_living_count e1_flood_master) 8)
 					(ai_place e1_fld_inf1/guy2)
 				)
 			)
 			(begin
 				(if
-					(<= (ai_living_count e1_flood_master) 15)
+					(<= (ai_living_count e1_flood_master) 8)
 					(ai_place e1_fld_inf1/guy3)
 				)
 	
 			)
 			(begin
 				(if
-					(<= (ai_living_count e1_flood_master) 15)
+					(<= (ai_living_count e1_flood_master) 8)
 					(ai_place e1_fld_inf1/guy4)
 				)
 	
 			)
 			(begin
 				(if
-					(<= (ai_living_count e1_flood_master) 15)
+					(<= (ai_living_count e1_flood_master) 8)
 					(ai_place e1_fld_inf1/guy5)
 				)
 			)

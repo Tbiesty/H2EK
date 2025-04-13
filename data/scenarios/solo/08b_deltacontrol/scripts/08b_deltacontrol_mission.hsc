@@ -5617,7 +5617,7 @@ Open Issues
 			(>= (object_model_targets_destroyed (ai_vehicle_get e2_pro_phantom0_0/phantom0) "target_front") 3) 
 		)
 		30
-		30_seconds
+		one_minute
 	)
 	
 	; Retreat
