@@ -968,7 +968,7 @@
 	(set central_plat_pel_arrives TRUE)
 	(cs_vehicle_speed .3)
 	(cs_fly_to bsp1_airspace/pel4 1)
-	(ai_place central_plat_pelican_allies (- 3 (ai_living_count allies_infantry)))
+	(ai_place central_plat_pelican_allies (- 2 (ai_living_count allies_infantry)))
 	(vehicle_load_magic (ai_vehicle_get_from_starting_location central_plat_pelican/pilot) "pelican_p" (ai_actors central_plat_pelican_allies))
 	(cs_fly_to bsp1_airspace/pel5 1)
 	(vehicle_unload (ai_vehicle_get_from_starting_location central_plat_pelican/pilot) "pelican_p")
@@ -2038,7 +2038,7 @@
 	(cs_vehicle_speed .5)	
 	(cs_fly_by tower3_airspace/pel1 1)
 	(cs_fly_to_and_face tower3_airspace/pel2 tower3_airspace/p0 1)
-	(ai_place tower3_pelican_allies (- 3 (ai_living_count allies_infantry)))
+	(ai_place tower3_pelican_allies (- 2 (ai_living_count allies_infantry)))
 	(vehicle_load_magic (ai_vehicle_get_from_starting_location tower3_pelican/pilot) "pelican_p" (ai_actors tower3_pelican_allies))
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location tower3_pelican/pilot) TRUE)
 	(sleep 30)
@@ -3568,7 +3568,7 @@
 
 ;Loads and launches the pelican
 (script dormant island_pelican_arrives
-	(ai_place island_pelican_allies (- 3 (ai_living_count allies_infantry)))
+	(ai_place island_pelican_allies (- 2 (ai_living_count allies_infantry)))
 	(ai_place island_pelican)
 	(vehicle_load_magic (ai_vehicle_get_from_starting_location island_pelican/pilot) "pelican_p" (ai_actors island_pelican_allies))
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location island_pelican/pilot) TRUE)
@@ -3622,7 +3622,7 @@
 	)
 )
 (script static void short_island_pel
-	(ai_place island_pelican_allies (- 3 (ai_living_count allies_infantry)))
+	(ai_place island_pelican_allies (- 2 (ai_living_count allies_infantry)))
 	(ai_place island_pelican)
 	(vehicle_load_magic (ai_vehicle_get_from_starting_location island_pelican/pilot) "pelican_p" (ai_actors island_pelican_allies))
 	(ai_vehicle_reserve (ai_vehicle_get_from_starting_location island_pelican/pilot) TRUE)
