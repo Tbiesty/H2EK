@@ -3448,7 +3448,7 @@
 					(volume_test_objects_all tv_e1_trigger2 (players))
 					(volume_test_objects_all tv_e1_trigger4 (players))
 				)
-				(ai_place e1_fld_inf5 (pin (- 8 (ai_living_count e1_flood_master)) 0 5))
+				(ai_place e1_fld_inf5)
 			)
 		)
 		(begin
@@ -3458,7 +3458,7 @@
 					(volume_test_objects_all tv_e1_trigger2 (players))
 					(volume_test_objects_all tv_e1_trigger4 (players))
 				)
-				(ai_place e1_fld_inf5 (pin (- 8 (ai_living_count e1_flood_master)) 0 5))
+				(ai_place e1_fld_inf5)
 			)
 			(sleep 450)
 			(if
@@ -3466,7 +3466,7 @@
 					(volume_test_objects_all tv_e1_trigger2 (players))
 					(volume_test_objects_all tv_e1_trigger4 (players))
 				)
-				(ai_place e1_fld_inf5 (pin (- 8 (ai_living_count e1_flood_master)) 0 5))
+				(ai_place e1_fld_inf5)
 			)
 		)			
 	)
