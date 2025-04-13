@@ -884,7 +884,7 @@
 	(cs_run_command_script LZ_pelican_02/pilot other_LZ_pelican)
 	(sleep 120)
 
-	(ai_place allies_lz_pelican (- 4 (ai_living_count all_allies)))
+	(ai_place allies_lz_pelican (- 3 (ai_living_count all_allies)))
 	(ai_place LZ_pelican_01)
 	(ai_place LZ_warthog_01)
 	(object_cannot_take_damage (ai_vehicle_get_from_starting_location LZ_pelican_01/pilot))
@@ -2447,8 +2447,8 @@
 	(wake music_05a_03_start)
 
 	(ai_place bridge_control_elites_01)
-	(ai_place bridge_control_jackals_01 (random_range 0 3))
-	(ai_place bridge_control_grunts_01 (- 3 (ai_living_count bridge_control_jackals_01)))
+	(ai_place bridge_control_jackals_01 (random_range 1 2))
+	(ai_place bridge_control_grunts_01 (- 4 (ai_living_count bridge_control_jackals_01)))
 )
 
 ;Spawning for entry at the lower level
@@ -3451,10 +3451,10 @@
 
 ;9/12
 
-	(if (< (ai_living_count temple_ent_enemies_all) 16)
+	(if (< (ai_living_count temple_ent_enemies_all) 10)
 		(ai_place temple_ent_elites_02r (- 1 (ai_living_count temple_ent_elites_01r)))
 	)
-	(if (< (ai_living_count temple_ent_enemies_all) 16)
+	(if (< (ai_living_count temple_ent_enemies_all) 10)
 		(ai_place temple_ent_elites_02l (- 1 (ai_living_count temple_ent_elites_01l)))
 	)
 	(wake temple_ent_veh_spawn)
@@ -3467,14 +3467,14 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_living_count temple_ent_enemies_all) 16)
+	(if (< (ai_living_count temple_ent_enemies_all) 10)
 		(ai_place temple_ent_jackals_02c 2)
 	)
 	(if 
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_03/1)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_03/1) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 16)
+			(< (ai_living_count temple_ent_enemies_all) 12)
 		)
 			(ai_place temple_ent_grunts_01l 1)
 	)
@@ -3482,7 +3482,7 @@
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_03/2)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_03/2) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 16)
+			(< (ai_living_count temple_ent_enemies_all) 12)
 		)
 			(ai_place temple_ent_grunts_01l 1)
 	)
@@ -3490,7 +3490,7 @@
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_04/1)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_04/1) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 16)
+			(< (ai_living_count temple_ent_enemies_all) 12)
 		)
 			(ai_place temple_ent_grunts_01r 1)
 	)
@@ -3498,7 +3498,7 @@
 		(AND
 			(> (object_get_health (ai_vehicle_get_from_starting_location temple_ent_turrets_04/2)) 0)
 			(= (vehicle_test_seat_list (ai_vehicle_get_from_starting_location temple_ent_turrets_04/2) "" (ai_actors all_enemies)) FALSE)
-			(< (ai_living_count temple_ent_enemies_all) 16)
+			(< (ai_living_count temple_ent_enemies_all) 12)
 		)
 			(ai_place temple_ent_grunts_01r 1)
 	)
@@ -3604,10 +3604,10 @@
 
 ;9/12
 
-	(if (< (ai_living_count tunnel_enemies_all) 16)
+	(if (< (ai_living_count tunnel_enemies_all) 10)
 		(ai_place tunnel_grunts 2)
 	)
-	(if (< (ai_living_count tunnel_enemies_all) 16)
+	(if (< (ai_living_count tunnel_enemies_all) 10)
 		(ai_place tunnel_heavies_01 2)
 	)
 	(cs_run_command_script tunnel_heavies_01/0 tunnel_turret_0)
@@ -3621,10 +3621,10 @@
 		
 	(sleep_until (= (volume_test_objects vol_tunnel_02 (players)) TRUE))
 	(game_save)
-	(if (< (ai_living_count tunnel_enemies_all) 16)
+	(if (< (ai_living_count tunnel_enemies_all) 10)
 		(ai_place tunnel_jackals 2)
 	)
-	(if (< (ai_living_count tunnel_enemies_all) 16)
+	(if (< (ai_living_count tunnel_enemies_all) 12)
 		(ai_place tunnel_heavies_02 2)
 	)
 	(cs_run_command_script tunnel_heavies_02/2 tunnel_turret_2)
@@ -4591,10 +4591,10 @@
 	(wake old_temple_perimeter_nuke)
 	
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_elites_01 (- 2 (ai_living_count old_temp_center_tough)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_grunts_01 (- 3 (ai_living_count old_temp_center_fodder)))
 	)
 	(wake old_temple_middle_ally)
@@ -4610,13 +4610,13 @@
 	(game_save)
 
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_grunts_03 (- 3 (ai_living_count old_temp_center_fodder)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_jackals_04 (- 2 (ai_living_count old_temp_center_tough)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_grunts_04 (- 6 (ai_living_count old_temp_center_fodder)))
 	)
 	
@@ -4630,10 +4630,10 @@
 	(game_save)
 
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_elites_05 (- 2 (ai_living_count old_temp_center_tough)))
 	)
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_center_jackals_05 (- 4 (ai_living_count old_temp_center_tough)))
 	)
 	
@@ -4672,10 +4672,10 @@
 ;Makes marines fight guys from center until you arrive
 (script dormant old_temple_playfight
 ;9/11
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_playfight_e 2)
 	)
-	(if (< (ai_living_count old_temple_enemies) 16)
+	(if (< (ai_living_count old_temple_enemies) 10)
 		(ai_place old_temple_playfight_g 3)
 	)
 	(sleep_until
@@ -5153,10 +5153,10 @@
 
 ;9/12
 
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_elites_01 2)
 	)
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_grunts_01 3)
 	)
 	;(wake old_temple_phantom_04)
@@ -5170,7 +5170,7 @@
 
 	(game_save)
 
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_grunts_02 (- 4 (ai_living_count old_temple_court_grunts_01)))
 	)
 	
@@ -5183,13 +5183,13 @@
 
 	(game_save)
 	(wake old_temple_holo_translate)
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_jackals_03 (- 2 (ai_living_count old_temple_court_elites_01)))
 	)
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_grunts_03 (- 3 (+ (ai_living_count old_temple_court_grunts_01) (ai_living_count old_temple_court_grunts_02))))
 	)
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_jackals_04 2)
 	)
 
@@ -5202,10 +5202,10 @@
 
 	(game_save)
 
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_elites_05 2)
 	)
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_jackals_05 2)
 	)
 	(wake old_temple_debris_reminder)
@@ -5220,10 +5220,10 @@
 ;	(wake old_temple_archaeologist)
 	(game_save)
 
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_jackals_06 2)
 	)
-	(if (< (ai_living_count old_temple_court_all) 16)
+	(if (< (ai_living_count old_temple_court_all) 10)
 		(ai_place old_temple_court_grunts_06 3)
 	)
 	
@@ -5485,7 +5485,7 @@
 		)
 			(sleep_forever)
 	)
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_crack_grunts 2)
 	)
 	
@@ -5504,7 +5504,7 @@
 		)
 			(sleep_forever)
 	)
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_buggers_new_01 (- 4 (ai_living_count grotto_buggers)))
 	)
 	
@@ -5532,7 +5532,7 @@
 (script dormant grotto_buggers_reinforce
 	(if 
 		(AND
-			(< (ai_living_count grotto_enemies) 16)
+			(< (ai_living_count grotto_enemies) 10)
 			(difficulty_legendary)
 		)
 			(ai_place grotto_buggers_01 (- 4 (ai_living_count grotto_buggers)))
@@ -5541,7 +5541,7 @@
 	(sleep_until (= (volume_test_objects vol_grotto_mid_03 (players)) TRUE))
 	(ai_migrate grotto_buggers_01 grotto_buggers_02)
 
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_buggers_02 (- 4 (ai_living_count grotto_buggers)))
 	)
 )
@@ -5620,7 +5620,7 @@
 		(if 
 			(AND
 				(> grotto_final_snipers 0)
-				(< (ai_living_count grotto_enemies) 16)
+				(< (ai_living_count grotto_enemies) 10)
 			)
 				(begin
 					(ai_place grotto_cave_jackals_02 1)
@@ -5630,7 +5630,7 @@
 		(if
 			(AND
 				(> grotto_final_snipers 0)
-				(< (ai_living_count grotto_enemies) 16)
+				(< (ai_living_count grotto_enemies) 10)
 			)
 				(begin
 					(ai_place grotto_cave_jackals_03 1)
@@ -5638,10 +5638,10 @@
 				)
 		)
 	)
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_cave_jackals_01 1)
 	)
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_cave_elites 2)
 	)
 	(wake grotto_buggers_reinforce)
@@ -5665,19 +5665,19 @@
 	; )
 	(ai_set_orders grotto_buggers grotto_follow_03)
 
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_end_elites_01 2)
 	)
 	(sleep 30)
 ;	(ai_place grotto_end_jackals_01 1)
 ;	(sleep 30)
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_end_jackals_02 2)
 	)
 	(sleep 30)
 ;	(ai_place grotto_end_jackals_03 1)
 ;	(sleep 30)
-	(if (< (ai_living_count grotto_enemies) 16)
+	(if (< (ai_living_count grotto_enemies) 10)
 		(ai_place grotto_end_elites_02 2)
 	)
 

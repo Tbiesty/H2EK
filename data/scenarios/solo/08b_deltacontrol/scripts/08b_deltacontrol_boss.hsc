@@ -281,25 +281,25 @@
 
 (script static short boss_tartarus_rateofrecharge
 	(cond
-		((difficulty_legendary)	(random_range (* 2 tick_seconds) (* 3 tick_seconds)))
-		((difficulty_heroic)	(random_range (* 2 tick_seconds) (* 3 tick_seconds)))
-		(TRUE				(random_range (* 3 tick_seconds) (* 4 tick_seconds)))
+		((difficulty_legendary)	(* 2 tick_seconds))
+		((difficulty_heroic)	(* 2 tick_seconds))
+		(TRUE				    (* 3 tick_seconds))
 	)
 )
 
 (script static short boss_johnson_rateoffire
 	(cond
-		((difficulty_legendary)	(random_range (* 6 tick_seconds) (* 10 tick_seconds)))
-		((difficulty_heroic)	(random_range (* 5 tick_seconds) (* 9 tick_seconds)))
-		(TRUE				(random_range (* 4 tick_seconds) (* 8 tick_seconds)))
+		((difficulty_legendary)	(random_range (* 8 tick_seconds) (* 10 tick_seconds)))
+		((difficulty_heroic)	(random_range (* 6 tick_seconds) (* 8 tick_seconds)))
+		(TRUE				    (random_range (* 4 tick_seconds) (* 6 tick_seconds)))
 	)
 )
 
 (script static short boss_rateofreenforcement
 	(cond
-		((difficulty_legendary)	(random_range (* 20 tick_seconds) (* 30 tick_seconds)))
-		((difficulty_heroic)	(random_range (* 20 tick_seconds) (* 30 tick_seconds)))
-		(TRUE				(random_range (* 20 tick_seconds) (* 30 tick_seconds)))
+		((difficulty_legendary)	(random_range (* 15 tick_seconds) (* 20 tick_seconds)))
+		((difficulty_heroic)	(random_range (* 15 tick_seconds) (* 20 tick_seconds)))
+		(TRUE				    (random_range (* 15 tick_seconds) (* 20 tick_seconds)))
 	)
 )
 

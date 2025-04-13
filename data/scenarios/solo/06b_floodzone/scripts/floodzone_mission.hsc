@@ -1789,12 +1789,8 @@
 
 	(sleep_until (volume_test_objects tv_factory2_mid (players)))
 	(game_save_no_timeout)
-	(if	(<= (ai_living_count factory2_flood) 12)
-		(begin
-			(ai_place factory2_flood_mid)
-			(ai_place factory2_flood_bk)
-		)
-	)
+	(ai_place factory2_flood_mid)
+	(ai_place factory2_flood_bk)
 	
 	(sleep_until (volume_test_objects tv_factory2_bk (players)))
 	(game_save)

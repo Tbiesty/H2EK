@@ -4361,7 +4361,7 @@
 		(game_save_no_timeout)
 	
 ;		(wake ai_hall_c_flood_spawn)
-		(ai_place hall_c_flood_c)
+		(ai_place hall_c_flood_c (pin (- 12 (ai_nonswarm_count hall_c_flood)) 0 8))
 		(ai_place hall_c_carrier_c)
 		(ai_place hall_c_sen_tube)
 		(sleep 1)
@@ -4371,14 +4371,14 @@
 		(game_save_no_timeout)
 		(data_mine_set_mission_segment enc_hall_c_sec_c)
 
-		(ai_place hall_c_flood_d)
+		(ai_place hall_c_flood_d (pin (- 12 (ai_nonswarm_count hall_c_flood)) 0 8))
 		(ai_place hall_c_carrier_d)
 		(sleep 1)
 		(ai_set_orders hall_c_flood hall_c_floor_d)
 
 	(sleep_until (volume_test_objects tv_hall_c_e (players)) 10)
 		(game_save_no_timeout)
-		(ai_place hall_c_flood_e)
+		(ai_place hall_c_flood_e (pin (- 12 (ai_nonswarm_count hall_c_flood)) 0 8))
 		(ai_place hall_c_carrier_e)
 		(ai_place hall_c_flood_f)
 		(sleep 1)

@@ -2248,7 +2248,7 @@
 	(ai_place lab_carriers_01/init1)
 	(ai_place lab_carriers_01/init2)
 	(ai_place lab_carriers_01/init3)
-	(ai_place lab_carriers_01/init4)
+	;(ai_place lab_carriers_01/init4)
 	(wake lab_barricades)
 	(if (difficulty_legendary)
 		(wake famine_flavor)
@@ -2614,10 +2614,10 @@
 
 ;9/12
 
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_R_02 2)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_R_03 (- 4 (+ (ai_living_count bridge_h_grunts_init) (ai_living_count bridge_runners))))
 	)
 
@@ -2628,7 +2628,7 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_R_04 (- 2 (ai_living_count bridge_heretics_R_02)))
 	)
 
@@ -2638,9 +2638,9 @@
 			(= (volume_test_objects vol_wrap_right_03 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
-		(ai_place bridge_sentinels_R_05 3)
-	)
+	;(if (< (ai_nonswarm_count bridge_enemies) 9)
+	(ai_place bridge_sentinels_R_05 3)
+	;)
 
 	(sleep_until 
 		(AND
@@ -2649,10 +2649,10 @@
 		)
 	)
 	(set bridge_final_gone TRUE)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_final (- 2 (+ (ai_living_count bridge_heretics_R_04) (ai_living_count bridge_heretics_L_04))))
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_final 2)
 	)
 )
@@ -2663,10 +2663,10 @@
 			(= (volume_test_objects vol_wrap_left_01 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_L_02 2)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_L_03 (- 4 (+ (ai_living_count bridge_h_grunts_init) (ai_living_count bridge_runners))))
 	)
 
@@ -2677,7 +2677,7 @@
 		)
 	)
 	(game_save)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_L_04 (- 2 (ai_living_count bridge_heretics_L_02)))
 	)
 	
@@ -2687,9 +2687,9 @@
 			(= (volume_test_objects vol_wrap_left_03 (players)) TRUE)
 		)
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
-		(ai_place bridge_sentinels_L_05 3)
-	)
+	;(if (< (ai_nonswarm_count bridge_enemies) 9)
+	(ai_place bridge_sentinels_L_05 3)
+	;)
 
 	(sleep_until 
 		(AND 
@@ -2698,10 +2698,10 @@
 		)
 	)
 	(set bridge_final_gone TRUE)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_heretics_final (- 2 (+ (ai_living_count bridge_heretics_R_04) (ai_living_count bridge_heretics_L_04))))
 	)
-	(if (< (ai_nonswarm_count bridge_enemies) 16)
+	(if (< (ai_nonswarm_count bridge_enemies) 9)
 		(ai_place bridge_h_grunts_final 2)
 	)
 )

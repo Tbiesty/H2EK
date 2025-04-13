@@ -3313,9 +3313,9 @@ Covenant
 	(ai_place e18_cov_inf2_2/sniper0)
 	(ai_place e18_cov_inf2_3/sniper0)
 
-	; Set the spawn limits!
-	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 5))
-	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 6))
+	; Set the spawn limits!s
+	(if (difficulty_heroic) (set g_e18_cov_inf2_spawn_max 6))
+	(if (difficulty_legendary) (set g_e18_cov_inf2_spawn_max 8))
 	
 	; Spawn more snipers
 	(sleep_until

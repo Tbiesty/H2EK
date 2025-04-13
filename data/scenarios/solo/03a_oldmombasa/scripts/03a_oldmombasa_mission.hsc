@@ -50,178 +50,6 @@ e13
 (script stub void chief_recovery_sequence (print "chief_recovery_sequence (cinematics didn't compile)"))
 
 
-(script static void print_covenant_count
-	(if (= (ai_living_count covenant) 0)
-		(begin
-	        (print "covenant_count: 0")
-		)
-	)
-	(if (= (ai_living_count covenant) 1)
-		(begin
-	        (print "covenant_count: 1")
-		)
-	)
-	(if (= (ai_living_count covenant) 2)
-		(begin
-	        (print "covenant_count: 2")
-		)
-	)
-	(if (= (ai_living_count covenant) 3)
-		(begin
-	        (print "covenant_count: 3")
-		)
-	)
-	(if (= (ai_living_count covenant) 4)
-		(begin
-	        (print "covenant_count: 4")
-		)
-	)
-	(if (= (ai_living_count covenant) 5)
-		(begin
-	        (print "covenant_count: 5")
-		)
-	)
-	(if (= (ai_living_count covenant) 6)
-		(begin
-	        (print "covenant_count: 6")
-		)
-	)
-	(if (= (ai_living_count covenant) 7)
-		(begin
-	        (print "covenant_count: 7")
-		)
-	)
-	(if (= (ai_living_count covenant) 8)
-		(begin
-	        (print "covenant_count: 8")
-		)
-	)
-	(if (= (ai_living_count covenant) 9)
-		(begin
-	        (print "covenant_count: 9")
-		)
-	)
-	(if (= (ai_living_count covenant) 10)
-		(begin
-	        (print "covenant_count: 10")
-		)
-	)
-	(if (= (ai_living_count covenant) 11)
-		(begin
-	        (print "covenant_count: 11")
-		)
-	)
-	(if (= (ai_living_count covenant) 12)
-		(begin
-	        (print "covenant_count: 12")
-		)
-	)
-	(if (= (ai_living_count covenant) 13)
-		(begin
-	        (print "covenant_count: 13")
-		)
-	)
-	(if (= (ai_living_count covenant) 14)
-		(begin
-	        (print "covenant_count: 14")
-		)
-	)
-	(if (= (ai_living_count covenant) 15)
-		(begin
-	        (print "covenant_count: 15")
-		)
-	)
-	(if (= (ai_living_count covenant) 16)
-		(begin
-	        (print "covenant_count: 16")
-		)
-	)
-	(if (= (ai_living_count covenant) 17)
-		(begin
-	        (print "covenant_count: 17")
-		)
-	)
-	(if (= (ai_living_count covenant) 18)
-		(begin
-	        (print "covenant_count: 18")
-		)
-	)
-	(if (= (ai_living_count covenant) 19)
-		(begin
-	        (print "covenant_count: 19")
-		)
-	)
-	(if (>= (ai_living_count covenant) 20)
-		(begin
-	        (print "covenant_count: 20+")
-		)
-	)
-)
-
-(script static void print_marine_count
-	(if (= (ai_living_count marines) 0)
-		(begin
-	        (print "marine_count: 0")
-		)
-	)
-	(if (= (ai_living_count marines) 1)
-		(begin
-	        (print "marine_count: 1")
-		)
-	)
-	(if (= (ai_living_count marines) 2)
-		(begin
-	        (print "marine_count: 2")
-		)
-	)
-	(if (= (ai_living_count marines) 3)
-		(begin
-	        (print "marine_count: 3")
-		)
-	)
-	(if (= (ai_living_count marines) 4)
-		(begin
-	        (print "marine_count: 4")
-		)
-	)
-	(if (= (ai_living_count marines) 5)
-		(begin
-	        (print "marine_count: 5")
-		)
-	)
-	(if (= (ai_living_count marines) 6)
-		(begin
-	        (print "marine_count: 6")
-		)
-	)
-	(if (= (ai_living_count marines) 7)
-		(begin
-	        (print "marine_count: 7")
-		)
-	)
-	(if (= (ai_living_count marines) 8)
-		(begin
-	        (print "marine_count: 8")
-		)
-	)
-	(if (= (ai_living_count marines) 9)
-		(begin
-	        (print "marine_count: 9")
-		)
-	)
-	(if (>= (ai_living_count marines) 10)
-		(begin
-	        (print "marine_count: 10+")
-		)
-	)
-)
-
-(script static void print_actor_count
-	(print_covenant_count)
-	(print_marine_count)
-)
-
-
 ;= SINEMATICS ============================================================================
 
 (script static void cinematic_intro
@@ -2755,7 +2583,7 @@ Open Issues
 		)
 		15
 	)
-	(ai_place e9_cov_inf0)
+	(ai_place e9_cov_inf0 (pin (- 10 (ai_living_count e9_cov)) 3 7))
 
 	; Retreat checkpoint
 	(wake e9_retreat_checkpoint0)
@@ -4154,7 +3982,7 @@ Covenant
 			(not (volume_test_objects tv_e5_cov_inf1_done (players)))
 		)
 		(begin
-			(ai_place e5_cov_inf1_1)
+			(ai_place e5_cov_inf1_1 (pin (- 8 (ai_living_count e5_cov)) 0 4))
 			(ai_set_orders e5_cov_inf1_1 e5_cov_inf1_1_init)
 		)
 	)
