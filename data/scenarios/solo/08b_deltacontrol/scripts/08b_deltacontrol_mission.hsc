@@ -1601,36 +1601,11 @@ Open Issues
 
 (script dormant e11_pro_banshees0_main
 	; Wait until all the Wraiths are dead
-	(sleep_until (<= (e11_pro_wraiths_living_count) 0))
+	(sleep_until (<= (e11_pro_wraiths_living_count) 1))
 	
-	; Banshee respawner
-	(sleep_until
-		(begin
-			; If the living count is depleted...
-			(if
-				(<= (ai_living_count e11_pro_banshees0) 0)
-				
-				; Until there are two...
-				(sleep_until
-					(begin
-						; Is the player outside the cove? Spawn accordingly
-						(if (volume_test_objects tv_e11_outer_cove (players))
-							(ai_place e11_pro_banshees0_1 1)
-							(ai_place e11_pro_banshees0_0 1)
-						)
-						
-						; Two total
-						(>= (ai_living_count e11_pro_banshees0) 2)
-					)
-					60
-				)
-			)
-		
-			; Limit number of Banshees that can spawn
-			(>= (ai_spawn_count e11_pro_banshees0) 2)
-		)
-		60
-	)
+	; Banshee spawner
+	(ai_place e11_pro_banshees0_0 1)
+	(ai_place e11_pro_banshees0_1 1)
 )
 	
 (script dormant e11_pro_spectres0_main
@@ -6198,7 +6173,7 @@ Open Issues
 	
 	; Chapter titles
 	(wake chapter_title0)
-	
+
 	; Wait for the mission to end
 	(sleep_until g_mission_over 5)
 	
