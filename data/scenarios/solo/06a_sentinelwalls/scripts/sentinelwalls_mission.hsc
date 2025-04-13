@@ -1438,7 +1438,7 @@
 	(cond
 		((difficulty_normal) (begin (set g_insertion_limit 0) (set g_insertion_index 1)))
 		((difficulty_heroic) (begin (set g_insertion_limit 0) (set g_insertion_index 2)))
-		((difficulty_legendary) (begin (set g_insertion_limit 1) (set g_insertion_index 3)))
+		((difficulty_legendary) (begin (set g_insertion_limit 1) (set g_insertion_index 2)))
 	)
 ; spawner loop 
 	(sleep_until
